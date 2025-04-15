@@ -1,0 +1,42 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../screens/chat_home_screen.dart';
+import '../screens/home_screen.dart';
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        CupertinoPageRoute(builder: (_) => const ChatHome()),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const CupertinoPageScaffold(
+      backgroundColor: Color(0xFF0C111D),
+      child: Center(child: LogoOnly()),
+    );
+  }
+}
+
+class LogoOnly extends StatelessWidget {
+  const LogoOnly({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SvgPicture.asset('assets/images/logo.svg', width: 80, height: 80);
+  }
+}

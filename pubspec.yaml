@@ -1,0 +1,63 @@
+name: hope
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  openai_realtime_dart: ^0.0.3+1
+  speech_to_text: ^7.0.0
+  just_audio: ^0.9.36
+  path_provider: ^2.1.2
+  permission_handler: ^11.0.1
+  audio_session: ^0.1.18
+  flutter_webrtc: ^0.13.0
+  http: ^1.1.0
+  lottie: ^2.7.0
+  cupertino_icons: ^1.0.6
+  supabase_flutter: ^2.3.4
+  sign_in_with_apple: ^7.0.1
+  crypto: ^3.0.3
+  google_sign_in: ^6.3.0
+  onesignal_flutter: ^5.2.8
+  purchases_flutter: ^8.3.2
+  logger: ^2.5.0
+  fluttertoast: ^8.2.12
+  jwt_decode: ^0.3.1
+  shared_preferences: ^2.5.3
+  jwt_decoder: ^2.0.1
+  get: ^4.7.2
+  flutter_svg: ^2.0.17
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/animations/
+    - assets/
+    - assets/images/logo.svg
+    - assets/images/the_ark.png
+    - assets/images/ellipse.svg
+    - assets/images/ellipse.png
+    - assets/icons/chat_home_1.svg
+    - assets/icons/chat_home_2.svg
+    - assets/icons/chat_home_3.svg
+    - assets/icons/soundoff.svg
+    - assets/icons/mute.svg
+    - assets/icons/callcut.svg
+    - assets/icons/play.svg
+    - assets/icons/share.svg
+    - assets/icons/download.svg
+    - assets/icons/bookmark.svg
+    - assets/icons/profile.svg
+    - assets/icons/home.svg
+    - assets/icons/bible.svg
+    - assets/icons/sparkle.svg
