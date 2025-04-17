@@ -4,7 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hope/Constants/colors.dart';
 
 class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({super.key});
+  final bool home;
+  final bool bible;
+  final bool myList;
+  final bool profile;
+  const BottomNavBar({this.home = false, this.bible = false,this.myList = false,this.profile = false});
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +27,13 @@ class BottomNavBar extends StatelessWidget {
           ),
           child: Row(
             children: [
-              _NavIcon(assetPath: 'assets/icons/home.svg', selected: true),
+              _NavIcon(assetPath: 'assets/icons/home.svg', selected: home),
               SizedBox(width: 4.w),
-              _NavIcon(assetPath: 'assets/icons/bible.svg'),
+              _NavIcon(assetPath: 'assets/icons/bible.svg',selected: bible),
               SizedBox(width: 4.w),
-              _NavIcon(assetPath: 'assets/icons/bookmark.svg'),
+              _NavIcon(assetPath: 'assets/icons/bookmark.svg', selected: myList),
               SizedBox(width: 4.w),
-              _NavIcon(assetPath: 'assets/icons/profile.svg'),
+              _NavIcon(assetPath: 'assets/icons/profile.svg', selected: profile),
             ],
           ),
         ),

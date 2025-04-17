@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
               bottom: 16,
               left: 0,
               right: 0,
-              child: BottomNavBar(),
+              child: BottomNavBar(home: true),
             ),
           ],
         ),
