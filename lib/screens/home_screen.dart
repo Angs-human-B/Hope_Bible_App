@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/bottom_nav_bar.dart';
 import '../widgets/HomeSection/search_bar.dart';
 import '../widgets/HomeSection/daily_verse_card.dart';
@@ -22,13 +23,14 @@ class HomeScreen extends StatelessWidget {
           children: [
             ListView(
               padding: const EdgeInsets.only(bottom: 100),
-              children: const [
-                SizedBox(height: 12),
+              children: [
+                SizedBox(height: 12.h),
                 CupertinoSearchBar(),
-                SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 FeaturedSection(),
                 DailyVerseCard(),
                 HorizontalCardList(title: 'Recommended'),
+                SizedBox(height: 12.h),
                 HorizontalCardList(title: 'Watch Now'),
               ],
             ),

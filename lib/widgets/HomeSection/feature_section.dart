@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:ui';
 
@@ -10,7 +11,7 @@ class FeaturedSection extends StatefulWidget {
 }
 
 class _FeaturedSectionState extends State<FeaturedSection> {
-  final PageController _pageController = PageController(viewportFraction: 0.6);
+  final PageController _pageController = PageController(viewportFraction: 0.55);
   double currentPage = 0;
 
   @override
@@ -32,7 +33,8 @@ class _FeaturedSectionState extends State<FeaturedSection> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 320,
+      height: 345.h,
+      width: 230.w,
       child: PageView.builder(
         controller: _pageController,
         itemCount: 5,
@@ -47,7 +49,7 @@ class _FeaturedSectionState extends State<FeaturedSection> {
             child: Transform.scale(
               scale: scale,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6),
+                padding: EdgeInsets.symmetric(horizontal: 2.w),
                 child: const _CupertinoFeatureCard(),
               ),
             ),
@@ -57,38 +59,41 @@ class _FeaturedSectionState extends State<FeaturedSection> {
     );
   }
 }
+
 class _CupertinoFeatureCard extends StatelessWidget {
   const _CupertinoFeatureCard();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 210,
-      height: 300,
+      height: 345.h,
+      width: 230.w,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(8.sp),
         image: const DecorationImage(
           image: AssetImage('assets/images/the_ark.png'),
           fit: BoxFit.cover,
         ),
       ),
-      child: Stack(
+      child:
+
+
+
+      Stack(
         children: [
-
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [
-                  CupertinoColors.black.withOpacity(0.6),
-                  CupertinoColors.black.withOpacity(0.2),
-                ],
-              ),
-            ),
-          ),
-
+          // Container(
+          //   decoration: BoxDecoration(
+          //     borderRadius: BorderRadius.circular(10.sp),
+          //     gradient: LinearGradient(
+          //       begin: Alignment.bottomCenter,
+          //       end: Alignment.topCenter,
+          //       colors: [
+          //         CupertinoColors.black.withOpacity(0.6),
+          //         CupertinoColors.black.withOpacity(0.2),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           Positioned(
             bottom: 16,
             left: 12,
@@ -97,8 +102,9 @@ class _CupertinoFeatureCard extends StatelessWidget {
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 6.0, sigmaY: 6.0),
                 child: Container(
-                  height: 40,
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  height: 44.h,
+                  width: 130.w,
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
                   decoration: BoxDecoration(
                     color: const Color.fromRGBO(68, 68, 68, 0.5),
                     borderRadius: BorderRadius.circular(8),
@@ -108,22 +114,23 @@ class _CupertinoFeatureCard extends StatelessWidget {
                     ),
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SvgPicture.asset(
                         'assets/icons/bookmark.svg',
-                        width: 18,
-                        height: 18,
+                        width: 12.w,
+                        height: 15.h,
                         colorFilter: const ColorFilter.mode(
                           CupertinoColors.white,
                           BlendMode.srcIn,
                         ),
                       ),
-                      const SizedBox(width: 6),
-                      const Text(
+                       SizedBox(width: 8.w),
+                       Text(
                         'Add to list',
                         style: TextStyle(
                           color: CupertinoColors.white,
-                          fontSize: 13,
+                          fontSize: 14.sp,
                         ),
                       ),
                     ],
@@ -137,8 +144,8 @@ class _CupertinoFeatureCard extends StatelessWidget {
             right: 12,
             child: SvgPicture.asset(
               'assets/icons/play.svg',
-              width: 40,
-              height: 40,
+              width: 44.w,
+              height: 44.h,
             ),
           ),
         ],
