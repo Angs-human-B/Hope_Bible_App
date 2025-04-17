@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hope/Constants/colors.dart';
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({super.key});
@@ -9,38 +11,42 @@ class BottomNavBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-
         Container(
-          margin: const EdgeInsets.symmetric(horizontal: 12),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          height: 72.h,
+          width: 250.w,
+          margin: EdgeInsets.symmetric(horizontal: 12.w),
+          padding: EdgeInsets.all(8.sp),
           decoration: BoxDecoration(
-            color: CupertinoColors.darkBackgroundGray,
-            borderRadius: BorderRadius.circular(30),
+            color: secondaryGrey,
+            borderRadius: BorderRadius.circular(99.sp),
+            border: Border.all(color: Color(0xFF888888), width: .5),
           ),
           child: Row(
-            children: const [
+            children: [
               _NavIcon(assetPath: 'assets/icons/home.svg', selected: true),
-              SizedBox(width: 12),
+              SizedBox(width: 4.w),
               _NavIcon(assetPath: 'assets/icons/bible.svg'),
-              SizedBox(width: 12),
+              SizedBox(width: 4.w),
               _NavIcon(assetPath: 'assets/icons/bookmark.svg'),
-              SizedBox(width: 12),
+              SizedBox(width: 4.w),
               _NavIcon(assetPath: 'assets/icons/profile.svg'),
             ],
           ),
         ),
 
         Container(
-          margin: const EdgeInsets.only(right: 12),
-          padding: const EdgeInsets.all(12),
-          decoration: const BoxDecoration(
-            color: CupertinoColors.darkBackgroundGray,
+          height: 70.h,
+          width: 70.w,
+          margin: EdgeInsets.only(right: 12.w),
+          padding: EdgeInsets.all(20.sp),
+          decoration: BoxDecoration(
+            color: secondaryGrey,
             shape: BoxShape.circle,
           ),
           child: SvgPicture.asset(
-            'assets/icons/sparkle.svg', 
-            width: 20,
-            height: 20,
+            'assets/icons/sparkle.svg',
+            width: 18.w,
+            height: 18.h,
             colorFilter: const ColorFilter.mode(
               CupertinoColors.white,
               BlendMode.srcIn,
@@ -61,15 +67,17 @@ class _NavIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 55.h,
+      width: 55.w,
       decoration: BoxDecoration(
-        color: selected ? CupertinoColors.systemYellow : CupertinoColors.darkBackgroundGray,
+        color: selected ? accentYellow : secondaryGrey,
         shape: BoxShape.circle,
       ),
-      padding: const EdgeInsets.all(8),
+      padding: EdgeInsets.all(15.sp),
       child: SvgPicture.asset(
         assetPath,
-        width: 20,
-        height: 20,
+        width: 19.w,
+        height: 19.h,
         colorFilter: ColorFilter.mode(
           selected ? CupertinoColors.black : CupertinoColors.white,
           BlendMode.srcIn,

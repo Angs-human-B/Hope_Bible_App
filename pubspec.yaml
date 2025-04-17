@@ -32,6 +32,7 @@ dependencies:
   jwt_decoder: ^2.0.1
   get: ^4.7.2
   flutter_svg: ^2.0.17
+  flutter_screenutil: ^5.9.3
 
 dev_dependencies:
   flutter_test:
@@ -43,21 +44,5 @@ flutter:
   assets:
     - assets/animations/
     - assets/
-    - assets/images/logo.svg
-    - assets/images/the_ark.png
-    - assets/images/ellipse.svg
-    - assets/images/ellipse.png
-    - assets/icons/chat_home_1.svg
-    - assets/icons/chat_home_2.svg
-    - assets/icons/chat_home_3.svg
-    - assets/icons/soundoff.svg
-    - assets/icons/mute.svg
-    - assets/icons/callcut.svg
-    - assets/icons/play.svg
-    - assets/icons/share.svg
-    - assets/icons/download.svg
-    - assets/icons/bookmark.svg
-    - assets/icons/profile.svg
-    - assets/icons/home.svg
-    - assets/icons/bible.svg
-    - assets/icons/sparkle.svg
+    - assets/images/
+    - assets/icons/

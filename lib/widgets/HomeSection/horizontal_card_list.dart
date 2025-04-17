@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'feature_card.dart';
 import 'section_header.dart';
 
@@ -14,7 +15,7 @@ class HorizontalCardList extends StatelessWidget {
       children: [
         SectionHeader(title: title),
         SizedBox(
-          height: 240, 
+          height: 240.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12),

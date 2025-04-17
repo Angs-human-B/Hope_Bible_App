@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hope/Constants/colors.dart';
 
 class DailyVerseCard extends StatelessWidget {
   const DailyVerseCard({super.key});
@@ -8,12 +10,18 @@ class DailyVerseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+      // padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.only(
+          top: 18.h,
+          bottom: 10.h,
+          left: 18.w,
+          right: 10.w,
+        ),
         decoration: BoxDecoration(
-          color: CupertinoColors.darkBackgroundGray,
-          borderRadius: BorderRadius.circular(16),
+          color: secondaryGrey,
+          borderRadius: BorderRadius.circular(12.sp),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,29 +30,48 @@ class DailyVerseCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CircleAvatar(
-                  radius: 24,
-                  backgroundImage: AssetImage('assets/images/the_ark.png'),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Outer yellow ring
+                    Container(
+                      width: 76.w, // Slightly bigger than avatar
+                      height: 76.h,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: accentYellow,
+                          width: 1.5.w,
+                        ),
+                      ),
+                    ),
+                    // Inner avatar
+                    CircleAvatar(
+                      radius: 34.w,
+                      backgroundImage: AssetImage('assets/images/the_ark.png'),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         "DAILY VERSE",
                         style: TextStyle(
-                          color: CupertinoColors.systemGrey,
-                          fontSize: 13,
+                          color: textWhite.withValues(alpha: .66),
+                          fontSize: 12.sp,
                         ),
                       ),
-                      SizedBox(height: 4),
+                      SizedBox(height: 4.h),
                       Text(
                         '"But those who hope in the Lord will renew their strength."',
                         style: TextStyle(
-                          color: CupertinoColors.white,
-                          fontSize: 20,
-                          height: 1.4,
+                          color: textWhite,
+                          fontSize: 20.sp,
+                          height: 1.2,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -52,22 +79,22 @@ class DailyVerseCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             // Bottom row with verse + icons
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "Isaiah 40:31",
+                Text(
+                  " Isaiah 40:31",
                   style: TextStyle(
-                    color: CupertinoColors.systemGrey,
-                    fontSize: 14,
+                    color: textWhite.withValues(alpha: .66),
+                    fontSize: 14.sp,
                   ),
                 ),
                 Row(
                   children: [
                     _blackIconBox('assets/icons/download.svg'),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8.w),
                     _blackIconBox('assets/icons/share.svg'),
                   ],
                 ),
@@ -81,15 +108,15 @@ class DailyVerseCard extends StatelessWidget {
 
   Widget _blackIconBox(String svgAsset) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(10.sp),
       decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(8),
+        color: secondaryBlack,
+        borderRadius: BorderRadius.circular(8.sp),
       ),
       child: SvgPicture.asset(
         svgAsset,
-        width: 16,
-        height: 16,
+        width: 20.w,
+        height: 20.h,
         colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
       ),
     );

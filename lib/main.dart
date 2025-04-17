@@ -3,6 +3,7 @@
 import 'dart:io' show Platform;
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hope/utilities/app.constants.dart' show EntitleMents;
 import 'package:onesignal_flutter/onesignal_flutter.dart'
     show OSLogLevel, OneSignal;
@@ -134,14 +135,21 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoApp(
-      debugShowCheckedModeBanner: false,
-      theme: CupertinoThemeData(
-        brightness: Brightness.dark,
-        primaryColor: CupertinoColors.systemBlue,
-        scaffoldBackgroundColor: CupertinoColors.black,
-      ),
-      home: SplashScreen(),
+    return ScreenUtilInit(
+      designSize: const Size(390, 844), // iPhone 13 dimensions; adjust as needed
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return const CupertinoApp(
+          debugShowCheckedModeBanner: false,
+          theme: CupertinoThemeData(
+            brightness: Brightness.dark,
+            primaryColor: CupertinoColors.systemBlue,
+            scaffoldBackgroundColor: CupertinoColors.black,
+          ),
+          home: SplashScreen(),
+        );
+      },
     );
   }
 }
