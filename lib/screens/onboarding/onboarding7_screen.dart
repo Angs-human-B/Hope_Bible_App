@@ -1,0 +1,82 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hope/Constants/image.dart';
+import 'package:hope/widgets/common_text.dart';
+import 'package:hope/widgets/common_text_box.dart';
+
+import '../../Constants/colors.dart';
+import '../../Constants/global_variable.dart';
+import '../../widgets/back_button.dart';
+import '../../widgets/next_button.dart';
+import '../../widgets/progress_bar.dart';
+
+class Onboarding7Screen extends StatefulWidget {
+  const Onboarding7Screen({super.key});
+
+  @override
+  State<Onboarding7Screen> createState() => _Onboarding7ScreenState();
+}
+
+class _Onboarding7ScreenState extends State<Onboarding7Screen> {
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        padding: EdgeInsets.symmetric(horizontal: 10.w),
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.bottomCenter,
+              height: 120.h,
+              child: Row(
+                children: [
+                  // SizedBox(width: 10.w),
+                  BackButtonOnboarding(),
+                  SizedBox(width: 30.w),
+                  ProgressBar(progress: currentProgress/totalProgress),
+                ],
+              ),
+            ),
+            SizedBox(height: 50.h),
+            Text.rich(
+              TextSpan(
+                style: TextStyle(
+                  color: textWhite,
+                  fontSize: 36.sp,
+                ),
+                children: [
+                  TextSpan(text: 'Millions rely on the '),
+                  TextSpan(
+                    text: 'NIV',
+                    style: TextStyle(
+                      color: accentYellow,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(text: ' to deepen their spiritual journey daily.'),
+                ],
+              ),
+              textAlign: TextAlign.start,
+            ),
+            SizedBox(height: 10.h),
+            Image.asset(onboarding7),
+            SizedBox(height: 13.h),
+            Text(
+              textAlign: TextAlign.center,
+              onboarding7String,
+              style: TextStyle(
+                fontSize: 20.sp,
+                color: textWhite
+              ),
+            ),
+            SizedBox(height: 101.h,),
+            // SizedBox(height: 30.h,),
+            NextButton("Next", "o8"),
+          ],
+        ),
+      ),
+    );
+  }
+}

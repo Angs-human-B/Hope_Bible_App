@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hope/Constants/global_variable.dart';
 
 import '../Constants/colors.dart';
 
@@ -15,7 +16,9 @@ class _BackButtonOnboardingState extends State<BackButtonOnboarding> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
+        currentProgress -= 1;
         Navigator.pop(context);
+
       },
       child: Container(
           height: 44.h,
