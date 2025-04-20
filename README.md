@@ -6,7 +6,7 @@ A Flutter project that aims to provide a modern and user-friendly mobile applica
 
 ### Prerequisites
 
-- Flutter SDK (^3.7.0)
+- Flutter SDK (^3.29.1)
 - Dart SDK
 - Android Studio / VS Code with Flutter extensions
 - Git

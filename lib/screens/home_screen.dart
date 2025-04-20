@@ -34,8 +34,8 @@ class HomeScreen extends StatelessWidget {
                 HorizontalCardList(title: 'Watch Now'),
               ],
             ),
-            const Positioned(
-              bottom: 16,
+            Positioned(
+              bottom: 16.h,
               left: 0,
               right: 0,
               child: BottomNavBar(home: true),

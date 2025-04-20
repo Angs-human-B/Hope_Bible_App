@@ -3,6 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hope/Constants/colors.dart';
 
+import '../screens/bible_screen.dart';
+import '../screens/home_screen.dart';
+import '../screens/my_list_screen.dart';
+import '../screens/profile_screen.dart';
+
 class BottomNavBar extends StatelessWidget {
   final bool home;
   final bool bible;
@@ -17,7 +22,7 @@ class BottomNavBar extends StatelessWidget {
       children: [
         Container(
           height: 72.h,
-          width: 250.w,
+          width: 240.w,
           margin: EdgeInsets.symmetric(horizontal: 12.w),
           padding: EdgeInsets.all(8.sp),
           decoration: BoxDecoration(
@@ -27,13 +32,55 @@ class BottomNavBar extends StatelessWidget {
           ),
           child: Row(
             children: [
-              _NavIcon(assetPath: 'assets/icons/home.svg', selected: home),
-              SizedBox(width: 4.w),
-              _NavIcon(assetPath: 'assets/icons/bible.svg',selected: bible),
-              SizedBox(width: 4.w),
-              _NavIcon(assetPath: 'assets/icons/bookmark.svg', selected: myList),
-              SizedBox(width: 4.w),
-              _NavIcon(assetPath: 'assets/icons/profile.svg', selected: profile),
+              _NavIcon(
+                assetPath: 'assets/icons/home.svg',
+                selected: home,
+                onTap: () {
+                  if (!home) {
+                    Navigator.pushReplacement(
+                      context,
+                      CupertinoPageRoute(builder: (_) => const HomeScreen()),
+                    );
+                  }
+                },
+              ),
+              _NavIcon(
+                assetPath: 'assets/icons/bible.svg',
+                selected: bible,
+                onTap: () {
+                  if (!bible) {
+                    Navigator.pushReplacement(
+                      context,
+                      CupertinoPageRoute(builder: (_) => const BibleScreen()),
+                    );
+                  }
+                },
+              ),
+              _NavIcon(
+                assetPath: 'assets/icons/bookmark.svg',
+                selected: myList,
+                onTap: () {
+                  if (!myList) {
+                    Navigator.pushReplacement(
+                      context,
+                      CupertinoPageRoute(builder: (_) => const MyListScreen()),
+                    );
+                  }
+                },
+              ),
+              _NavIcon(
+                assetPath: 'assets/icons/profile.svg',
+                selected: profile,
+                onTap: () {
+                  if (!profile) {
+                    Navigator.pushReplacement(
+                      context,
+                      CupertinoPageRoute(builder: (_) => const ProfileScreen()),
+                    );
+                  }
+                },
+              ),
+
             ],
           ),
         ),
@@ -65,26 +112,34 @@ class BottomNavBar extends StatelessWidget {
 class _NavIcon extends StatelessWidget {
   final String assetPath;
   final bool selected;
+  final VoidCallback onTap;
 
-  const _NavIcon({required this.assetPath, this.selected = false});
+  const _NavIcon({
+    required this.assetPath,
+    required this.onTap,
+    this.selected = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 55.h,
-      width: 55.w,
-      decoration: BoxDecoration(
-        color: selected ? accentYellow : secondaryGrey,
-        shape: BoxShape.circle,
-      ),
-      padding: EdgeInsets.all(15.sp),
-      child: SvgPicture.asset(
-        assetPath,
-        width: 19.w,
-        height: 19.h,
-        colorFilter: ColorFilter.mode(
-          selected ? CupertinoColors.black : CupertinoColors.white,
-          BlendMode.srcIn,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 55.h,
+        width: 55.w,
+        decoration: BoxDecoration(
+          color: selected ? accentYellow : secondaryGrey,
+          shape: BoxShape.circle,
+        ),
+        padding: EdgeInsets.all(15.sp),
+        child: SvgPicture.asset(
+          assetPath,
+          width: 19.w,
+          height: 19.h,
+          colorFilter: ColorFilter.mode(
+            selected ? CupertinoColors.black : CupertinoColors.white,
+            BlendMode.srcIn,
+          ),
         ),
       ),
     );
