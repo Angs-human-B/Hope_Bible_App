@@ -1,35 +1,33 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hope/Constants/colors.dart';
-import 'package:hope/Constants/global_variable.dart';
-import 'package:hope/widgets/back_button.dart';
-import 'package:hope/widgets/common_text.dart';
-import 'package:hope/widgets/common_text_box.dart';
-import 'package:hope/widgets/next_button.dart';
-import 'package:hope/widgets/progress_bar.dart';
+import 'package:hope/widgets/ManualTwoColumnGrid2.dart';
 
+import '../../Constants/global_variable.dart';
 import '../../widgets/ManualTwoColumnGrid.dart';
+import '../../widgets/back_button.dart';
+import '../../widgets/common_text.dart';
+import '../../widgets/next_button.dart';
+import '../../widgets/progress_bar.dart';
 
-class Onboarding2Screen extends StatefulWidget {
-  const Onboarding2Screen({super.key});
+class Onboarding6Screen extends StatefulWidget {
+  const Onboarding6Screen({super.key});
 
   @override
-  State<Onboarding2Screen> createState() => _Onboarding2ScreenState();
+  State<Onboarding6Screen> createState() => _Onboarding6ScreenState();
 }
 
-class _Onboarding2ScreenState extends State<Onboarding2Screen> {
-  List<String> denomination = [
-    "Baptist",
-    "Methodic",
-    "Catholic",
-    "Presbyterian",
-    "Lutheran",
-    "Pentecostal",
-    "Orthodox",
-    "Other",
-    "Non-denominational",
+class _Onboarding6ScreenState extends State<Onboarding6Screen> {
+   List<String> translations = [
+    'ESV',
+    'NIV',
+    'KJV',
+    'NKJV',
+    'MSG',
+    'NLT',
+    'Other',
   ];
+
   int selectedIdx = 9;
   @override
   Widget build(BuildContext context) {
@@ -52,11 +50,11 @@ class _Onboarding2ScreenState extends State<Onboarding2Screen> {
               ),
             ),
             SizedBox(height: 50.h),
-            CommonText(onboarding2String, 36.sp),
+            CommonText(onboarding6String, 36.sp),
             SizedBox(height: 40.h),
-            ManualTwoColumnGrid(denomination: denomination),
+            ManualTwoColumnGrid2(denomination: translations),
             // SizedBox(height: 30.h,),
-            NextButton("Next", "o3"),
+            NextButton("Next", "o7"),
           ],
         ),
       ),
