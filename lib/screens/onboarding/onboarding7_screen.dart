@@ -53,13 +53,13 @@ class _Onboarding7ScreenState extends State<Onboarding7Screen> {
                       children: [
                         TextSpan(text: 'Millions rely on the '),
                         TextSpan(
-                          text: 'NIV',
+                          text: 'NIV\n',
                           style: TextStyle(
                             color: accentYellow,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        TextSpan(text: ' to deepen their spiritual journey daily.'),
+                        TextSpan(text: 'to deepen their spiritual journey daily.'),
                       ],
                     ),
                     textAlign: TextAlign.start,

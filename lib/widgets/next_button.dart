@@ -55,7 +55,7 @@ class _NextButtonState extends State<NextButton> {
     if(onTapNextRouteString == 'o8'){
       currentProgress += 1;
       Navigator.of(context).push(CupertinoPageRoute(builder: (context) => CommonOnboardingScreen(
-          churchGoingFrequencies,
+          readingFrequencies,
           onboarding8String,
           'o9'
       )));
@@ -67,8 +67,8 @@ class _NextButtonState extends State<NextButton> {
     if(onTapNextRouteString == 'o10'){
       currentProgress += 1;
       Navigator.of(context).push(CupertinoPageRoute(builder: (context) => CommonOnboardingScreen(
-          readingFrequencies,
-          onboarding8String,
+          churchGoingFrequencies,
+          onboarding10String,
           'o11'
       )));
     }

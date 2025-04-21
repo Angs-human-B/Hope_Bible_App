@@ -59,7 +59,7 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        TextSpan(text: ' of users aged under '),
+                        TextSpan(text: ' of users aged\nunder '),
                         TextSpan(
                           text: '18y',
                           style: TextStyle(
@@ -67,7 +67,7 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        TextSpan(text: ' found renewed hope through daily engagement."'),
+                        TextSpan(text: 'found\nrenewed hope through daily engagement."'),
 
                       ],
                     ),

@@ -28,5 +28,5 @@ String onboarding2String = "What is your Denomination?";
 String onboarding4String = "What is your Age\ngroup?";
 String onboarding6String = "Which Bible version speaks to you most";
 String onboarding7String = "*80% of users aged under 18y found\nrenewed hope through daily engagement.";
-String onboarding8String = "How often do you attend church?";
+String onboarding8String = "How often do you\nattend church?";
 String onboarding10String = "How often do you pray or meditate?";
