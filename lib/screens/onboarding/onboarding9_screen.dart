@@ -11,14 +11,14 @@ import '../../widgets/back_button.dart';
 import '../../widgets/next_button.dart';
 import '../../widgets/progress_bar.dart';
 
-class Onboarding7Screen extends StatefulWidget {
-  const Onboarding7Screen({super.key});
+class Onboarding9Screen extends StatefulWidget {
+  const Onboarding9Screen({super.key});
 
   @override
-  State<Onboarding7Screen> createState() => _Onboarding7ScreenState();
+  State<Onboarding9Screen> createState() => _Onboarding9ScreenState();
 }
 
-class _Onboarding7ScreenState extends State<Onboarding7Screen> {
+class _Onboarding9ScreenState extends State<Onboarding9Screen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -42,45 +42,38 @@ class _Onboarding7ScreenState extends State<Onboarding7Screen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 84.h),
+                  SizedBox(height: 117.h),
+                  Image.asset(
+                      onboarding9),
+                  SizedBox(height: 125.h),
                   Text.rich(
                     TextSpan(
                       style: TextStyle(
                         color: textWhite,
-                        fontSize: 30.sp,
+                        fontSize: 24.sp,
                         fontWeight: FontWeight.w600
                       ),
                       children: [
-                        TextSpan(text: 'Millions rely on the '),
+                        TextSpan(text: 'Your '),
                         TextSpan(
-                          text: 'NIV',
+                          text: 'commitment',
                           style: TextStyle(
                             color: accentYellow,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        TextSpan(text: ' to deepen their spiritual journey daily.'),
+                        TextSpan(text: ' aligns with thousands who\'ve found consistent support here.'),
                       ],
                     ),
                     textAlign: TextAlign.start,
-                  ),
-                  Image.asset(
-                      onboarding7),
-                  SizedBox(height: 48.h),
-                  Text(
-                    textAlign: TextAlign.center,
-                    onboarding7String,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: textWhite
-                    ),
-                  ),
+                  )
+
 
                 ],
               ),
               Positioned(
                   top: 695.h,
-                  child: NextButton("Next", "o8")),
+                  child: NextButton("Next", "o10")),
             ],
           ),
         ),

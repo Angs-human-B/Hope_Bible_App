@@ -8,12 +8,12 @@ class ManualTwoColumnGrid extends StatefulWidget {
   const ManualTwoColumnGrid({
     Key? key,
     required this.denomination,
-    this.gridHeight = 480, // default = 600.h
+    this.gridHeight = 324, // default = 600.h
     this.itemWidth = 167, // default = 167.w
     this.itemHeight = 52, // default =  65.h
-    this.crossSpacing = 15,
-    this.mainSpacing = 15,
-    this.horizontalPadding = 5,
+    this.crossSpacing = 14,
+    this.mainSpacing = 14,
+    this.horizontalPadding = 0,
   }) : super(key: key);
 
   /// Data to show in each tile.
@@ -81,7 +81,7 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                   child: _buildBox(
                       widget.denomination[i+1],
                       52.h,
-                      110.w,
+                      104.w,
                       selectedIdx == i+1
                           ? accentYellow.withOpacity(0.25)
                           : secondaryGrey,

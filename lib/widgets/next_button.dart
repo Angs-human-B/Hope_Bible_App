@@ -10,6 +10,7 @@ import '../screens/onboarding/onboarding3_screen.dart';
 import '../screens/onboarding/onboarding5_screen.dart';
 import '../screens/onboarding/onboarding6_screen.dart';
 import '../screens/onboarding/onboarding7_screen.dart';
+import '../screens/onboarding/onboarding9_screen.dart';
 
 class NextButton extends StatefulWidget {
   String text;
@@ -56,15 +57,19 @@ class _NextButtonState extends State<NextButton> {
       Navigator.of(context).push(CupertinoPageRoute(builder: (context) => CommonOnboardingScreen(
           churchGoingFrequencies,
           onboarding8String,
-          'o10'
+          'o9'
       )));
+    }
+    if(onTapNextRouteString == 'o9'){
+      currentProgress += 1;
+      Navigator.of(context).push(CupertinoPageRoute(builder: (context) => Onboarding9Screen()));
     }
     if(onTapNextRouteString == 'o10'){
       currentProgress += 1;
       Navigator.of(context).push(CupertinoPageRoute(builder: (context) => CommonOnboardingScreen(
           readingFrequencies,
           onboarding8String,
-          'o9'
+          'o11'
       )));
     }
   }
@@ -86,7 +91,7 @@ class _NextButtonState extends State<NextButton> {
             child: Text(
                 widget.text,
               style: TextStyle(
-                fontSize: 20.sp,
+                fontSize: 16.sp,
                 color: secondaryBlack,
                 fontWeight: FontWeight.bold
               ),
