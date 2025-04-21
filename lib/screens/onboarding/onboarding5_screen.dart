@@ -22,103 +22,110 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: CupertinoPageScaffold(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.symmetric(horizontal: 18.w),
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
+          children: [
+            Align(
+                alignment: Alignment.topCenter,
+                child: Image.asset(spotLight)),
+            Container(
+              height: MediaQuery.of(context).size.height,
+              padding: EdgeInsets.symmetric(horizontal: 18.w),
+              child: Stack(
                 children: [
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 62.h,
-                    child: Row(
-                      children: [
-                        // SizedBox(width: 10.w),
-                        BackButtonOnboarding(),
-                        SizedBox(width: 26.w),
-                        ProgressBar(progress: currentProgress/totalProgress),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 84.h),
-                  Text.rich(
-                    TextSpan(
-                      style: TextStyle(
-                        color: textWhite,
-                        fontSize: 30.sp,
-                        fontWeight: FontWeight.w600
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        height: 62.h,
+                        child: Row(
+                          children: [
+                            // SizedBox(width: 10.w),
+                            BackButtonOnboarding(),
+                            SizedBox(width: 26.w),
+                            ProgressBar(progress: currentProgress/totalProgress),
+                          ],
+                        ),
                       ),
-                      children: [
-                        TextSpan(text: '"'),
+                      SizedBox(height: 84.h),
+                      Text.rich(
                         TextSpan(
-                          text: '80%',
                           style: TextStyle(
-                            color: accentYellow,
-                            fontWeight: FontWeight.w600,
+                            color: textWhite,
+                            fontSize: 30.sp,
+                            fontWeight: FontWeight.w600
                           ),
-                        ),
-                        TextSpan(text: ' of users aged\nunder '),
-                        TextSpan(
-                          text: '18y',
-                          style: TextStyle(
-                            color: accentYellow,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        TextSpan(text: 'found\nrenewed hope through daily engagement."'),
+                          children: [
+                            TextSpan(text: '"'),
+                            TextSpan(
+                              text: '80%',
+                              style: TextStyle(
+                                color: accentYellow,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            TextSpan(text: ' of users aged\nunder '),
+                            TextSpan(
+                              text: '18y',
+                              style: TextStyle(
+                                color: accentYellow,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            TextSpan(text: 'found\nrenewed hope through daily engagement."'),
 
-                      ],
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                  SizedBox(height: 118.h),
-                  Image.asset(
-                      onboarding5
-                  ),
-                  SizedBox(height: 16.h,),
-                  Text.rich(
-                    TextSpan(
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: textWhite, // default color for text
+                          ],
+                        ),
+                        textAlign: TextAlign.start,
                       ),
-                      children: [
+                      SizedBox(height: 118.h),
+                      Image.asset(
+                          onboarding5
+                      ),
+                      SizedBox(height: 16.h,),
+                      Text.rich(
                         TextSpan(
-                          text: '*',
                           style: TextStyle(
-                            color: accentYellow,
-                            fontWeight: FontWeight.normal,
+                            fontSize: 14.sp,
+                            color: textWhite, // default color for text
                           ),
+                          children: [
+                            TextSpan(
+                              text: '*',
+                              style: TextStyle(
+                                color: accentYellow,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '80%',
+                              style: TextStyle(
+                                color: textWhite,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(text: ' of users aged under '),
+                            TextSpan(
+                              text: '18y',
+                              style: TextStyle(
+                                color: textWhite,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(text: ' found renewed\nhope through daily engagement.'),
+                          ],
                         ),
-                        TextSpan(
-                          text: '80%',
-                          style: TextStyle(
-                            color: textWhite,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextSpan(text: ' of users aged under '),
-                        TextSpan(
-                          text: '18y',
-                          style: TextStyle(
-                            color: textWhite,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextSpan(text: ' found renewed\nhope through daily engagement.'),
-                      ],
-                    ),
-                    textAlign: TextAlign.left,
+                        textAlign: TextAlign.left,
+                      ),
+                    ],
                   ),
+                  Positioned(
+                      top:695.h,
+                      child: NextButton("Next", "o6")),
                 ],
               ),
-              Positioned(
-                  top:695.h,
-                  child: NextButton("Next", "o6")),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

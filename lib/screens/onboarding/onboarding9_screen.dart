@@ -23,59 +23,67 @@ class _Onboarding9ScreenState extends State<Onboarding9Screen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: CupertinoPageScaffold(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.symmetric(horizontal: 18.w),
-          child: Stack(
-            children: [
-              Column(
+        child: Stack(
+          children: [
+            Align(
+                alignment: Alignment.topCenter,
+
+                child: Image.asset(spotLight)),
+            Container(
+              height: MediaQuery.of(context).size.height,
+              padding: EdgeInsets.symmetric(horizontal: 18.w),
+              child: Stack(
                 children: [
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 62.h,
-                    child: Row(
-                      children: [
-                        // SizedBox(width: 10.w),
-                        BackButtonOnboarding(),
-                        SizedBox(width: 26.w),
-                        ProgressBar(progress: currentProgress/totalProgress),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 117.h),
-                  Image.asset(
-                      onboarding9),
-                  SizedBox(height: 125.h),
-                  Text.rich(
-                    TextSpan(
-                      style: TextStyle(
-                        color: textWhite,
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.w600
-                      ),
-                      children: [
-                        TextSpan(text: 'Your '),
-                        TextSpan(
-                          text: 'commitment',
-                          style: TextStyle(
-                            color: accentYellow,
-                            fontWeight: FontWeight.bold,
-                          ),
+                  Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        height: 62.h,
+                        child: Row(
+                          children: [
+                            // SizedBox(width: 10.w),
+                            BackButtonOnboarding(),
+                            SizedBox(width: 26.w),
+                            ProgressBar(progress: currentProgress/totalProgress),
+                          ],
                         ),
-                        TextSpan(text: ' aligns with thousands who\'ve found consistent support here.'),
-                      ],
-                    ),
-                    textAlign: TextAlign.start,
-                  )
+                      ),
+                      SizedBox(height: 117.h),
+                      Image.asset(
+                          onboarding9),
+                      SizedBox(height: 125.h),
+                      Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            color: textWhite,
+                            fontSize: 24.sp,
+                            fontWeight: FontWeight.w600
+                          ),
+                          children: [
+                            TextSpan(text: 'Your '),
+                            TextSpan(
+                              text: 'commitment',
+                              style: TextStyle(
+                                color: accentYellow,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(text: ' aligns with thousands who\'ve found consistent support here.'),
+                          ],
+                        ),
+                        textAlign: TextAlign.start,
+                      )
 
 
+                    ],
+                  ),
+                  Positioned(
+                      top: 695.h,
+                      child: NextButton("Next", "o10")),
                 ],
               ),
-              Positioned(
-                  top: 695.h,
-                  child: NextButton("Next", "o10")),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

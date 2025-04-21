@@ -1,5 +1,5 @@
 
-
+String spotLight = "assets/images/Vector.png";
 String onboarding1 = "assets/images/Frame.png";
 String onboarding3_1 = "assets/images/Group 115.png";
 String onboarding3_2 = "assets/images/Auto Layout Horizontal.png";

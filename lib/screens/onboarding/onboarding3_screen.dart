@@ -33,89 +33,97 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: CupertinoPageScaffold(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.symmetric(horizontal: 18.w),
-          child: Stack(
-            children: [
-              Column(
+        child: Stack(
+          children: [
+            Align(
+                alignment: Alignment.topCenter,
+
+                child: Image.asset(spotLight)),
+            Container(
+              height: MediaQuery.of(context).size.height,
+              padding: EdgeInsets.symmetric(horizontal: 18.w),
+              child: Stack(
                 children: [
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 62.h,
-                    child: Row(
-                      children: [
-                        // SizedBox(width: 10.w),
-                        BackButtonOnboarding(),
-                        SizedBox(width: 26.w),
-                        ProgressBar(progress: currentProgress/totalProgress),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 84.h),
-                  Text.rich(
-                    textAlign: TextAlign.center,
-                    TextSpan(
-                      text: 'Countless ',
-                      style: TextStyle(
-                        color: textWhite,
-                        fontSize: 30.sp,
-                        fontWeight: FontWeight.w600
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'Baptists\n',
-                          style: TextStyle(
-                            color: accentYellow,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextSpan(
-                          text: ' have strengthen their faith!',
-                        ),
-                      ],
-                    ),
-                    // textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 32.h),
-                  Image.asset(onboarding3_1),
-                  SizedBox(height: 15.h,),
-                  Container(
-                    height: 126.h,
-                    width: 319.w,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(onboarding3_2)
-                      )
-                    ),
-                    child: Center(
+                  Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        height: 62.h,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CommonText("+", 60.sp,textColor: accentYellow,),
-                            AnimatedFlipCounter(
-                              value: _count,
-                              duration: const Duration(seconds: 1),
-                              textStyle: TextStyle(
-                                fontSize: 60.sp,
-                                fontWeight: FontWeight.bold,
+                            // SizedBox(width: 10.w),
+                            BackButtonOnboarding(),
+                            SizedBox(width: 26.w),
+                            ProgressBar(progress: currentProgress/totalProgress),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 84.h),
+                      Text.rich(
+                        textAlign: TextAlign.center,
+                        TextSpan(
+                          text: 'Countless ',
+                          style: TextStyle(
+                            color: textWhite,
+                            fontSize: 30.sp,
+                            fontWeight: FontWeight.w600
+                          ),
+                          children: [
+                            TextSpan(
+                              text: 'Baptists\n',
+                              style: TextStyle(
                                 color: accentYellow,
+                                fontWeight: FontWeight.bold,
                               ),
-                              // optional: you can format with separators:
-                              // thousandSeparator: ',',
+                            ),
+                            TextSpan(
+                              text: ' have strengthen their faith!',
                             ),
                           ],
-                        ),),
+                        ),
+                        // textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 32.h),
+                      Image.asset(onboarding3_1),
+                      SizedBox(height: 15.h,),
+                      Container(
+                        height: 126.h,
+                        width: 319.w,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(onboarding3_2)
+                          )
+                        ),
+                        child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CommonText("+", 60.sp,textColor: accentYellow,),
+                                AnimatedFlipCounter(
+                                  value: _count,
+                                  duration: const Duration(seconds: 1),
+                                  textStyle: TextStyle(
+                                    fontSize: 60.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: accentYellow,
+                                  ),
+                                  // optional: you can format with separators:
+                                  // thousandSeparator: ',',
+                                ),
+                              ],
+                            ),),
+                      ),
+                      SizedBox(height: 22.h,),
+                      Image.asset(onboarding3_3),
+                    ],
                   ),
-                  SizedBox(height: 22.h,),
-                  Image.asset(onboarding3_3),
+                  Positioned(
+                      top:695.h,
+                      child: NextButton("Next", "o4")),
                 ],
               ),
-              Positioned(
-                  top:695.h,
-                  child: NextButton("Next", "o4")),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
