@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hope/Constants/image.dart';
@@ -16,8 +17,8 @@ class Onboarding1Screen extends StatefulWidget {
 class _Onboarding1ScreenState extends State<Onboarding1Screen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body:Container(
+    return CupertinoPageScaffold(
+      child:Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(

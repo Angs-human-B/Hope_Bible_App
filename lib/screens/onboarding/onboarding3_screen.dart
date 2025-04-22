@@ -37,8 +37,7 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
           children: [
             Align(
                 alignment: Alignment.topCenter,
-
-                child: Image.asset(spotLight)),
+                child: Image.asset(spotLight, fit: BoxFit.cover,width:  MediaQuery.of(context).size.width,)),
             Container(
               height: MediaQuery.of(context).size.height,
               padding: EdgeInsets.symmetric(horizontal: 18.w),
@@ -102,6 +101,7 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
                                 AnimatedFlipCounter(
                                   value: _count,
                                   duration: const Duration(seconds: 1),
+                                  thousandSeparator: ",",
                                   textStyle: TextStyle(
                                     fontSize: 60.sp,
                                     fontWeight: FontWeight.bold,
