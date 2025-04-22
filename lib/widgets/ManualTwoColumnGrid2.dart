@@ -8,7 +8,7 @@ class ManualTwoColumnGrid2 extends StatefulWidget {
   const ManualTwoColumnGrid2({
     Key? key,
     required this.denomination,
-    this.gridHeight = 480, // default = 600.h
+    this.gridHeight = 326, // default = 600.h
     this.itemWidth = 167, // default = 167.w
     this.itemHeight = 52, // default =  65.h
     this.crossSpacing = 15,

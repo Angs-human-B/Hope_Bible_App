@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hope/Constants/image.dart';
 import 'package:hope/widgets/ManualTwoColumnGrid2.dart';
 
 import '../../Constants/global_variable.dart';
@@ -31,30 +32,45 @@ class _Onboarding6ScreenState extends State<Onboarding6Screen> {
   int selectedIdx = 9;
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        padding: EdgeInsets.symmetric(horizontal: 10.w),
-        child: Column(
+    return SafeArea(
+      child: CupertinoPageScaffold(
+        child: Stack(
           children: [
+            Align(
+                alignment: Alignment.topCenter,
+
+                child: Image.asset(spotLight)),
             Container(
-              alignment: Alignment.bottomCenter,
-              height: 120.h,
-              child: Row(
+              height: MediaQuery.of(context).size.height,
+              padding: EdgeInsets.symmetric(horizontal: 18.w),
+              child: Stack(
                 children: [
-                  // SizedBox(width: 10.w),
-                  BackButtonOnboarding(),
-                  SizedBox(width: 30.w),
-                  ProgressBar(progress: currentProgress/totalProgress),
+                  Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        height: 62.h,
+                        child: Row(
+                          children: [
+                            // SizedBox(width: 10.w),
+                            BackButtonOnboarding(),
+                            SizedBox(width: 26.w),
+                            ProgressBar(progress: currentProgress/totalProgress),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 84.h),
+                      CommonText(onboarding6String, 30.sp),
+                      SizedBox(height: 53.h),
+                      ManualTwoColumnGrid2(denomination: translations),
+                    ],
+                  ),
+                  Positioned(
+                      top: 695.h,
+                      child: NextButton("Next", "o7")),
                 ],
               ),
             ),
-            SizedBox(height: 50.h),
-            CommonText(onboarding6String, 36.sp),
-            SizedBox(height: 40.h),
-            ManualTwoColumnGrid2(denomination: translations),
-            // SizedBox(height: 30.h,),
-            NextButton("Next", "o7"),
           ],
         ),
       ),

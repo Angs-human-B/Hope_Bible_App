@@ -7,7 +7,8 @@ class CommonText extends StatelessWidget {
   String text;
   double fontSize;
   Color textColor;
-  CommonText(this.text, this.fontSize,{this.textColor = Colors.white,super.key});
+  FontWeight fontWeight;
+  CommonText(this.text, this.fontSize,{this.textColor = Colors.white,this.fontWeight = FontWeight.w600 ,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,8 @@ class CommonText extends StatelessWidget {
       style: TextStyle(
           color: textColor,
           fontSize: fontSize,
-          fontWeight: FontWeight.bold
+          fontWeight: this.fontWeight,
+        height: 1.25
       ),
     );
   }
