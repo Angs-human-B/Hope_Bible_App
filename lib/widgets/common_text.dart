@@ -6,7 +6,9 @@ import '../Constants/colors.dart';
 class CommonText extends StatelessWidget {
   String text;
   double fontSize;
-  CommonText(this.text, this.fontSize,{super.key});
+  Color textColor;
+  FontWeight fontWeight;
+  CommonText(this.text, this.fontSize,{this.textColor = Colors.white,this.fontWeight = FontWeight.w600 ,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +16,10 @@ class CommonText extends StatelessWidget {
       textAlign: TextAlign.center,
       text,
       style: TextStyle(
-          color: textWhite,
+          color: textColor,
           fontSize: fontSize,
-          fontWeight: FontWeight.bold
+          fontWeight: this.fontWeight,
+        height: 1.25
       ),
     );
   }

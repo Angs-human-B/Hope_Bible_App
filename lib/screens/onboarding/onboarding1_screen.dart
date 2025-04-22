@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hope/Constants/image.dart';
@@ -16,8 +17,8 @@ class Onboarding1Screen extends StatefulWidget {
 class _Onboarding1ScreenState extends State<Onboarding1Screen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body:Container(
+    return CupertinoPageScaffold(
+      child:Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
@@ -33,65 +34,80 @@ class _Onboarding1ScreenState extends State<Onboarding1Screen> {
                 child: SizedBox()),
             Expanded(
               flex: 1,
-              child: Column(
-                children: [
-                  CommonText("Ready to Personalize Your Spiritual Journey?"
-                      , 41.sp),
-                  SizedBox(height: 10.h,),
-                  NextButton("Get Started", "o2"),
-                  SizedBox(height: 30.h,),
-                  Text.rich(
-                    TextSpan(
-                      text: "Already have an account? ",
+              child: Container(
+                // width: 340.w,
+                child: Column(
+                  children: [
+                    SizedBox(height: 52.5.h,),
+                    CommonText("Ready to\n Personalize Your Spiritual Journey?"
+                        , 36.sp),
+                    SizedBox(height: 34.h,),
+                    NextButton("Get Started", "o2"),
+                    SizedBox(height: 10.h,),
+                    Text("Or",
                       style: TextStyle(
-                        color: textWhite,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 12.sp,
+                        color: textGrey,
                       ),
-                      children: [
-                        TextSpan(
-                          text: "Sign In",
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: textWhite,
-                          ),
-                        ),
-                      ],
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 40.h,),
-                  Text.rich(
-                    TextSpan(
-                      text: "By continuing, you agree to Bilble’s ",
-                      style: TextStyle(
-                        color: textWhite,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
+                    SizedBox(height: 10.h,),
+                    // SizedBox(height: 40.h,),
+                    Text.rich(
+                      TextSpan(
+                        text: "Already have an account? ",
+                        style: TextStyle(
+                          color: textWhite,
+                          fontSize: 14.sp,
+                          // fontWeight: FontWeight.bold,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Sign In",
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: textWhite,
+                            ),
+                          ),
+                        ],
                       ),
-                      children: [
-                        TextSpan(
-                          text: "Terms of services",
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: textWhite,
-                          ),
-                        ),
-                        TextSpan(
-                          text: " & ",
-                        ),
-                        TextSpan(
-                          text: "Privacy policy.",
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: textWhite,
-                          ),
-                        ),
-                      ],
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
-                  )
-                ],
+                    SizedBox(height: 33.h,),
+                    Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: 26.w),
+                      child: Text.rich(
+                        TextSpan(
+                          text: "By continuing, you agree to Bilble’s ",
+                          style: TextStyle(
+                            color: textWhite,
+                            fontSize: 14.sp,
+                            // fontWeight: FontWeight.bold,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Terms of services",
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: textWhite,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " & ",
+                            ),
+                            TextSpan(
+                              text: "Privacy policy.",
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: textWhite,
+                              ),
+                            ),
+                          ],
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  ],
+                ),
               ),
             )
           ],
