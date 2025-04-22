@@ -37,14 +37,14 @@ class _Onboarding2ScreenState extends State<Onboarding2Screen> {
     return SafeArea(
       child: CupertinoPageScaffold(
         child: Stack(
-
           children: [
             Align(
               alignment: Alignment.topCenter,
-                child: Image.asset(spotLight,)),
+                child: Image.asset(spotLight, fit: BoxFit.cover,width:  MediaQuery.of(context).size.width,)),
             Container(
               height: MediaQuery.of(context).size.height,
               padding: EdgeInsets.symmetric(horizontal: 18.w),
+              // color: Colors.black,
               child: Stack(
                 children: [
 

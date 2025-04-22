@@ -27,8 +27,8 @@ class _Onboarding7ScreenState extends State<Onboarding7Screen> {
           children: [
             Align(
                 alignment: Alignment.topCenter,
+                child: Image.asset(spotLight, fit: BoxFit.cover,width:  MediaQuery.of(context).size.width,)),
 
-                child: Image.asset(spotLight)),
             Container(
               height: MediaQuery.of(context).size.height,
               padding: EdgeInsets.symmetric(horizontal: 18.w),

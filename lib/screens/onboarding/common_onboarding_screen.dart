@@ -34,8 +34,8 @@ class _CommonOnboardingScreenState extends State<CommonOnboardingScreen> {
           children: [
             Align(
                 alignment: Alignment.topCenter,
+                child: Image.asset(spotLight, fit: BoxFit.cover,width:  MediaQuery.of(context).size.width,)),
 
-                child: Image.asset(spotLight)),
             Container(
               height: MediaQuery.of(context).size.height,
               padding: EdgeInsets.symmetric(horizontal: 18.w),
