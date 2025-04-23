@@ -44,9 +44,9 @@ class _AuthPageState extends State<AuthPage> {
   final controller = Get.find<BibleController>();
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      controller.getAllBibleVersionsFn(context);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    //   // controller.getAllBibleBooksFn();
+    // });
     super.initState();
   }
 

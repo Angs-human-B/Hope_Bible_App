@@ -1,14 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hope/Constants/image.dart';
-
 import '../../Constants/colors.dart';
-import '../../Constants/global_variable.dart';
-import '../../widgets/back_button.dart';
-import '../../widgets/next_button.dart';
-import '../../widgets/progress_bar.dart';
-
 
 class Onboarding5Screen extends StatefulWidget {
   const Onboarding5Screen({super.key});
@@ -25,8 +18,13 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
         child: Stack(
           children: [
             Align(
-                alignment: Alignment.topCenter,
-                child: Image.asset(spotLight, fit: BoxFit.cover,width:  MediaQuery.of(context).size.width,)),
+              alignment: Alignment.topCenter,
+              child: Image.asset(
+                spotLight,
+                fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width,
+              ),
+            ),
 
             Container(
               height: MediaQuery.of(context).size.height,
@@ -36,25 +34,13 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        height: 62.h,
-                        child: Row(
-                          children: [
-                            // SizedBox(width: 10.w),
-                            BackButtonOnboarding(),
-                            SizedBox(width: 26.w),
-                            ProgressBar(progress: currentProgress/totalProgress),
-                          ],
-                        ),
-                      ),
                       SizedBox(height: 84.h),
                       Text.rich(
                         TextSpan(
                           style: TextStyle(
                             color: textWhite,
                             fontSize: 30.sp,
-                            fontWeight: FontWeight.w600
+                            fontWeight: FontWeight.w600,
                           ),
                           children: [
                             TextSpan(text: '"'),
@@ -73,17 +59,17 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            TextSpan(text: 'found\nrenewed hope through daily engagement."'),
-
+                            TextSpan(
+                              text:
+                                  'found\nrenewed hope through daily engagement."',
+                            ),
                           ],
                         ),
                         textAlign: TextAlign.start,
                       ),
                       SizedBox(height: 118.h),
-                      Image.asset(
-                          onboarding5
-                      ),
-                      SizedBox(height: 16.h,),
+                      Image.asset(onboarding5),
+                      SizedBox(height: 16.h),
                       Text.rich(
                         TextSpan(
                           style: TextStyle(
@@ -113,16 +99,16 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            TextSpan(text: ' found renewed\nhope through daily engagement.'),
+                            TextSpan(
+                              text:
+                                  ' found renewed\nhope through daily engagement.',
+                            ),
                           ],
                         ),
                         textAlign: TextAlign.left,
                       ),
                     ],
                   ),
-                  Positioned(
-                      top:695.h,
-                      child: NextButton("Next", "o6")),
                 ],
               ),
             ),

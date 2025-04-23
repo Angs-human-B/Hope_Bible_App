@@ -34,7 +34,7 @@
 	<key>NSAppleMusicUsageDescription</key>
 	<string>This app needs access to media library to play audio responses.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>We need microphone access to capture your voice for speech-to-speech conversation.</string>
+	<string>This app needs access to microphone for video playback</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>This app needs access to speech recognition to convert your voice to text.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

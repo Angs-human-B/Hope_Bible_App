@@ -124,7 +124,7 @@ class _MyListScreenState extends State<MyListScreen> {
               bottom: 16.h,
               left: 0,
               right: 0,
-              child: BottomNavBar(myList: true),
+              child: BottomNavBar(currentIndex: 2, onTap: (index) {}),
             ),
           ],
         ),

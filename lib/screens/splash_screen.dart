@@ -1,13 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hope/screens/ai_call_screen.dart';
-import 'package:hope/screens/profile_screen.dart';
-import 'package:hope/screens/onboarding/onboarding1_screen.dart';
-import '../screens/chat_home_screen.dart';
-import '../screens/home_screen.dart';
-import 'bible_screen.dart';
-import 'onboarding/onboarding2_screen.dart';
-import 'my_list_screen.dart';
+import 'onboarding/onboarding1_screen.dart' show Onboarding1Screen;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -24,7 +17,15 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        CupertinoPageRoute(builder: (_) => const Onboarding1Screen()),
+        PageRouteBuilder(
+          pageBuilder:
+              (context, animation, secondaryAnimation) =>
+                  const Onboarding1Screen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
       );
     });
   }

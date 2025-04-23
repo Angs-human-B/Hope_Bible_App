@@ -1,14 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+// ignore_for_file: must_be_immutable
 
-import '../Constants/colors.dart';
+import 'package:flutter/material.dart';
 
 class CommonText extends StatelessWidget {
   String text;
   double fontSize;
   Color textColor;
   FontWeight fontWeight;
-  CommonText(this.text, this.fontSize,{this.textColor = Colors.white,this.fontWeight = FontWeight.w600 ,super.key});
+  CommonText(
+    this.text,
+    this.fontSize, {
+    this.textColor = Colors.white,
+    this.fontWeight = FontWeight.w600,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +21,10 @@ class CommonText extends StatelessWidget {
       textAlign: TextAlign.center,
       text,
       style: TextStyle(
-          color: textColor,
-          fontSize: fontSize,
-          fontWeight: this.fontWeight,
-        height: 1.25
+        color: textColor,
+        fontSize: fontSize,
+        fontWeight: this.fontWeight,
+        height: 1.25,
       ),
     );
   }

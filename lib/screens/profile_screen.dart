@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hope/Constants/colors.dart';
 import 'package:hope/widgets/ProfileSection/profile_upper_container.dart';
 import '../Constants/icons.dart';
-import '../widgets/ProfileSection/date_progress_box.dart';
 import '../widgets/ProfileSection/settings_button_listtile.dart';
 import '../widgets/bottom_nav_bar.dart';
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -43,16 +42,14 @@ class ProfileScreen extends StatelessWidget {
                           iconPath: profileIcon,
                           title: "My Account",
                           trailingIconPath: arrowRight2,
-                          onTap: () {
-                          },
+                          onTap: () {},
                         ),
                         SizedBox(height: 10.h),
                         SettingsButtonListTile(
                           iconPath: settingsIcon,
                           title: "App settings",
                           trailingIconPath: arrowRight2,
-                          onTap: () {
-                          },
+                          onTap: () {},
                         ),
                         SizedBox(height: 10.h),
                         SettingsButtonListTile(
@@ -65,8 +62,7 @@ class ProfileScreen extends StatelessWidget {
                           onDropdownChanged: (value) {
                             print("Gender selected: $value");
                           },
-                          onTap: () {
-                          },
+                          onTap: () {},
                         ),
                         SizedBox(height: 10.h),
                         SettingsButtonListTile(
@@ -79,14 +75,14 @@ class ProfileScreen extends StatelessWidget {
                           onDropdownChanged: (value) {
                             print("Language selected: $value");
                           },
-                          onTap: () {
-                          },
+                          onTap: () {},
                         ),
                         SizedBox(height: 10.h),
                         SettingsButtonListTile(
                           iconPath: notificationsIcon,
                           title: "Notifications",
-                          trailingIconPath: arrowRight2, // Not shown when toggle is enabled
+                          trailingIconPath:
+                              arrowRight2, // Not shown when toggle is enabled
                           enableToggle: true,
                           toggleValue: true,
                           onToggleChanged: (val) {
@@ -104,7 +100,7 @@ class ProfileScreen extends StatelessWidget {
               bottom: 16.h,
               left: 0,
               right: 0,
-              child: BottomNavBar(profile: true),
+              child: BottomNavBar(currentIndex: 3, onTap: (index) {}),
             ),
           ],
         ),
