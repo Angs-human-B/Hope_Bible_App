@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hope/Constants/colors.dart';
+import 'package:hope/screens/app_settings_screen.dart';
+import 'package:hope/screens/profile_settings_screen.dart';
 import 'package:hope/widgets/ProfileSection/profile_upper_container.dart';
 import '../Constants/icons.dart';
 import '../widgets/ProfileSection/date_progress_box.dart';
@@ -44,6 +46,10 @@ class ProfileScreen extends StatelessWidget {
                           title: "My Account",
                           trailingIconPath: arrowRight2,
                           onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(builder: (_) => const ProfileSettingsScreen()),
+                            );
                           },
                         ),
                         SizedBox(height: 10.h),
@@ -52,6 +58,10 @@ class ProfileScreen extends StatelessWidget {
                           title: "App settings",
                           trailingIconPath: arrowRight2,
                           onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(builder: (_) => const AppSettingsScreen()),
+                            );
                           },
                         ),
                         SizedBox(height: 10.h),

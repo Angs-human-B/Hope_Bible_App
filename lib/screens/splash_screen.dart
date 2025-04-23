@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hope/screens/ai_call_screen.dart';
+import 'package:hope/screens/app_settings_screen.dart';
 import 'package:hope/screens/profile_screen.dart';
 import 'package:hope/screens/onboarding/onboarding1_screen.dart';
+import 'package:hope/screens/profile_settings_screen.dart';
+import 'package:hope/screens/streaks_screen.dart';
 import '../screens/chat_home_screen.dart';
 import '../screens/home_screen.dart';
 import 'bible_screen.dart';
@@ -24,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        CupertinoPageRoute(builder: (_) => const Onboarding1Screen()),
+        CupertinoPageRoute(builder: (_) => const HomeScreen()),
       );
     });
   }

@@ -11,3 +11,7 @@ String settingsIcon= "assets/icons/settings.svg";
 String voiceoverIcon= "assets/icons/voiceover.svg";
 String languageIcon= "assets/icons/language.svg";
 String notificationsIcon= "assets/icons/notifications.svg";
+String editIcon= "assets/icons/edit.svg";
+String logoutIcon= "assets/icons/logout.svg";
+String calenderIcon= "assets/icons/calender.svg";
+String closeIcon= "assets/icons/close.svg";
