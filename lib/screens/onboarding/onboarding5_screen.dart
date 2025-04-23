@@ -121,7 +121,7 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
                     ],
                   ),
                   Positioned(
-                      top:695.h,
+                      top:690.h,
                       child: NextButton("Next", "o6")),
                 ],
               ),

@@ -94,7 +94,7 @@ class _CommonOnboardingScreenState extends State<CommonOnboardingScreen> {
                     ],
                   ),
                   Positioned(
-                      top: 695.h,
+                      top: 690.h,
                       child: NextButton("Next", widget.nextRoute),)
                 ],
               ),

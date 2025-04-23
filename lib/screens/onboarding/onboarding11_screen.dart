@@ -1,39 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hope/Constants/image.dart';
-import 'package:hope/widgets/common_text.dart';
-import 'package:hope/widgets/common_text_box.dart';
 
 import '../../Constants/colors.dart';
 import '../../Constants/global_variable.dart';
+import '../../Constants/image.dart';
 import '../../widgets/back_button.dart';
 import '../../widgets/next_button.dart';
 import '../../widgets/progress_bar.dart';
 
-class Onboarding9Screen extends StatefulWidget {
-  const Onboarding9Screen({super.key});
+
+class Onboarding11Screen extends StatefulWidget {
+  const Onboarding11Screen({super.key});
 
   @override
-  State<Onboarding9Screen> createState() => _Onboarding9ScreenState();
+  State<Onboarding11Screen> createState() => _Onboarding11ScreenState();
 }
 
-class _Onboarding9ScreenState extends State<Onboarding9Screen> {
+class _Onboarding11ScreenState extends State<Onboarding11Screen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: CupertinoPageScaffold(
         child: Stack(
           children: [
-            Align(
-                alignment: Alignment.topCenter,
-                child: Image.asset(spotLight, fit: BoxFit.cover,width:  MediaQuery.of(context).size.width,)),
             Container(
               height: MediaQuery.of(context).size.height,
+              width:  MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(onboarding11,),
+                  fit: BoxFit.fill
+                )
+              ),
               padding: EdgeInsets.symmetric(horizontal: 18.w),
               child: Stack(
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         alignment: Alignment.bottomCenter,
@@ -47,38 +51,34 @@ class _Onboarding9ScreenState extends State<Onboarding9Screen> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 117.h),
-                      Image.asset(
-                          onboarding9),
-                      SizedBox(height: 125.h),
+                      SizedBox(height: 477.h),
                       Text.rich(
                         TextSpan(
                           style: TextStyle(
-                            color: textWhite,
-                            fontSize: 24.sp,
-                            fontWeight: FontWeight.w600
+                              color: textWhite,
+                              fontSize: 30.sp,
+                              fontWeight: FontWeight.w600
                           ),
                           children: [
-                            TextSpan(text: 'Your '),
+                            TextSpan(text: 'Daily '),
                             TextSpan(
-                              text: 'commitment',
+                              text: 'devotionals\n',
                               style: TextStyle(
                                 color: accentYellow,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            TextSpan(text: ' aligns with thousands who\'ve found consistent support here.'),
+                            TextSpan(text: 'bring peace—join our\nprayerful community.'),
                           ],
                         ),
                         textAlign: TextAlign.start,
                       )
 
-
                     ],
                   ),
                   Positioned(
                       top: 690.h,
-                      child: NextButton("Next", "o10")),
+                      child: NextButton("Next", "o12")),
                 ],
               ),
             ),

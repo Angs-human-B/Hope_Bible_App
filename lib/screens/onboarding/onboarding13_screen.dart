@@ -2,23 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hope/Constants/image.dart';
-import 'package:hope/widgets/common_text.dart';
-import 'package:hope/widgets/common_text_box.dart';
 
 import '../../Constants/colors.dart';
 import '../../Constants/global_variable.dart';
 import '../../widgets/back_button.dart';
 import '../../widgets/next_button.dart';
 import '../../widgets/progress_bar.dart';
-
-class Onboarding9Screen extends StatefulWidget {
-  const Onboarding9Screen({super.key});
+class Onboarding13Screen extends StatefulWidget {
+  const Onboarding13Screen({super.key});
 
   @override
-  State<Onboarding9Screen> createState() => _Onboarding9ScreenState();
+  State<Onboarding13Screen> createState() => _Onboarding13ScreenState();
 }
 
-class _Onboarding9ScreenState extends State<Onboarding9Screen> {
+class _Onboarding13ScreenState extends State<Onboarding13Screen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -28,12 +25,14 @@ class _Onboarding9ScreenState extends State<Onboarding9Screen> {
             Align(
                 alignment: Alignment.topCenter,
                 child: Image.asset(spotLight, fit: BoxFit.cover,width:  MediaQuery.of(context).size.width,)),
+
             Container(
               height: MediaQuery.of(context).size.height,
               padding: EdgeInsets.symmetric(horizontal: 18.w),
               child: Stack(
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         alignment: Alignment.bottomCenter,
@@ -47,38 +46,40 @@ class _Onboarding9ScreenState extends State<Onboarding9Screen> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 117.h),
-                      Image.asset(
-                          onboarding9),
-                      SizedBox(height: 125.h),
+                      SizedBox(height: 84.h),
                       Text.rich(
                         TextSpan(
                           style: TextStyle(
                             color: textWhite,
-                            fontSize: 24.sp,
-                            fontWeight: FontWeight.w600
+                            fontSize: 30.sp,
+                            fontWeight: FontWeight.w600,
                           ),
                           children: [
-                            TextSpan(text: 'Your '),
+                            TextSpan(text: 'Thousands grow spiritually together\nhere—'),
                             TextSpan(
-                              text: 'commitment',
+                              text: 'you\'re invited',
                               style: TextStyle(
                                 color: accentYellow,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                            TextSpan(text: ' aligns with thousands who\'ve found consistent support here.'),
+                            TextSpan(text: '.'),
                           ],
                         ),
                         textAlign: TextAlign.start,
-                      )
+                      ),
+                      // SizedBox(height: 118.h),
+                      SizedBox(height: 20.h,),
 
-
+                      Image.asset(
+                          onboarding13
+                      ),
+                      SizedBox(height: 16.h,),
                     ],
                   ),
                   Positioned(
-                      top: 690.h,
-                      child: NextButton("Next", "o10")),
+                      top:690.h,
+                      child: NextButton("Next", "o14")),
                 ],
               ),
             ),

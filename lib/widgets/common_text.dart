@@ -8,12 +8,13 @@ class CommonText extends StatelessWidget {
   double fontSize;
   Color textColor;
   FontWeight fontWeight;
-  CommonText(this.text, this.fontSize,{this.textColor = Colors.white,this.fontWeight = FontWeight.w600 ,super.key});
+  TextAlign textAlign;
+  CommonText(this.text, this.fontSize,{this.textColor = Colors.white,this.fontWeight = FontWeight.w600 ,this.textAlign = TextAlign.center,super.key});
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      textAlign: TextAlign.center,
+      textAlign: textAlign,
       text,
       style: TextStyle(
           color: textColor,

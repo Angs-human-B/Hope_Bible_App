@@ -5,6 +5,10 @@ import 'package:hope/Constants/global_variable.dart';
 import 'package:hope/screens/onboarding/common_onboarding_screen.dart';
 
 import '../Constants/colors.dart';
+import '../screens/onboarding/onboarding11_screen.dart';
+import '../screens/onboarding/onboarding13_screen.dart';
+import '../screens/onboarding/onboarding17_screen.dart';
+import '../screens/onboarding/onboarding18_screen.dart';
 import '../screens/onboarding/onboarding2_screen.dart';
 import '../screens/onboarding/onboarding3_screen.dart';
 import '../screens/onboarding/onboarding5_screen.dart';
@@ -71,6 +75,38 @@ class _NextButtonState extends State<NextButton> {
           onboarding10String,
           'o11'
       )));
+    }
+    if(onTapNextRouteString == 'o11'){
+      currentProgress += 1;
+      Navigator.of(context).push(CupertinoPageRoute(builder: (context) => Onboarding11Screen()));
+    }
+    if(onTapNextRouteString == 'o12'){
+      currentProgress += 1;
+      Navigator.of(context).push(CupertinoPageRoute(builder: (context) => CommonOnboardingScreen(
+          studyGroup,
+          onboarding12String,
+          'o13'
+      )));
+    }
+    if(onTapNextRouteString == 'o13'){
+      currentProgress += 1;
+      Navigator.of(context).push(CupertinoPageRoute(builder: (context) => Onboarding13Screen()));
+    }
+    if(onTapNextRouteString == 'o14'){
+      currentProgress += 1;
+      Navigator.of(context).push(CupertinoPageRoute(builder: (context) => CommonOnboardingScreen(
+          spiritualStages,
+          onboarding14String,
+          'o15'
+      )));
+    }
+    if(onTapNextRouteString == 'o15'){
+      currentProgress += 1;
+      Navigator.of(context).push(CupertinoPageRoute(builder: (context) => Onboarding17Screen()));
+    }
+    if(onTapNextRouteString == 'o18'){
+      currentProgress += 1;
+      Navigator.of(context).push(CupertinoPageRoute(builder: (context) => Onboarding18Screen()));
     }
   }
 
