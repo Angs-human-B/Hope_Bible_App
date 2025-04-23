@@ -118,7 +118,7 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
                     ],
                   ),
                   Positioned(
-                      top:695.h,
+                      top:690.h,
                       child: NextButton("Next", "o4")),
                 ],
               ),

@@ -85,7 +85,7 @@ class _Onboarding7ScreenState extends State<Onboarding7Screen> {
                     ],
                   ),
                   Positioned(
-                      top: 695.h,
+                      top: 690.h,
                       child: NextButton("Next", "o8")),
                 ],
               ),

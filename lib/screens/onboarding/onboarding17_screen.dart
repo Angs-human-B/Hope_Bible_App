@@ -10,15 +10,14 @@ import '../../Constants/global_variable.dart';
 import '../../widgets/back_button.dart';
 import '../../widgets/next_button.dart';
 import '../../widgets/progress_bar.dart';
-
-class Onboarding9Screen extends StatefulWidget {
-  const Onboarding9Screen({super.key});
+class Onboarding17Screen extends StatefulWidget {
+  const Onboarding17Screen({super.key});
 
   @override
-  State<Onboarding9Screen> createState() => _Onboarding9ScreenState();
+  State<Onboarding17Screen> createState() => _Onboarding17ScreenState();
 }
 
-class _Onboarding9ScreenState extends State<Onboarding9Screen> {
+class _Onboarding17ScreenState extends State<Onboarding17Screen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -28,13 +27,16 @@ class _Onboarding9ScreenState extends State<Onboarding9Screen> {
             Align(
                 alignment: Alignment.topCenter,
                 child: Image.asset(spotLight, fit: BoxFit.cover,width:  MediaQuery.of(context).size.width,)),
+
             Container(
               height: MediaQuery.of(context).size.height,
               padding: EdgeInsets.symmetric(horizontal: 18.w),
               child: Stack(
                 children: [
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       Container(
                         alignment: Alignment.bottomCenter,
                         height: 62.h,
@@ -47,38 +49,19 @@ class _Onboarding9ScreenState extends State<Onboarding9Screen> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 117.h),
-                      Image.asset(
-                          onboarding9),
-                      SizedBox(height: 125.h),
-                      Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            color: textWhite,
-                            fontSize: 24.sp,
-                            fontWeight: FontWeight.w600
-                          ),
-                          children: [
-                            TextSpan(text: 'Your '),
-                            TextSpan(
-                              text: 'commitment',
-                              style: TextStyle(
-                                color: accentYellow,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(text: ' aligns with thousands who\'ve found consistent support here.'),
-                          ],
-                        ),
-                        textAlign: TextAlign.start,
-                      )
-
+                      SizedBox(height: 84.h),
+                      CommonText(onboarding17String, 30.sp, textAlign: TextAlign.start,),
+                      SizedBox(height: 47.h),
+                      Padding(
+                        padding:  EdgeInsets.only(left: 25.w,right: 45.w),
+                        child: Image.asset(onboarding17),
+                      ),
 
                     ],
                   ),
                   Positioned(
                       top: 690.h,
-                      child: NextButton("Next", "o10")),
+                      child: NextButton("Next", "o18")),
                 ],
               ),
             ),
