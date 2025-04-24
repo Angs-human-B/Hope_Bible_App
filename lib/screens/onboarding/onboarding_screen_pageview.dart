@@ -147,7 +147,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                     Positioned(
                         top: 690.h,
                         child: Padding(
-                          padding:  EdgeInsets.symmetric(horizontal: 18.w),
+                          padding:  EdgeInsets.symmetric(horizontal: 19.w),
                           child: GestureDetector(
                             onTap: (){
                               controller.nextPage(
