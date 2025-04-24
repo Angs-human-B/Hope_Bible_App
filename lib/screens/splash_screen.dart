@@ -6,6 +6,7 @@ import '../screens/chat_home_screen.dart';
 import '../screens/home_screen.dart';
 import 'bible_screen.dart';
 import 'onboarding/onboarding2_screen.dart';
+import 'onboarding/onboarding_screen_pageview.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -22,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        CupertinoPageRoute(builder: (_) => const Onboarding1Screen()),
+        CupertinoPageRoute(builder: (_) => OnboardingPager()),
       );
     });
   }

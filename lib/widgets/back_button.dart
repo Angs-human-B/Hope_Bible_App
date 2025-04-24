@@ -8,7 +8,8 @@ import 'package:hope/Constants/global_variable.dart';
 import '../Constants/colors.dart';
 
 class BackButtonOnboarding extends StatefulWidget {
-  const BackButtonOnboarding({super.key});
+  PageController pageController;
+  BackButtonOnboarding(this.pageController,{super.key});
 
   @override
   State<BackButtonOnboarding> createState() => _BackButtonOnboardingState();
@@ -19,9 +20,10 @@ class _BackButtonOnboardingState extends State<BackButtonOnboarding> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        currentProgress -= 1;
-        Navigator.pop(context);
-
+        widget.pageController.previousPage(
+          duration: Duration(milliseconds: 300),
+          curve: Curves.ease,
+        );
       },
       child: ClipRect(
         child: BackdropFilter(
