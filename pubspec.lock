@@ -276,10 +276,10 @@ packages:
     dependency: transitive
     description:
       name: google_api_headers
-      sha256: c8b14f45d3c5bd8be657998db85600bc75c3b592fba36bc8b77a0c68743ca472
+      sha256: "16c26ed3f65e59282b060f5c9eff29c603cb21acde96a5272ad430bccb1ce21a"
       url: "https://pub.dev"
     source: hosted
-    version: "4.4.3"
+    version: "4.4.2"
   google_cloud_translation:
     dependency: "direct main"
     description:
@@ -1214,5 +1214,5 @@ packages:
     source: hosted
     version: "2.0.3"
 sdks:
-  dart: ">=3.7.2 <4.0.0"
-  flutter: ">=3.29.2"
+  dart: ">=3.7.0 <4.0.0"
+  flutter: ">=3.29.1"

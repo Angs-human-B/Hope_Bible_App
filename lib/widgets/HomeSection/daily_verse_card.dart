@@ -117,25 +117,30 @@ class _DailyVerseCardState extends State<DailyVerseCard> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Stack(
-                          alignment: Alignment.center,
+                        Column(
                           children: [
-                            Container(
-                              width: 76.w,
-                              height: 76.h,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: accentYellow,
-                                  width: 1.5.w,
+                            SizedBox(height: 26.h),
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  width: 76.w,
+                                  height: 76.h,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: accentYellow,
+                                      width: 1.5.w,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            CircleAvatar(
-                              radius: 34.w,
-                              backgroundImage: const AssetImage(
-                                'assets/images/the_ark.png',
-                              ),
+                                CircleAvatar(
+                                  radius: 34.w,
+                                  backgroundImage: const AssetImage(
+                                    'assets/images/the_ark.png',
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -151,7 +156,7 @@ class _DailyVerseCardState extends State<DailyVerseCard> {
                                   fontSize: 12.sp,
                                 ),
                               ),
-                              SizedBox(height: 4.h),
+                              SizedBox(height: 8.h),
                               Text(
                                 '"$_verseText"',
                                 style: TextStyle(
@@ -166,7 +171,7 @@ class _DailyVerseCardState extends State<DailyVerseCard> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 12.h),
+                    SizedBox(height: 8.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
