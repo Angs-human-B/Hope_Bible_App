@@ -7,8 +7,8 @@ import 'package:hope/Constants/image.dart';
 import 'package:hope/widgets/back_button.dart';
 import 'package:hope/widgets/common_text.dart';
 import 'package:hope/widgets/common_text_box.dart';
-import 'package:hope/widgets/next_button.dart';
-import 'package:hope/widgets/progress_bar.dart';
+import 'package:hope/widgets/OnboardingSection/next_button.dart';
+import 'package:hope/widgets/OnboardingSection/progress_bar.dart';
 
 import '../../widgets/ManualTwoColumnGrid.dart';
 
@@ -34,50 +34,15 @@ class _Onboarding2ScreenState extends State<Onboarding2Screen> {
   int selectedIdx = 9;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: CupertinoPageScaffold(
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.topCenter,
-                child: Image.asset(spotLight, fit: BoxFit.cover,width:  MediaQuery.of(context).size.width,)),
-            Container(
-              height: MediaQuery.of(context).size.height,
-              padding: EdgeInsets.symmetric(horizontal: 18.w),
-              // color: Colors.black,
-              child: Stack(
-                children: [
+    return Column(
+      children: [
+        SizedBox(height: 50,),
+        SizedBox(height:84.h),
+        CommonText(onboarding2String, 30.sp),
+        SizedBox(height: 53.h),
+        ManualTwoColumnGrid(denomination: denomination),
+      ],
 
-                  Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.bottomLeft,
-                        height: 62.h,
-                        child: Row(
-                          children: [
-                            BackButtonOnboarding(),
-                            SizedBox(width: 26.w),
-                            ProgressBar(progress: currentProgress/totalProgress),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height:84.h),
-                      CommonText(onboarding2String, 30.sp),
-                      SizedBox(height: 53.h),
-                      ManualTwoColumnGrid(denomination: denomination),
-
-                    ],
-
-                  ),
-                  Positioned(
-                    top: 690.h,
-                      child: NextButton("Next", "o3")),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

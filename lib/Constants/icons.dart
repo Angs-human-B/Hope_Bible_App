@@ -17,3 +17,4 @@ String calenderIcon= "assets/icons/calender.svg";
 String closeIcon= "assets/icons/close.svg";
 String googleIcon= "assets/icons/google_icon.svg";
 String appleIcon= "assets/icons/apple_icon.svg";
+String star= "assets/icons/Star.png";

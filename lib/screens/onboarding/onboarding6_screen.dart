@@ -8,8 +8,8 @@ import '../../Constants/global_variable.dart';
 import '../../widgets/ManualTwoColumnGrid.dart';
 import '../../widgets/back_button.dart';
 import '../../widgets/common_text.dart';
-import '../../widgets/next_button.dart';
-import '../../widgets/progress_bar.dart';
+import '../../widgets/OnboardingSection/next_button.dart';
+import '../../widgets/OnboardingSection/progress_bar.dart';
 
 class Onboarding6Screen extends StatefulWidget {
   const Onboarding6Screen({super.key});
@@ -32,48 +32,15 @@ class _Onboarding6ScreenState extends State<Onboarding6Screen> {
   int selectedIdx = 9;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: CupertinoPageScaffold(
-        child: Stack(
-          children: [
-            Align(
-                alignment: Alignment.topCenter,
-                child: Image.asset(spotLight, fit: BoxFit.cover,width:  MediaQuery.of(context).size.width,)),
+    return Column(
+      children: [
 
-            Container(
-              height: MediaQuery.of(context).size.height,
-              padding: EdgeInsets.symmetric(horizontal: 18.w),
-              child: Stack(
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        height: 62.h,
-                        child: Row(
-                          children: [
-                            // SizedBox(width: 10.w),
-                            BackButtonOnboarding(),
-                            SizedBox(width: 26.w),
-                            ProgressBar(progress: currentProgress/totalProgress),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 84.h),
-                      CommonText(onboarding6String, 30.sp),
-                      SizedBox(height: 53.h),
-                      ManualTwoColumnGrid2(denomination: translations),
-                    ],
-                  ),
-                  Positioned(
-                      top: 690.h,
-                      child: NextButton("Next", "o7")),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+        SizedBox(height: 50.h),
+        SizedBox(height: 84.h),
+        CommonText(onboarding6String, 30.sp),
+        SizedBox(height: 53.h),
+        ManualTwoColumnGrid2(denomination: translations),
+      ],
     );
   }
 }
