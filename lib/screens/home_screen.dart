@@ -10,33 +10,20 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      backgroundColor: CupertinoColors.black,
-      child: SafeArea(
-        bottom: false,
-        child: Stack(
-          children: [
-            ListView(
-              padding: const EdgeInsets.only(bottom: 100),
-              children: [
-                SizedBox(height: 12.h),
-                CupertinoSearchBar(),
-                SizedBox(height: 16.h),
-                FeaturedSection(),
-                DailyVerseCard(),
-                HorizontalCardList(title: 'Recommended'),
-                SizedBox(height: 12.h),
-                HorizontalCardList(title: 'Watch Now'),
-              ],
-            ),
-            Positioned(
-              bottom: 16.h,
-              left: 0,
-              right: 0,
-              child: BottomNavBar(home: true),
-            ),
-          ],
-        ),
+    return SafeArea(
+      top: true,
+      child: ListView(
+        padding: const EdgeInsets.only(bottom: 10),
+        children: [
+          SizedBox(height: 20.h),
+          CupertinoSearchBar(),
+          SizedBox(height: 16.h),
+          FeaturedSection(),
+          DailyVerseCard(),
+          HorizontalCardList(title: 'Recommended'),
+          SizedBox(height: 12.h),
+          HorizontalCardList(title: 'Watch Now'),
+        ],
       ),
     );
   }
