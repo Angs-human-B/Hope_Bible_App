@@ -20,3 +20,4 @@ String onboarding23 = "assets/images/onboarding23.png";
 String onboarding24 = "assets/images/onboarding24.png";
 String onboarding25 = "assets/images/onboarding25.png";
 String onboarding26 = "assets/images/onboarding26.png";
+String onboarding27 = "assets/images/onboarding27.png";

@@ -40,6 +40,16 @@ List<String> churchGoingFrequencies = [
 
 PageController controller = PageController();
 
+bool denominationIsSelected = false;
+bool ageIsSelected = false;
+bool attendChurchIsSelected = false;
+bool meditateIsSelected = false;
+bool studyGroupIsSelected = false;
+bool journeyIsSelected = false;
+bool ignorePages = true;
+bool bibleVersionIsSelected = false;
+
+ValueNotifier<bool> isSelected = ValueNotifier(false);
 //Strings
 
 String onboarding2String = "What is your Denomination?";

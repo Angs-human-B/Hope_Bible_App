@@ -43,28 +43,31 @@ class _Onboarding15ScreenState extends State<Onboarding15Screen> {
 
         ),
         SizedBox(height: 63.h,),
-        Text.rich(
-          TextSpan(
-            style: TextStyle(
-              color: textWhite,
-              fontSize: 24.sp,
-              fontWeight: FontWeight.w600,
-            ),
-            children: [
-              TextSpan(text: 'Many on a similar path have\n'),
-              TextSpan(
-                text: 'transformed',
-                style: TextStyle(
-                  color: accentYellow,
-                  fontWeight: FontWeight.w600,
-                    height: 1.25
-
-                ),
+        Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 18.w),
+          child: Text.rich(
+            TextSpan(
+              style: TextStyle(
+                color: textWhite,
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w600,
               ),
-              TextSpan(text: ' their spiritual\nlives here.'),
-            ],
+              children: [
+                TextSpan(text: 'Many on a similar path have\n'),
+                TextSpan(
+                  text: 'transformed',
+                  style: TextStyle(
+                    color: accentYellow,
+                    fontWeight: FontWeight.w600,
+                      height: 1.25
+
+                  ),
+                ),
+                TextSpan(text: ' their spiritual\nlives here.'),
+              ],
+            ),
+            textAlign: TextAlign.start,
           ),
-          textAlign: TextAlign.start,
         )
 
 

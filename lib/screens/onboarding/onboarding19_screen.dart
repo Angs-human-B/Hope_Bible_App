@@ -36,7 +36,6 @@ class _Onboarding19ScreenState extends State<Onboarding19Screen> {
 
         ),
         SizedBox(height: 10.h),
-
         AutoScrollingImage(
           imageProvider: AssetImage(
             onboarding19,
@@ -46,9 +45,15 @@ class _Onboarding19ScreenState extends State<Onboarding19Screen> {
 
         ),
         SizedBox(height: 63.h,),
-        CommonText(onboarding19String, 18.sp, textAlign: TextAlign.start,textColor: accentYellow,),
+        Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 18.w),
+          child: CommonText(onboarding19String, 18.sp, textAlign: TextAlign.start,textColor: accentYellow,),
+        ),
         SizedBox(height: 10.h),
-        CommonText(onboarding19String2, 14.sp, textAlign: TextAlign.start,textColor: textGrey,),
+        Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 18.w),
+          child: CommonText(onboarding19String2, 14.sp, textAlign: TextAlign.start,textColor: textGrey,),
+        ),
 
 
       ],

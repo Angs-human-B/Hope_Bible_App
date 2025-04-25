@@ -16,8 +16,9 @@ class CommonOnboardingScreen extends StatefulWidget {
   List<String> categoryList;
   String title;
   String nextRoute;
+  String type;
 
-  CommonOnboardingScreen(this.categoryList, this.title, this.nextRoute,{super.key});
+  CommonOnboardingScreen(this.categoryList, this.title, this.nextRoute,this.type,{super.key});
 
   @override
   State<CommonOnboardingScreen> createState() => _CommonOnboardingScreenState();
@@ -26,6 +27,34 @@ class CommonOnboardingScreen extends StatefulWidget {
 class _CommonOnboardingScreenState extends State<CommonOnboardingScreen> {
   int selectedIdx = 9;
 
+  isOptionSelected(String type){
+    if(type == 'age'){
+      ageIsSelected = true;
+    }
+    if(type == 'attendChurch'){
+      attendChurchIsSelected = true;
+    }
+    if(type == 'meditate'){
+      meditateIsSelected = true;
+    }
+    if(type == 'studyGroup'){
+      studyGroupIsSelected = true;
+    }
+    if(type == 'spiritualJourney'){
+      journeyIsSelected = true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isSelected.value = false;
+
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -47,9 +76,11 @@ class _CommonOnboardingScreenState extends State<CommonOnboardingScreen> {
                       children: [
                         GestureDetector(
                           onTap: (){
+                            isOptionSelected(widget.type);
                             setState(() {
                               selectedIdx = index;
                             });
+                            isSelected.value = true;
                           },
                           child: SizedBox(
                               width: 350.w, // width is ignored when inside Expanded/full width

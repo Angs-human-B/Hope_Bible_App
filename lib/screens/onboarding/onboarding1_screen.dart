@@ -49,7 +49,7 @@ class _Onboarding1ScreenState extends State<Onboarding1Screen> {
                         curve: Curves.ease,
                       );
                     },
-                      child: NextButton(text: "Get Started")),
+                      child: NextButton(text: "Get Started", true)),
                   SizedBox(height: 10.h,),
                   Text("Or",
                     style: TextStyle(

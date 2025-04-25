@@ -3,7 +3,9 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hope/Constants/global_variable.dart';
+import 'package:hope/Constants/icons.dart';
 
 import '../Constants/colors.dart';
 
@@ -31,11 +33,13 @@ class _BackButtonOnboardingState extends State<BackButtonOnboarding> {
           child: Container(
               height: 44.h,
               width: 44.w,
+              padding: EdgeInsets.all(8.sp),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),
                 color: CupertinoColors.systemGrey.withOpacity(0.4),
               ),
-              child: Icon(Icons.arrow_back, color: Colors.white,)),
+              child: SvgPicture.asset(arrowLeft, height: 24.h, width: 24.w,)
+          ),
         ),
       ),
     );
