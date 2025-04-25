@@ -15,3 +15,5 @@ String editIcon= "assets/icons/edit.svg";
 String logoutIcon= "assets/icons/logout.svg";
 String calenderIcon= "assets/icons/calender.svg";
 String closeIcon= "assets/icons/close.svg";
+String googleIcon= "assets/icons/google_icon.svg";
+String appleIcon= "assets/icons/apple_icon.svg";

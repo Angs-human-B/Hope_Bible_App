@@ -6,5 +6,6 @@ Color textWhite= Color(0xffffffff);
 Color textFieldGrey= Color(0xffefefef);
 Color hintTextGrey= Color(0xff85888E);
 Color secondaryGrey= Color(0xff202227);
+Color cardGrey= Color(0xff444444);
 Color accentYellow= Color(0xffFFC943);
 Color textGrey = Color(0xffCCCCCC);

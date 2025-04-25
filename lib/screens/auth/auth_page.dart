@@ -24,9 +24,14 @@ import 'package:flutter/cupertino.dart'
         TextStyle,
         Widget,
         showCupertinoDialog;
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hope/Constants/colors.dart';
+import 'package:hope/Constants/icons.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:crypto/crypto.dart';
@@ -54,92 +59,138 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       backgroundColor: CupertinoColors.black,
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Spacer(),
-              Center(
-                child: Column(
-                  children: [
-                    const Text(
-                      'Welcome to Hope',
-                      semanticsLabel: 'Welcome to Hope',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: CupertinoColors.white,
-                        letterSpacing: -0.5,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Sign in to continue',
-                      semanticsLabel: 'Sign in to continue',
-                      style: TextStyle(
-                        fontSize: 17,
-                        color: CupertinoColors.white.withOpacity(0.6),
-                        letterSpacing: -0.41,
-                      ),
-                    ),
-                  ],
-                ),
+      child: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
+                  Colors.black,
+                  Color(0xFF31343A),
+                ],
+                stops: [0.41, 1.0],
               ),
-              const Spacer(),
-              Column(
-                mainAxisSize: MainAxisSize.min,
+            ),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 30.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  SignInWithAppleButton(
-                    onPressed: () => _handleAppleSignIn(context),
-                    style: SignInWithAppleButtonStyle.white,
-                    height: 50,
+                  Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                       Text(
+                        'Your Subscription \nis Confirmed!',
+                        semanticsLabel: 'Your Subscription is Confirmed!',
+                        style: TextStyle(
+                          fontSize: 36.sp,
+                          fontWeight: FontWeight.bold,
+                          color: textWhite,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Text(
+                        'Lets create your account.',
+                        semanticsLabel: 'Lets create your account.',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          color: textWhite.withValues(alpha: 0.9),
+                          letterSpacing: -0.41,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 48.h),
+                  CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () => _handleAppleSignIn(context),
+                    child: Container(
+                      height: 54.h,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: cardGrey.withValues(alpha: .5), // Google Blue
+                          borderRadius: BorderRadius.circular(8.sp),
+                          border: Border.all(color: hintTextGrey.withValues(alpha: .3),width: 1.5)
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            googleIcon,
+                            height: 22.h,
+                          ),
+                          SizedBox(width: 12.w),
+                          Text(
+                            'Continue with Google',
+                            style: TextStyle(
+                              color: CupertinoColors.white,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: '.SF Pro Text',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
                   CupertinoButton(
                     padding: EdgeInsets.zero,
                     onPressed: () => _handleGoogleSignIn(context),
                     child: Container(
-                      height: 50,
+                      height: 54.h,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF4285F4), // Google Blue
-                        borderRadius: BorderRadius.circular(4),
+                        color: cardGrey.withValues(alpha: .05), // Google Blue
+                        borderRadius: BorderRadius.circular(8.sp),
+                        border: Border.all(color: hintTextGrey.withValues(alpha: .3),width: 1.5)
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                        child: Text(
-                          'Sign in with Google',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: CupertinoColors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: '.SF Pro Text',
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            appleIcon,
+                            height: 26.h,
                           ),
-                        ),
+                          SizedBox(width: 12.w),
+                          Text(
+                            'Continue with Apple',
+                            style: TextStyle(
+                              color: CupertinoColors.white,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: '.SF Pro Text',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 16.h),
+                    child: Text(
+                      'By continuing, you agree to our Terms of Service and Privacy Policy',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: CupertinoColors.white.withValues(alpha: 0.9),
+                        letterSpacing: -0.08,
                       ),
                     ),
                   ),
                 ],
               ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Text(
-                  'By continuing, you agree to our Terms of Service and Privacy Policy',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: CupertinoColors.white.withOpacity(0.4),
-                    letterSpacing: -0.08,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
