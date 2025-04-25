@@ -32,6 +32,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hope/Constants/colors.dart';
 import 'package:hope/Constants/icons.dart';
+import 'package:hope/screens/persistent_botom_nav.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:crypto/crypto.dart';
@@ -66,10 +67,7 @@ class _AuthPageState extends State<AuthPage> {
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
-                colors: [
-                  Colors.black,
-                  Color(0xFF31343A),
-                ],
+                colors: [Colors.black, Color(0xFF31343A)],
                 stops: [0.41, 1.0],
               ),
             ),
@@ -85,14 +83,24 @@ class _AuthPageState extends State<AuthPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       Text(
-                        'Your Subscription \nis Confirmed!',
-                        semanticsLabel: 'Your Subscription is Confirmed!',
-                        style: TextStyle(
-                          fontSize: 36.sp,
-                          fontWeight: FontWeight.bold,
-                          color: textWhite,
-                          letterSpacing: -0.5,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                            CupertinoPageRoute(
+                              builder: (_) => const PersistentBottomNav(),
+                            ),
+                            (route) => false,
+                          );
+                        },
+                        child: Text(
+                          'Your Subscription \nis Confirmed!',
+                          semanticsLabel: 'Your Subscription is Confirmed!',
+                          style: TextStyle(
+                            fontSize: 36.sp,
+                            fontWeight: FontWeight.bold,
+                            color: textWhite,
+                            letterSpacing: -0.5,
+                          ),
                         ),
                       ),
                       SizedBox(height: 10.h),
@@ -115,17 +123,17 @@ class _AuthPageState extends State<AuthPage> {
                       height: 54.h,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                          color: cardGrey.withValues(alpha: .5), // Google Blue
-                          borderRadius: BorderRadius.circular(8.sp),
-                          border: Border.all(color: hintTextGrey.withValues(alpha: .3),width: 1.5)
+                        color: cardGrey.withValues(alpha: .5), // Google Blue
+                        borderRadius: BorderRadius.circular(8.sp),
+                        border: Border.all(
+                          color: hintTextGrey.withValues(alpha: .3),
+                          width: 1.5,
+                        ),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(
-                            googleIcon,
-                            height: 22.h,
-                          ),
+                          SvgPicture.asset(googleIcon, height: 22.h),
                           SizedBox(width: 12.w),
                           Text(
                             'Continue with Google',
@@ -150,15 +158,15 @@ class _AuthPageState extends State<AuthPage> {
                       decoration: BoxDecoration(
                         color: cardGrey.withValues(alpha: .05), // Google Blue
                         borderRadius: BorderRadius.circular(8.sp),
-                        border: Border.all(color: hintTextGrey.withValues(alpha: .3),width: 1.5)
+                        border: Border.all(
+                          color: hintTextGrey.withValues(alpha: .3),
+                          width: 1.5,
+                        ),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(
-                            appleIcon,
-                            height: 26.h,
-                          ),
+                          SvgPicture.asset(appleIcon, height: 26.h),
                           SizedBox(width: 12.w),
                           Text(
                             'Continue with Apple',

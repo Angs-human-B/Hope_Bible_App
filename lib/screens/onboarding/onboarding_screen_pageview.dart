@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hope/screens/Pricing&LoginSection/pricing_screen_1.dart';
+import 'package:hope/screens/auth/auth_page.dart';
 import 'package:hope/screens/onboarding/onboarding27_screen.dart';
 
 // import all your onboarding screens:
@@ -41,8 +43,7 @@ class OnboardingPager extends StatefulWidget {
 
 class _OnboardingPagerState extends State<OnboardingPager> {
 
-  // 1) Put all your screens into a list:
-  List<Widget> _pages = [
+  final List<Widget> _pages = [
     Onboarding1Screen(controller),
     Onboarding2Screen(),
     Onboarding3Screen(),
@@ -253,7 +254,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                                 return GestureDetector(
                                     onTap: (){
                                       final enabled = isOptionsSelected(index);
-                                      if(enabled && isSelected.value)
+                                      if(enabled && isSelected.value && index!=26)
                                       {
                                         currentProgress += 1;
                                         controller.nextPage(
@@ -261,6 +262,12 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                                           curve: Curves.ease,
                                         );
                                       }
+                                      else{
+                                          Navigator.of(context).pushAndRemoveUntil(
+                                            CupertinoPageRoute(builder: (_) => const PricingScreen1()),
+                                                (route) => false,
+                                          );
+                                    }
                                     },
                                     child: Container(
                                       height: 56.h,

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hope/Constants/colors.dart';
+import 'package:hope/screens/auth/auth_page.dart';
 
 class PricingScreen2 extends StatelessWidget {
   const PricingScreen2({super.key});
@@ -102,7 +103,12 @@ class PricingScreen2 extends StatelessWidget {
                       Divider(color: textWhite.withValues(alpha: 0.08)),
                       SizedBox(height: 12.h),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                              CupertinoPageRoute(builder: (_) => const AuthPage()),
+                                  (route) => false,
+                            );
+                        },
                         child: Container(
                           height: 56.h,
                           width: double.infinity,

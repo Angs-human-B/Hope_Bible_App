@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        CupertinoPageRoute(builder: (_) => PersistentBottomNav()),
+        CupertinoPageRoute(builder: (_) => OnboardingPager()),
       );
     });
   }
