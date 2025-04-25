@@ -2,7 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 
-double totalProgress = 27;
+double totalProgress = 26;
 double currentProgress = 0.0;
 List<String> ageGroup = [
   'Under 18',
