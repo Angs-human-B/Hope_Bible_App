@@ -37,6 +37,7 @@ class _Onboarding2ScreenState extends State<Onboarding2Screen> {
     // TODO: implement initState
     super.initState();
     // denominationIsSelected = false;
+    isSelected.value = false;
   }
   @override
   Widget build(BuildContext context) {

@@ -22,6 +22,8 @@ class _BackButtonOnboardingState extends State<BackButtonOnboarding> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
+        isSelected.value = true;
+        currentProgress -=1;
         widget.pageController.previousPage(
           duration: Duration(milliseconds: 300),
           curve: Curves.ease,

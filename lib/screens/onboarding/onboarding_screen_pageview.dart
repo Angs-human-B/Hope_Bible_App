@@ -253,7 +253,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                                 return GestureDetector(
                                     onTap: (){
                                       final enabled = isOptionsSelected(index);
-                                      if(enabled)
+                                      if(enabled && isSelected.value)
                                       {
                                         currentProgress += 1;
                                         controller.nextPage(
