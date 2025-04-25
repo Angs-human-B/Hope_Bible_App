@@ -15,7 +15,14 @@ class HomeScreen extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.only(bottom: 10),
         children: [
-          SizedBox(height: 20.h),
+          SizedBox(height: 10.h),
+          CupertinoButton(
+            onPressed: () {
+              LanguageChangeUtility.showLanguageScreen(context);
+            },
+            padding: EdgeInsets.zero,
+            child: LanguageSelector(),
+          ),
           CupertinoSearchBar(),
           SizedBox(height: 16.h),
           FeaturedSection(),

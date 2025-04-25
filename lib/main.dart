@@ -3,8 +3,9 @@
 import 'dart:io' show Platform;
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hope/utilities/app.constants.dart' show EntitleMents;
+import 'package:flutter_screenutil/flutter_screenutil.dart' show ScreenUtilInit;
+import 'package:get/get.dart';
+import 'package:hope/utilities/app.constants.dart' show EntitleMents, Utils;
 import 'package:onesignal_flutter/onesignal_flutter.dart'
     show OSLogLevel, OneSignal;
 import 'package:purchases_flutter/models/purchases_configuration.dart'
@@ -19,10 +20,10 @@ import 'package:purchases_flutter/purchases_flutter.dart'
         Store;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'config/store.config.dart' show StoreConfig;
-import 'screens/auth/auth_page.dart';
 import 'config/supabase_config.dart';
 import 'utilities/initial.bindings.dart' show InitialBinding;
 import './screens/splash_screen.dart';
+import 'core/controllers/translation.controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,12 +35,10 @@ void main() async {
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
   await _configureSDK();
-
-  InitialBinding();
-  // Apply bindings manually
-  InitialBinding().dependencies();
-
   // await fetchRevenueCatDetailsFn();
+
+  // Initialize controllers
+  Get.put(TranslationController());
 
   runApp(const MainApp());
 }
@@ -70,18 +69,13 @@ Future<void> _configureSDK() async {
     configuration = PurchasesConfiguration(
       Platform.isAndroid ? EntitleMents.googleApiKey : EntitleMents.appleApiKey,
     );
-    // ..appUserID = null
-    // ..purchasesAreCompletedBy = const PurchasesAreCompletedByRevenueCat();
   }
 
   await Purchases.configure(configuration);
 }
 
 Future<void> fetchRevenueCatDetailsFn() async {
-  // final signUpcontroller = Get.find<SignUpController>();
-
   CustomerInfo customerInfo = await Purchases.getCustomerInfo();
-
   print('Customer Info: ${customerInfo}');
 
   final offerings = await Purchases.getOfferings();
@@ -89,45 +83,7 @@ Future<void> fetchRevenueCatDetailsFn() async {
   EntitlementInfo? entitlement =
       customerInfo.entitlements.all[EntitleMents.entitlementId];
 
-  print('Entitlement: ${offerings}');
-
-  // Purchases.addCustomerInfoUpdateListener((customerInfo) {
-  //   // Handle subscription status update
-  //   bool isSubscribed =
-  //       customerInfo.entitlements.all[EntitleMents.entitlementId]?.isActive ??
-  //           false;
-
-  //   if (isSubscribed) {
-  //     AppConstants.isSubscriptionActive = isSubscribed;
-  //     Utils.logger.f(
-  //         'Is Subscription Active ------>>>>>>>>>>>>>>>>>>: ${AppConstants.isSubscriptionActive}');
-  //   } else {
-  //     AppConstants.isSubscriptionActive = isSubscribed;
-  //     Utils.logger.f(
-  //         'Is Subscription Active ------>>>>>>>>>>>>>>>>>>: ${AppConstants.isSubscriptionActive}');
-  //   }
-  // });
-
-  // Utils.logger.f('Revenue Cat ID: ${customerInfo.originalAppUserId}');
-
-  // AppConstants.currentSubscription = entitlement?.productIdentifier ?? '';
-
-  // final trialEligibility =
-  //     await Purchases.checkTrialOrIntroductoryPriceEligibility([
-  //   signUpcontroller
-  //           .offerings?.current?.availablePackages[1].storeProduct.identifier
-  //           .toString() ??
-  //       ''
-  // ]);
-
-  // Utils.logger.e(
-  //     'Annual Offering --->>${signUpcontroller.offerings?.current?.availablePackages[1]}');
-
-  // AppConstants.eligibleForTrial =
-  //     trialEligibility.entries.first.value.status ==
-  //             IntroEligibilityStatus.introEligibilityStatusIneligible
-  //         ? false
-  //         : true;
+  Utils.logger.d('Entitlement: ${offerings}');
 }
 
 class MainApp extends StatelessWidget {
@@ -136,18 +92,22 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(390, 844), // iPhone 13 dimensions; adjust as needed
+      designSize: const Size(
+        390,
+        844,
+      ), // iPhone 13 dimensions; adjust as needed
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return const CupertinoApp(
+        return GetCupertinoApp(
           debugShowCheckedModeBanner: false,
-          theme: CupertinoThemeData(
+          initialBinding: InitialBinding(),
+          theme: const CupertinoThemeData(
             brightness: Brightness.dark,
             primaryColor: CupertinoColors.systemBlue,
             scaffoldBackgroundColor: CupertinoColors.black,
           ),
-          home: SplashScreen(),
+          home: const SplashScreen(),
         );
       },
     );

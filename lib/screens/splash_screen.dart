@@ -30,6 +30,18 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     Future.delayed(const Duration(seconds: 3), () {
+      // Navigator.pushReplacement(
+      //   context,
+      //   PageRouteBuilder(
+      //     pageBuilder:
+      //         (context, animation, secondaryAnimation) =>
+      //     const Onboarding1Screen(),
+      //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      //       return FadeTransition(opacity: animation, child: child);
+      //     },
+      //     transitionDuration: const Duration(milliseconds: 500),
+      //   ),
+      // );
       Navigator.pushReplacement(
         context,
         CupertinoPageRoute(builder: (_) => OnboardingPager()),
