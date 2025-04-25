@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../Constants/colors.dart';
+import '../Constants/global_variable.dart';
 import 'common_text_box.dart';
 
 class ManualTwoColumnGrid2 extends StatefulWidget {
@@ -54,6 +55,8 @@ class _ManualTwoColumnGrid2State extends State<ManualTwoColumnGrid2> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
+                      bibleVersionIsSelected = true;
+                      isSelected.value = true;
                       setState(() {
                         selectedIdx = i;
                       });
@@ -76,6 +79,8 @@ class _ManualTwoColumnGrid2State extends State<ManualTwoColumnGrid2> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
+                      bibleVersionIsSelected = true;
+                      isSelected.value = true;
                       setState(() {
                         selectedIdx = i+1;
                       });
@@ -102,6 +107,8 @@ class _ManualTwoColumnGrid2State extends State<ManualTwoColumnGrid2> {
         rows.add(
           GestureDetector(
             onTap: () {
+              isSelected.value = true;
+              bibleVersionIsSelected = true;
               setState(() {
                 selectedIdx = i;
               });

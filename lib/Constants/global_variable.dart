@@ -2,7 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 
-double totalProgress = 27;
+double totalProgress = 26;
 double currentProgress = 0.0;
 List<String> ageGroup = [
   'Under 18',
@@ -40,6 +40,16 @@ List<String> churchGoingFrequencies = [
 
 PageController controller = PageController();
 
+bool denominationIsSelected = false;
+bool ageIsSelected = false;
+bool attendChurchIsSelected = false;
+bool meditateIsSelected = false;
+bool studyGroupIsSelected = false;
+bool journeyIsSelected = false;
+bool ignorePages = true;
+bool bibleVersionIsSelected = false;
+
+ValueNotifier<bool> isSelected = ValueNotifier(false);
 //Strings
 
 String onboarding2String = "What is your Denomination?";

@@ -36,7 +36,7 @@ class _Onboarding26ScreenState extends State<Onboarding26Screen> {
         SizedBox(height: 18.h,),
         CommonText(
           "Remember the quiet moments you longed for clarity\nand peace? They were never meant to be faced\nalone.",
-          14.sp,
+          13.sp,
           textAlign: TextAlign.center,
           textColor: textGrey,
 

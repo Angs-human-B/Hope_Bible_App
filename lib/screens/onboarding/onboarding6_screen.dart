@@ -31,6 +31,13 @@ class _Onboarding6ScreenState extends State<Onboarding6Screen> {
 
   int selectedIdx = 9;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isSelected.value = false;
+
+  }
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [

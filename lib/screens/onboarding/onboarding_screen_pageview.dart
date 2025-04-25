@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hope/screens/onboarding/main_onboarding_screen.dart';
+import 'package:hope/screens/onboarding/onboarding27_screen.dart';
 
 // import all your onboarding screens:
+import '../../Constants/colors.dart';
 import '../../Constants/global_variable.dart';
 import '../../Constants/image.dart';
 import '../../widgets/OnboardingSection/next_button.dart';
@@ -20,6 +21,7 @@ import 'onboarding19_screen.dart';
 import 'onboarding1_screen.dart';
 import 'onboarding20_screen.dart';
 import 'onboarding21_screen.dart';
+import 'onboarding22_screen.dart';
 import 'onboarding23_screen.dart';
 import 'onboarding24_screen.dart';
 import 'onboarding25_screen.dart';
@@ -47,7 +49,8 @@ class _OnboardingPagerState extends State<OnboardingPager> {
   CommonOnboardingScreen(
   ageGroup,
   onboarding4String,
-  'o5'
+  'o5',
+    'age'
   ),
     Onboarding5Screen(),
     Onboarding6Screen(),
@@ -55,25 +58,29 @@ class _OnboardingPagerState extends State<OnboardingPager> {
     CommonOnboardingScreen(
         readingFrequencies,
         onboarding8String,
-        'o9'
+        'o9',
+      'attendChurch'
     ),
     Onboarding9Screen(),
     CommonOnboardingScreen(
         churchGoingFrequencies,
         onboarding10String,
-        'o11'
+        'o11',
+        "meditate"
     ),
     Onboarding11Screen(),
     CommonOnboardingScreen(
         studyGroup,
         onboarding12String,
-        'o13'
+        'o13',
+      'studyGroup'
     ),
     Onboarding13Screen(),
     CommonOnboardingScreen(
         spiritualStages,
         onboarding14String,
-        'o15'
+        'o15',
+      'spiritualJourney'
     ),
     Onboarding15Screen(),
     Onboarding16Screen(),
@@ -82,40 +89,129 @@ class _OnboardingPagerState extends State<OnboardingPager> {
     Onboarding19Screen(),
     Onboarding20Screen(),
     Onboarding21Screen(),
-    // Onboarding22Screen(),
+    Onboarding22Screen(),
     Onboarding23Screen(),
     Onboarding24Screen(),
     Onboarding25Screen(),
     Onboarding26Screen(),
+    Onboarding27Screen(),
+
   ];
 
   @override
   void dispose() {
     controller.dispose();
     super.dispose();
-
-
   }
-  
   getBackgroundImage(int index){
     print(index);
+
     if(index ==10){
       return onboarding11;
     }
-    if(index ==21){
+    if(index ==22){
       return onboarding23;
     }
-    if(index ==22){
+    if(index ==23){
       return onboarding24;
     }
-    if(index ==23){
+    if(index ==24){
       return onboarding25;
     }
-    if(index ==24){
+    if(index ==25){
       return onboarding26;
+    }
+    if(index == 26){
+      return onboarding27;
     }
     else{
       return spotLight;
+    }
+  }
+  bool isOptionsSelected(int index){
+    if(index ==0 && ignorePages){
+      // denominationIsSelected = false;
+      return true;
+    }
+    if(index ==1 && denominationIsSelected){
+      print(denominationIsSelected);
+      return true;
+    }
+    if(index ==2 && ignorePages){
+      return true;
+    }
+    if(index ==3 && ageIsSelected){
+      return true;
+    }
+    if(index ==4 && ignorePages){
+      return true;
+    }
+    if(index ==5 && bibleVersionIsSelected){
+      return true;
+    }
+    if(index ==6 && ignorePages){
+      return true;
+    }
+    if(index ==7 && attendChurchIsSelected){
+      return true;
+    }
+    if(index ==8 && ignorePages){
+      return true;
+    }
+    if(index ==9 && meditateIsSelected){
+      return true;
+    }
+    if(index ==10 && ignorePages){
+      return true;
+    }
+    if(index ==11 && studyGroupIsSelected){
+      return true;
+    }
+    if(index ==12 && ignorePages){
+      return true;
+    }
+    if(index ==13 && journeyIsSelected){
+      return true;
+    }
+    if(index ==14 && ignorePages){
+      return true;
+    }
+    if(index ==15 && ignorePages){
+      return true;
+    }
+    if(index ==16 && ignorePages){
+      return true;
+    }
+    if(index ==17 && ignorePages){
+      return true;
+    }
+    if(index ==18 && ignorePages){
+      return true;
+    }
+
+    if(index ==19 && ignorePages){
+      return true;
+    }
+    if(index ==20 && ignorePages){
+      return true;
+    }
+    if(index ==21 && ignorePages){
+      return true;
+    }
+    if(index ==22 && ignorePages){
+      return true;
+    }
+    if(index ==23 && ignorePages){
+      return true;
+    }
+    if(index ==24 && ignorePages){
+      return true;
+    }
+    if(index ==25 && ignorePages){
+      return true;
+    }
+    else{
+      return false;
     }
   }
 
@@ -128,6 +224,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
         itemCount: _pages.length,
         itemBuilder: (context, index) {
           // if(index != 0){
+          print(index);
             return SafeArea(
               bottom: false,
               child: CupertinoPageScaffold(
@@ -139,7 +236,9 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                     Container(
                         height: MediaQuery.of(context).size.height,
                         width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.symmetric(horizontal: index !=0? 18.w: 0),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: index ==0 || index == 14 || index == 15 || index == 18 || index == 21 ? 0.w:
+                            18.w),
                         // color: Colors.black,
                         child: _pages[index]
                     ),
@@ -148,15 +247,45 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                         top: 690.h,
                         child: Padding(
                           padding:  EdgeInsets.symmetric(horizontal: 19.w),
-                          child: GestureDetector(
-                            onTap: (){
-                              controller.nextPage(
-                                duration: Duration(milliseconds: 300),
-                                curve: Curves.ease,
-                              );
-                            },
-                              child: NextButton()
-                          ),
+                          child: ValueListenableBuilder<bool>(
+                              valueListenable: isSelected,
+                              builder:(BuildContext context, bool value, Widget? child){
+                                return GestureDetector(
+                                    onTap: (){
+                                      final enabled = isOptionsSelected(index);
+                                      if(enabled && isSelected.value)
+                                      {
+                                        currentProgress += 1;
+                                        controller.nextPage(
+                                          duration: Duration(milliseconds: 300),
+                                          curve: Curves.ease,
+                                        );
+                                      }
+                                    },
+                                    child: Container(
+                                      height: 56.h,
+                                      width: 350.h,
+                                      decoration: BoxDecoration(
+                                          color: value? accentYellow : secondaryGrey,
+                                          borderRadius: BorderRadius.circular(30.sp)
+                                      ),
+                                      child: Center(
+                                          child: Text(
+                                            index == 25? "Find Your Way Back" :
+                                            index == 26? "Enter the Experience":
+                                            "Next",
+                                            style: TextStyle(
+                                                fontSize: 16.sp,
+                                                color: secondaryBlack,
+                                                fontWeight: FontWeight.bold
+                                            ),
+                                          )
+                                      ),
+                                    )
+                                );
+                              }
+                          )
+
                         )),
                     if(index  !=0)
                     Positioned(

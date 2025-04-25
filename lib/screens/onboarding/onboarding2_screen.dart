@@ -31,7 +31,14 @@ class _Onboarding2ScreenState extends State<Onboarding2Screen> {
     "Other",
     "Non-denominational",
   ];
-  int selectedIdx = 9;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // denominationIsSelected = false;
+    isSelected.value = false;
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -42,7 +49,6 @@ class _Onboarding2ScreenState extends State<Onboarding2Screen> {
         SizedBox(height: 53.h),
         ManualTwoColumnGrid(denomination: denomination),
       ],
-
     );
   }
 }

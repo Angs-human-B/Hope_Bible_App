@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hope/Constants/global_variable.dart';
 
 import '../Constants/colors.dart';
 import 'common_text_box.dart';
@@ -54,6 +55,8 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    denominationIsSelected = true;
+                    isSelected.value = true;
                     setState(() {
                       selectedIdx = i;
                     });
@@ -74,6 +77,7 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                 SizedBox(width: widget.crossSpacing),
                 GestureDetector(
                   onTap: () {
+                    denominationIsSelected = true;
                     setState(() {
                       selectedIdx = i+1;
                     });
@@ -101,6 +105,8 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
+                      denominationIsSelected = true;
+                      isSelected.value = true;
                       setState(() {
                         selectedIdx = i;
                       });
@@ -123,6 +129,8 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
+                      denominationIsSelected = true;
+                      isSelected.value = true;
                       setState(() {
                         selectedIdx = i+1;
                       });
@@ -151,6 +159,9 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
           GestureDetector(
             onTap: () {
               setState(() {
+                denominationIsSelected = true;
+                isSelected.value = true;
+
                 selectedIdx = i;
               });
             },

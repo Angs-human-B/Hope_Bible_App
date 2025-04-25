@@ -6,6 +6,7 @@ import 'package:hope/widgets/common_text.dart';
 import 'package:hope/widgets/OnboardingSection/next_button.dart';
 
 import '../../Constants/colors.dart';
+import '../../Constants/global_variable.dart';
 
 class Onboarding1Screen extends StatefulWidget {
   late PageController pageController;
@@ -44,12 +45,13 @@ class _Onboarding1ScreenState extends State<Onboarding1Screen> {
                   SizedBox(height: 34.h,),
                   GestureDetector(
                     onTap: (){
+                      currentProgress += 1;
                       widget.pageController.nextPage(
                         duration: Duration(milliseconds: 300),
                         curve: Curves.ease,
                       );
                     },
-                      child: NextButton(text: "Get Started")),
+                      child: NextButton(text: "Get Started", true)),
                   SizedBox(height: 10.h,),
                   Text("Or",
                     style: TextStyle(

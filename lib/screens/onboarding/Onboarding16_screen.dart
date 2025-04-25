@@ -36,9 +36,16 @@ class _Onboarding16ScreenState extends State<Onboarding16Screen> {
       children: [
         SizedBox(height: 50.h),
         SizedBox(height: 84.h),
-        CommonText(onboarding16String, 30.sp, textAlign: TextAlign.start,),
+        Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 18.w),
+          child: CommonText(onboarding16String, 30.sp, textAlign: TextAlign.start,),
+        ),
         SizedBox(height: 17.h),
-        CommonText(onboarding16String2, 14.sp, textAlign: TextAlign.start,textColor: textGrey,),
+        Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 18.w),
+
+          child: CommonText(onboarding16String2, 14.sp, textAlign: TextAlign.start,textColor: textGrey,),
+        ),
         SizedBox(height: 46.h),
         AutoScrollingImage(
           imageProvider: AssetImage(
@@ -48,51 +55,58 @@ class _Onboarding16ScreenState extends State<Onboarding16Screen> {
 
         ),
         SizedBox(height: 46.h,),
-        CommonText("Benefits of Personalized Nutrition", 20.sp, textAlign: TextAlign.start,),
+        Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 18.w),
+
+          child: CommonText("Benefits of Personalized Nutrition", 20.sp, textAlign: TextAlign.start,),
+        ),
         SizedBox(height: 20.h,),
-        Container(
-          decoration: BoxDecoration(
-    color: _cardBackground,
-    borderRadius: BorderRadius.circular(16.r),
-          ),
-          // ListView.separated scrolls if needed and builds dividers automatically
-          child: SizedBox(
-    // constrain height so ListView knows its bounds
-    height: benefits.length * (32.h + 24.h),
-    child: ListView.separated(
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: benefits.length,
-      separatorBuilder: (_, __) => Divider(
-        height: 1, thickness: 1, color: Colors.grey[800],
-        indent: 16.w, endIndent: 16.w,
-      ),
-      itemBuilder: (context, i) => Padding(
-        padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
-        child: Row(
-          children: [
-            Container(
-              width: 32.w, height: 32.w,
-              decoration: BoxDecoration(
-                color: _iconBackground,
-                shape: BoxShape.circle,
-              ),
-              child:Image.asset(star),
+        Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 18.w),
+          child: Container(
+            decoration: BoxDecoration(
+              color: _cardBackground,
+              borderRadius: BorderRadius.circular(16.r),
             ),
-            SizedBox(width: 12.w),
-            Expanded(
-              child: Text(
-                benefits[i],
-                style: TextStyle(
-                  color: _textWhite,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
+            // ListView.separated scrolls if needed and builds dividers automatically
+            child: SizedBox(
+              // constrain height so ListView knows its bounds
+              height: benefits.length * (32.h + 24.h),
+              child: ListView.separated(
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: benefits.length,
+                separatorBuilder: (_, __) => Divider(
+          height: 1, thickness: 1, color: Colors.grey[800],
+          indent: 16.w, endIndent: 16.w,
+                ),
+                itemBuilder: (context, i) => Padding(
+          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+          child: Row(
+            children: [
+              Container(
+                width: 32.w, height: 32.w,
+                decoration: BoxDecoration(
+                  color: _iconBackground,
+                  shape: BoxShape.circle,
+                ),
+                child:Image.asset(star),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Text(
+                  benefits[i],
+                  style: TextStyle(
+                    color: _textWhite,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
                 ),
               ),
             ),
-          ],
-        ),
-      ),
-    ),
           ),
         )
       ],
