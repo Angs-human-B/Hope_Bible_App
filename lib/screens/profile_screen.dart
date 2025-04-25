@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hope/Constants/colors.dart';
 import 'package:hope/screens/app_settings_screen.dart';
 import 'package:hope/screens/profile_settings_screen.dart';
 import 'package:hope/widgets/ProfileSection/profile_upper_container.dart';
 import '../Constants/icons.dart';
-import '../widgets/ProfileSection/date_progress_box.dart';
 import '../widgets/ProfileSection/settings_button_listtile.dart';
 import '../widgets/bottom_nav_bar.dart';
 class ProfileScreen extends StatelessWidget {
