@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../Constants/colors.dart';
+import '../Constants/global_variable.dart';
+import '../screens/onboarding/controllers/onboarding.controller.dart'
+    show OnboardingController;
 import 'common_text_box.dart';
 
 class ManualTwoColumnGrid2 extends StatefulWidget {
@@ -34,6 +38,8 @@ class ManualTwoColumnGrid2 extends StatefulWidget {
 }
 
 class _ManualTwoColumnGrid2State extends State<ManualTwoColumnGrid2> {
+  final OnboardingController onboardingController =
+      Get.find<OnboardingController>();
   int selectedIdx = 9;
 
   @override
@@ -48,75 +54,88 @@ class _ManualTwoColumnGrid2State extends State<ManualTwoColumnGrid2> {
 
       if (hasPair) {
         // ── Normal two‑column row ────────────────────────────────────────────
-          rows.add(
-            Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedIdx = i;
-                      });
-                    },
-                    child: _buildBox(
-                        widget.denomination[i],
-                        widget.itemHeight,
-                        widget.itemWidth,
-                        selectedIdx == i
-                            ? accentYellow.withOpacity(0.25)
-                            : secondaryGrey,
-                        selectedIdx == i ? accentYellow : textWhite,
-                        selectedIdx == i ? accentYellow : Colors.transparent,
-                        selectedIdx == i ? true : false
-
-                    ),
+        rows.add(
+          Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    bibleVersionIsSelected = true;
+                    onboardingController.isSelected.value = true;
+                    setState(() {
+                      selectedIdx = i;
+                    });
+                    onboardingController.updatePageData(
+                      'translations',
+                      widget.denomination[i],
+                    );
+                  },
+                  child: _buildBox(
+                    widget.denomination[i],
+                    widget.itemHeight,
+                    widget.itemWidth,
+                    selectedIdx == i
+                        ? accentYellow.withOpacity(0.25)
+                        : secondaryGrey,
+                    selectedIdx == i ? accentYellow : textWhite,
+                    selectedIdx == i ? accentYellow : Colors.transparent,
+                    selectedIdx == i ? true : false,
                   ),
                 ),
-                SizedBox(width: widget.crossSpacing),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedIdx = i+1;
-                      });
-                    },
-                    child: _buildBox(
-                        widget.denomination[i+1],
-                        widget.itemHeight,
-                        widget.itemWidth,
-                        selectedIdx == i+1
-                            ? accentYellow.withOpacity(0.25)
-                            : secondaryGrey,
-                        selectedIdx == i+1 ? accentYellow : textWhite,
-                        selectedIdx == i+1 ? accentYellow : Colors.transparent,
-                        selectedIdx == i+1 ? true : false
-
-                    ),
+              ),
+              SizedBox(width: widget.crossSpacing),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    bibleVersionIsSelected = true;
+                    onboardingController.isSelected.value = true;
+                    setState(() {
+                      selectedIdx = i + 1;
+                    });
+                    onboardingController.updatePageData(
+                      'translations',
+                      widget.denomination[i + 1],
+                    );
+                  },
+                  child: _buildBox(
+                    widget.denomination[i + 1],
+                    widget.itemHeight,
+                    widget.itemWidth,
+                    selectedIdx == i + 1
+                        ? accentYellow.withOpacity(0.25)
+                        : secondaryGrey,
+                    selectedIdx == i + 1 ? accentYellow : textWhite,
+                    selectedIdx == i + 1 ? accentYellow : Colors.transparent,
+                    selectedIdx == i + 1 ? true : false,
                   ),
                 ),
-              ],
-            ),
-          );
+              ),
+            ],
+          ),
+        );
       } else {
         // ── Last odd item → full‑width ──────────────────────────────────────
         rows.add(
           GestureDetector(
             onTap: () {
+              onboardingController.isSelected.value = true;
+              bibleVersionIsSelected = true;
               setState(() {
                 selectedIdx = i;
               });
+              onboardingController.updatePageData(
+                'translations',
+                widget.denomination[i],
+              );
             },
             child: _buildBox(
-                widget.denomination[i],
-                widget.itemHeight,
-                800.w,
-                selectedIdx == i
-                    ? accentYellow.withOpacity(0.25)
-                    : secondaryGrey,
-                selectedIdx == i ? accentYellow : textWhite,
-                selectedIdx == i ? accentYellow : Colors.transparent,
-                selectedIdx == i ? true : false
-
+              widget.denomination[i],
+              widget.itemHeight,
+              800.w,
+              selectedIdx == i ? accentYellow.withOpacity(0.25) : secondaryGrey,
+              selectedIdx == i ? accentYellow : textWhite,
+              selectedIdx == i ? accentYellow : Colors.transparent,
+              selectedIdx == i ? true : false,
             ),
           ),
         );
@@ -141,16 +160,22 @@ class _ManualTwoColumnGrid2State extends State<ManualTwoColumnGrid2> {
 
   /// Builds a single tile wrapped in a SizedBox to keep the original height.
   Widget _buildBox(
-      String label,
-      double height,
-      double width,
-      Color backgroundColor,
-      Color textColor,
-      Color borderColor,
-      bool clicked
-      ) => SizedBox(
+    String label,
+    double height,
+    double width,
+    Color backgroundColor,
+    Color textColor,
+    Color borderColor,
+    bool clicked,
+  ) => SizedBox(
     width: width, // width is ignored when inside Expanded/full width
     height: height,
-    child: CommonTextBox(label, textColor, backgroundColor, borderColor: borderColor,clicked: clicked,),
+    child: CommonTextBox(
+      label,
+      textColor,
+      backgroundColor,
+      borderColor: borderColor,
+      clicked: clicked,
+    ),
   );
 }

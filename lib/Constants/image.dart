@@ -1,3 +1,4 @@
+
 String spotLight = "assets/images/Vector.png";
 String onboarding1 = "assets/images/Frame.png";
 String onboarding3_1 = "assets/images/Group 115.png";
@@ -6,3 +7,17 @@ String onboarding3_3 = "assets/images/Group 116.png";
 String onboarding5 = "assets/images/onboarding5.png";
 String onboarding7 = "assets/images/onboarding7.png";
 String onboarding9 = "assets/images/onboarding9.png";
+String onboarding11 = "assets/images/onboarding11.png";
+String onboarding13 = "assets/images/onboarding13.png";
+String onboarding15 = "assets/images/onboarding15.png";
+String onboarding16 = "assets/images/onboarding16.png";
+String onboarding17 = "assets/images/onboarding17.png";
+String onboarding18 = "assets/images/onboarding18.png";
+String onboarding19 = "assets/images/onboarding19.png";
+String onboarding20 = "assets/images/onboarding20.png";
+String onboarding21 = "assets/images/onboarding21.png";
+String onboarding23 = "assets/images/onboarding23.png";
+String onboarding24 = "assets/images/onboarding24.png";
+String onboarding25 = "assets/images/onboarding25.png";
+String onboarding26 = "assets/images/onboarding26.png";
+String onboarding27 = "assets/images/onboarding27.png";

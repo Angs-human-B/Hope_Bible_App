@@ -1,21 +1,26 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hope/Constants/image.dart';
+import 'package:get/get.dart';
+
 import '../../Constants/colors.dart';
+import '../../Constants/global_variable.dart';
 import '../../widgets/common_text.dart';
 import '../../widgets/common_text_box.dart';
+import 'controllers/onboarding.controller.dart' show OnboardingController;
 
-// ignore: must_be_immutable
 class CommonOnboardingScreen extends StatefulWidget {
   List<String> categoryList;
   String title;
   String nextRoute;
+  String type;
 
   CommonOnboardingScreen(
     this.categoryList,
     this.title,
-    this.nextRoute, {
+    this.nextRoute,
+    this.type, {
     super.key,
   });
 
@@ -23,85 +28,104 @@ class CommonOnboardingScreen extends StatefulWidget {
   State<CommonOnboardingScreen> createState() => _CommonOnboardingScreenState();
 }
 
-class _CommonOnboardingScreenState extends State<CommonOnboardingScreen> {
+class _CommonOnboardingScreenState extends State<CommonOnboardingScreen>
+    with AutomaticKeepAliveClientMixin {
   int selectedIdx = 9;
+
+  isOptionSelected(String type) {
+    if (type == 'age') {
+      ageIsSelected = true;
+    }
+    if (type == 'attendChurch') {
+      attendChurchIsSelected = true;
+    }
+    if (type == 'meditate') {
+      meditateIsSelected = true;
+    }
+    if (type == 'studyGroup') {
+      studyGroupIsSelected = true;
+    }
+    if (type == 'spiritualJourney') {
+      journeyIsSelected = true;
+    } else {
+      return false;
+    }
+  }
+
+  final OnboardingController onboardingController =
+      Get.find<OnboardingController>();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      onboardingController.isSelected.value = false;
+    });
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: CupertinoPageScaffold(
-        child: Stack(
+    super.build(context);
+    return Stack(
+      children: [
+        Column(
           children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: Image.asset(
-                spotLight,
-                fit: BoxFit.cover,
-                width: MediaQuery.of(context).size.width,
-              ),
-            ),
-
-            Container(
-              height: MediaQuery.of(context).size.height,
-              padding: EdgeInsets.symmetric(horizontal: 18.w),
-              child: Stack(
-                children: [
-                  Column(
+            SizedBox(height: 50.h),
+            SizedBox(height: 84.h),
+            //
+            CommonText(widget.title, 30.sp),
+            SizedBox(height: 40.h),
+            SizedBox(
+              height: 256.h,
+              child: ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: widget.categoryList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(
                     children: [
-                      SizedBox(height: 84.h),
-                      //
-                      CommonText(widget.title, 30.sp),
-                      SizedBox(height: 40.h),
-                      SizedBox(
-                        height: 256.h,
-                        child: ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: widget.categoryList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedIdx = index;
-                                    });
-                                  },
-                                  child: SizedBox(
-                                    width:
-                                        350.w, // width is ignored when inside Expanded/full width
-                                    height: 52.h,
-                                    child: CommonTextBox(
-                                      widget.categoryList[index],
-                                      selectedIdx == index
-                                          ? accentYellow
-                                          : textWhite,
-                                      selectedIdx == index
-                                          ? accentYellow.withOpacity(0.25)
-                                          : secondaryGrey,
-                                      borderColor:
-                                          selectedIdx == index
-                                              ? accentYellow
-                                              : Colors.transparent,
-                                      clicked:
-                                          selectedIdx == index ? true : false,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 15.h),
-                              ],
-                            );
-                          },
+                      GestureDetector(
+                        onTap: () {
+                          isOptionSelected(widget.type);
+                          setState(() {
+                            selectedIdx = index;
+                          });
+                          onboardingController.isSelected.value = true;
+                          onboardingController.updatePageData(
+                            widget.type,
+                            widget.categoryList[index],
+                          );
+                        },
+                        child: SizedBox(
+                          width:
+                              350.w, // width is ignored when inside Expanded/full width
+                          height: 52.h,
+                          child: CommonTextBox(
+                            widget.categoryList[index],
+                            selectedIdx == index ? accentYellow : textWhite,
+                            selectedIdx == index
+                                ? accentYellow.withOpacity(0.25)
+                                : secondaryGrey,
+                            borderColor:
+                                selectedIdx == index
+                                    ? accentYellow
+                                    : CupertinoColors.transparent,
+                            clicked: selectedIdx == index ? true : false,
+                          ),
                         ),
                       ),
-                      // SizedBox(height: 55.h,)
+                      SizedBox(height: 15.h),
                     ],
-                  ),
-                ],
+                  );
+                },
               ),
             ),
+            // SizedBox(height: 55.h,)
           ],
         ),
-      ),
+        //
+      ],
     );
   }
 }

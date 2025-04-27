@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hope/Constants/colors.dart';
+import 'package:hope/screens/chat_home_screen.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -26,7 +27,7 @@ class BottomNavBar extends StatelessWidget {
           decoration: BoxDecoration(
             color: secondaryGrey,
             borderRadius: BorderRadius.circular(99.sp),
-            border: Border.all(color: Color(0xFF888888), width: .5),
+            border: Border.all(color: const Color(0xFF888888), width: .5),
           ),
           child: Row(
             children: [
@@ -53,22 +54,30 @@ class BottomNavBar extends StatelessWidget {
             ],
           ),
         ),
-        Container(
-          height: 70.h,
-          width: 70.w,
-          margin: EdgeInsets.only(right: 12.w),
-          padding: EdgeInsets.all(20.sp),
-          decoration: BoxDecoration(
-            color: secondaryGrey,
-            shape: BoxShape.circle,
-          ),
-          child: SvgPicture.asset(
-            'assets/icons/sparkle.svg',
-            width: 18.w,
-            height: 18.h,
-            colorFilter: const ColorFilter.mode(
-              CupertinoColors.white,
-              BlendMode.srcIn,
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute(builder: (_) => ChatHome()),
+            );
+          },
+          child: Container(
+            height: 70.h,
+            width: 70.w,
+            margin: EdgeInsets.only(right: 12.w),
+            padding: EdgeInsets.all(20.sp),
+            decoration: BoxDecoration(
+              color: secondaryGrey,
+              shape: BoxShape.circle,
+            ),
+            child: SvgPicture.asset(
+              'assets/icons/sparkle.svg',
+              width: 18.w,
+              height: 18.h,
+              colorFilter: const ColorFilter.mode(
+                CupertinoColors.white,
+                BlendMode.srcIn,
+              ),
             ),
           ),
         ),

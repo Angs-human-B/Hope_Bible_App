@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'dart:convert';
 import 'package:flutter/cupertino.dart'
     show
@@ -24,122 +23,184 @@ import 'package:flutter/cupertino.dart'
         TextStyle,
         Widget,
         showCupertinoDialog;
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hope/Constants/colors.dart';
+import 'package:hope/Constants/icons.dart';
+import 'package:hope/screens/persistent_botom_nav.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart' show OneSignal;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:crypto/crypto.dart';
-import '../bible/controllers/bible.controller.dart' show BibleController;
-import '../chat.bot.page.dart';
+import '../../utilities/app.constants.dart' show AppConstants, Utils;
+import '../onboarding/controllers/onboarding.controller.dart'
+    show OnboardingController;
+import 'controllers/user.auth.controller.dart' show SignUpController;
 
 class AuthPage extends StatefulWidget {
-  const AuthPage({super.key});
+  final bool login;
+  final bool mainScreenRedirect;
+  const AuthPage({
+    super.key,
+    this.login = false,
+    this.mainScreenRedirect = false,
+  });
 
   @override
   State<AuthPage> createState() => _AuthPageState();
 }
 
 class _AuthPageState extends State<AuthPage> {
-  final controller = Get.find<BibleController>();
-  @override
-  void initState() {
-    // WidgetsBinding.instance.addPostFrameCallback((_) async {
-    //   // controller.getAllBibleBooksFn();
-    // });
-    super.initState();
-  }
+  final controller = Get.find<SignUpController>();
+  final OnboardingController oboardingController =
+      Get.find<OnboardingController>();
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       backgroundColor: CupertinoColors.black,
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Spacer(),
-              Center(
-                child: Column(
-                  children: [
-                    const Text(
-                      'Welcome to Hope',
-                      semanticsLabel: 'Welcome to Hope',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: CupertinoColors.white,
-                        letterSpacing: -0.5,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Sign in to continue',
-                      semanticsLabel: 'Sign in to continue',
-                      style: TextStyle(
-                        fontSize: 17,
-                        color: CupertinoColors.white.withOpacity(0.6),
-                        letterSpacing: -0.41,
-                      ),
-                    ),
-                  ],
-                ),
+      child: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [Colors.black, Color(0xFF31343A)],
+                stops: [0.41, 1.0],
               ),
-              const Spacer(),
-              Column(
-                mainAxisSize: MainAxisSize.min,
+            ),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 30.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  SignInWithAppleButton(
-                    onPressed: () => _handleAppleSignIn(context),
-                    style: SignInWithAppleButtonStyle.white,
-                    height: 50,
+                  Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                            CupertinoPageRoute(
+                              builder: (_) => const PersistentBottomNav(),
+                            ),
+                            (route) => false,
+                          );
+                        },
+                        child: Text(
+                          'Your Subscription \nis Confirmed!',
+                          semanticsLabel: 'Your Subscription is Confirmed!',
+                          style: TextStyle(
+                            fontSize: 36.sp,
+                            fontWeight: FontWeight.bold,
+                            color: textWhite,
+                            letterSpacing: -0.5,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Text(
+                        'Lets create your account.',
+                        semanticsLabel: 'Lets create your account.',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          color: textWhite.withValues(alpha: 0.9),
+                          letterSpacing: -0.41,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 48.h),
                   CupertinoButton(
                     padding: EdgeInsets.zero,
                     onPressed: () => _handleGoogleSignIn(context),
                     child: Container(
-                      height: 50,
+                      height: 54.h,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF4285F4), // Google Blue
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                        child: Text(
-                          'Sign in with Google',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: CupertinoColors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: '.SF Pro Text',
-                          ),
+                        color: cardGrey.withValues(alpha: .5), // Google Blue
+                        borderRadius: BorderRadius.circular(8.sp),
+                        border: Border.all(
+                          color: hintTextGrey.withValues(alpha: .3),
+                          width: 1.5,
                         ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(googleIcon, height: 22.h),
+                          SizedBox(width: 12.w),
+                          Text(
+                            'Continue with Google',
+                            style: TextStyle(
+                              color: CupertinoColors.white,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: '.SF Pro Text',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+                  CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () => _handleAppleSignIn(context),
+                    child: Container(
+                      height: 54.h,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: cardGrey.withValues(alpha: .05), // Google Blue
+                        borderRadius: BorderRadius.circular(8.sp),
+                        border: Border.all(
+                          color: hintTextGrey.withValues(alpha: .3),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(appleIcon, height: 26.h),
+                          SizedBox(width: 12.w),
+                          Text(
+                            'Continue with Apple',
+                            style: TextStyle(
+                              color: CupertinoColors.white,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: '.SF Pro Text',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 16.h),
+                    child: Text(
+                      'By continuing, you agree to our Terms of Service and Privacy Policy',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: CupertinoColors.white.withValues(alpha: 0.9),
+                        letterSpacing: -0.08,
                       ),
                     ),
                   ),
                 ],
               ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Text(
-                  'By continuing, you agree to our Terms of Service and Privacy Policy',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: CupertinoColors.white.withOpacity(0.4),
-                    letterSpacing: -0.08,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -172,11 +233,65 @@ class _AuthPageState extends State<AuthPage> {
           );
 
       if (signedInUser.user != null) {
-        // Navigate to ChatBotPage after successful sign in
-        Navigator.pushReplacement(
-          context,
-          CupertinoPageRoute(builder: (context) => const ChatBotPage()),
-        );
+        final Map<String, dynamic> params = {
+          "username": "username",
+          "password": "Random1@",
+          "name":
+              Supabase
+                  .instance
+                  .client
+                  .auth
+                  .currentSession
+                  ?.user
+                  .userMetadata?['name'] ??
+              '',
+          "email":
+              Supabase.instance.client.auth.currentSession?.user.email ?? '',
+          "role": "user",
+          "providerId": credential.userIdentifier,
+          "provider": "Apple",
+          "revenueCatId": AppConstants.revenueCatId,
+          "currentSubscription": AppConstants.currentSubscription,
+          "supabaseId": Supabase.instance.client.auth.currentUser?.id ?? '',
+          "one_signal_id": OneSignal.User.pushSubscription.id.toString(),
+          // "readingTime": oboardingController.getPageData(page)
+          "denomination": oboardingController.getPageData('denomination'),
+          "age": oboardingController.getPageData('age'),
+          "bibleVersion": oboardingController.getPageData('bibleVersion'),
+          "attendChurch": oboardingController.getPageData('attendChurch'),
+          "meditate": oboardingController.getPageData('meditate'),
+          "studyGroup": oboardingController.getPageData('studyGroup'),
+        };
+        Utils.logger.f(widget.login);
+        Utils.logger.f(params);
+        if (widget.login == false) {
+          await controller.userRegisterFn(params, context);
+          // await Posthog().capture(
+          //   properties: {
+          //     "name":
+          //         Supabase
+          //             .instance
+          //             .client
+          //             .auth
+          //             .currentSession
+          //             ?.user
+          //             .userMetadata?['name']
+          //             .toString() ??
+          //         '',
+          //     "subscriptionType": AppConstants.currentSubscription,
+          //     "revenueCatId": AppConstants.revenueCatId,
+          //     "one_signal_id": OneSignal.User.pushSubscription.id.toString(),
+          //   },
+          //   eventName: 'New User - Apple',
+          // );
+        } else {
+          final Map<String, dynamic> loginParams = {
+            "email":
+                Supabase.instance.client.auth.currentSession?.user.email ?? '',
+          };
+
+          await controller.userLoginFn(loginParams, context);
+        }
       }
     } catch (error) {
       showCupertinoDialog(
@@ -229,10 +344,57 @@ class _AuthPageState extends State<AuthPage> {
 
       if (signedInUser.user != null) {
         // Navigate to ChatBotPage after successful sign in
-        Navigator.pushReplacement(
-          context,
-          CupertinoPageRoute(builder: (context) => const ChatBotPage()),
+        Utils.logger.e(
+          'Signed In Google User -->> ${signedInUser.user?.userMetadata?['full_name'] ?? ''}',
         );
+
+        String? userId = signedInUser.session?.user.id;
+        String? email = signedInUser.user?.email ?? '';
+        String? name = signedInUser.user?.userMetadata?['full_name'] ?? '';
+
+        final Map<String, String> params = {
+          "username": "username",
+          "password": "Random1@",
+          "name": name.toString(),
+          "email": email,
+          "role": "user",
+          "providerId": userId.toString(),
+          "provider": "Google",
+          "revenueCatId": AppConstants.revenueCatId,
+          "currentSubscription": AppConstants.currentSubscription,
+          "supabaseId": Supabase.instance.client.auth.currentUser?.id ?? '',
+          "one_signal_id": OneSignal.User.pushSubscription.id.toString(),
+        };
+
+        Utils.logger.f(params);
+        if (widget.login == false) {
+          await controller.userRegisterFn(params, context);
+          // await Posthog().capture(
+          //   properties: {
+          //     "name":
+          //         Supabase
+          //             .instance
+          //             .client
+          //             .auth
+          //             .currentSession
+          //             ?.user
+          //             .userMetadata?['name']
+          //             .toString() ??
+          //         '',
+          //     "subscriptionType": AppConstants.currentSubscription,
+          //     "revenueCatId": AppConstants.revenueCatId,
+          //     "one_signal_id": OneSignal.User.pushSubscription.id.toString(),
+          //   },
+          //   eventName: 'New User - Google',
+          // );
+        } else {
+          final Map<String, String> loginParams = {"email": email};
+          await controller.userLoginFn(loginParams, context);
+          // await Posthog().capture(
+          //   properties: loginParams,
+          //   eventName: 'Returning User - Google',
+          // );
+        }
       }
     } catch (error) {
       showCupertinoDialog(

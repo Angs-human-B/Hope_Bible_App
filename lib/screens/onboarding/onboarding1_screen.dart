@@ -1,82 +1,153 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:hope/Constants/image.dart';
+import 'package:hope/screens/auth/auth_page.dart' show AuthPage;
+import 'package:hope/utilities/app.constants.dart';
 import 'package:hope/widgets/common_text.dart';
+import 'package:hope/widgets/OnboardingSection/next_button.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart'
+    show CupertinoScaffold;
 import '../../Constants/colors.dart';
-import 'onboarding_page_view.dart' show OnboardingPageView;
+import 'controllers/onboarding.controller.dart' show OnboardingController;
 
 class Onboarding1Screen extends StatefulWidget {
-  const Onboarding1Screen({super.key});
+  late PageController pageController;
+  Onboarding1Screen(this.pageController, {super.key});
 
   @override
   State<Onboarding1Screen> createState() => _Onboarding1ScreenState();
 }
 
 class _Onboarding1ScreenState extends State<Onboarding1Screen> {
+  final OnboardingController onboardingController =
+      Get.find<OnboardingController>();
+
+  Future<String> _determineInitialScreen() async {
+    // Add your logic here to determine the initial screen
+    // For example, check authentication status, user preferences, etc.
+    await Future.delayed(const Duration(milliseconds: 500)); // Simulated delay
+    return 'auth';
+  }
+
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(onboarding1),
-            fit: BoxFit.fill,
-          ),
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(onboarding1),
+          fit: BoxFit.cover,
         ),
-        child: Column(
-          children: [
-            Expanded(flex: 1, child: SizedBox()),
-            Expanded(
-              flex: 1,
-              child: Container(
-                // width: 340.w,
-                child: Column(
-                  children: [
-                    SizedBox(height: 52.5.h),
-                    CommonText(
-                      "Ready to\n Personalize Your Spiritual Journey?",
-                      36.sp,
-                    ),
-                    SizedBox(height: 34.h),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          CupertinoPageRoute(
-                            builder: (context) => OnboardingPageView(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        height: 56.h,
-                        width: 350.h,
-                        decoration: BoxDecoration(
-                          color: accentYellow,
-                          borderRadius: BorderRadius.circular(30.sp),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Get Started",
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: secondaryBlack,
-                              fontWeight: FontWeight.bold,
+      ),
+      child: Column(
+        children: [
+          Expanded(flex: 1, child: SizedBox()),
+          Expanded(
+            flex: 1,
+            child: SizedBox(
+              width: 340.w,
+              child: Column(
+                children: [
+                  SizedBox(height: 30.h),
+                  CommonText(
+                    "Ready to\n Personalize Your Spiritual Journey?",
+                    36.sp,
+                  ),
+                  SizedBox(height: 34.h),
+                  GestureDetector(
+                    onTap: () {
+                      onboardingController.currentProgress.value++;
+
+                      Utils.logger.f(
+                        onboardingController.currentProgress.value,
+                      );
+
+                      widget.pageController.nextPage(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.ease,
+                      );
+                    },
+                    child: NextButton(text: "Get Started", true),
+                  ),
+                  SizedBox(height: 10.h),
+                  Text(
+                    "Or",
+                    style: TextStyle(fontSize: 12.sp, color: textGrey),
+                  ),
+                  SizedBox(height: 10.h),
+                  // SizedBox(height: 40.h,),
+                  Text.rich(
+                    TextSpan(
+                      text: "Already have an account? ",
+                      style: TextStyle(color: textWhite, fontSize: 14.sp),
+                      children: [
+                        WidgetSpan(
+                          child: GestureDetector(
+                            onTap: () async {
+                              try {
+                                await Navigator.of(
+                                  context,
+                                  rootNavigator: true,
+                                ).push(
+                                  CupertinoPageRoute(
+                                    builder:
+                                        (context) => CupertinoScaffold(
+                                          body: FutureBuilder<String>(
+                                            future: _determineInitialScreen(),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return const CupertinoPageScaffold(
+                                                  child: Center(
+                                                    child: SizedBox(),
+                                                  ),
+                                                );
+                                              } else if (snapshot.hasError) {
+                                                return const CupertinoPageScaffold(
+                                                  child: Center(
+                                                    child: Text(
+                                                      'An error occurred. Please try again later.',
+                                                    ),
+                                                  ),
+                                                );
+                                              } else {
+                                                return AuthPage(login: true);
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                  ),
+                                );
+                              } catch (e) {
+                                print('Navigation error: $e');
+                                // You can show a snackbar or dialog here to inform the user
+                              }
+                            },
+                            child: Text(
+                              "Sign In",
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: textWhite,
+                                fontSize: 14.sp,
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                    SizedBox(height: 10.h),
-                    Text(
-                      "Or",
-                      style: TextStyle(fontSize: 12.sp, color: textGrey),
-                    ),
-                    SizedBox(height: 10.h),
-                    // SizedBox(height: 40.h,),
-                    Text.rich(
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 33.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 26.w),
+                    child: Text.rich(
                       TextSpan(
-                        text: "Already have an account? ",
+                        text: "By continuing, you agree to Bilble's ",
                         style: TextStyle(
                           color: textWhite,
                           fontSize: 14.sp,
@@ -84,7 +155,15 @@ class _Onboarding1ScreenState extends State<Onboarding1Screen> {
                         ),
                         children: [
                           TextSpan(
-                            text: "Sign In",
+                            text: "Terms of services",
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: textWhite,
+                            ),
+                          ),
+                          TextSpan(text: " & "),
+                          TextSpan(
+                            text: "Privacy policy.",
                             style: TextStyle(
                               decoration: TextDecoration.underline,
                               color: textWhite,
@@ -94,44 +173,12 @@ class _Onboarding1ScreenState extends State<Onboarding1Screen> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 33.h),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 26.w),
-                      child: Text.rich(
-                        TextSpan(
-                          text: "By continuing, you agree to Bilble’s ",
-                          style: TextStyle(
-                            color: textWhite,
-                            fontSize: 14.sp,
-                            // fontWeight: FontWeight.bold,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: "Terms of services",
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                color: textWhite,
-                              ),
-                            ),
-                            TextSpan(text: " & "),
-                            TextSpan(
-                              text: "Privacy policy.",
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                color: textWhite,
-                              ),
-                            ),
-                          ],
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

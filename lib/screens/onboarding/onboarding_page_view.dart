@@ -1,5 +1,4 @@
 import 'dart:ui' show ImageFilter;
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -75,7 +74,7 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
               onPageChanged: (int page) {
                 // Update both local and controller state
                 setState(() {
-                  currentProgress = page + 1;
+                  controller.currentProgress.value = page + 1;
                 });
                 controller.setCurrentPage(page);
                 Utils.logger.f("Page changed to: $page");
@@ -83,7 +82,7 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
               children: [
                 Onboarding2Screen(),
                 const Onboarding3Screen(),
-                CommonOnboardingScreen(ageGroup, onboarding4String, 'o5'),
+                CommonOnboardingScreen(ageGroup, onboarding4String, 'o5', ''),
                 const Onboarding5Screen(),
                 const Onboarding6Screen(),
                 const Onboarding7Screen(),
@@ -91,12 +90,14 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                   readingFrequencies,
                   onboarding8String,
                   'o9',
+                  '',
                 ),
                 const Onboarding9Screen(),
                 CommonOnboardingScreen(
                   churchGoingFrequencies,
                   onboarding10String,
                   'o11',
+                  '',
                 ),
               ],
             ),
@@ -128,7 +129,9 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                     ),
                   ),
                   SizedBox(width: 26.w),
-                  ProgressBar(progress: currentProgress / totalProgress),
+                  ProgressBar(
+                    progress: controller.currentProgress.value / totalProgress,
+                  ),
                 ],
               ),
             ),

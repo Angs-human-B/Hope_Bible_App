@@ -16,7 +16,7 @@ mixin RefreshToken {
     }
   }
 
-  String fetchToken = "api/auth/access-token";
+  String fetchToken = "api/v1/auth/access-token";
   Future<String> refreshToken() async {
     String authToken = "";
     try {

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart'; // Only for Colors.white.withOpacity
+import 'package:flutter/material.dart';
 
 class AppBarHeader extends StatelessWidget {
   final Widget? title;
@@ -35,9 +35,7 @@ class AppBarHeader extends StatelessWidget {
             ),
           ),
 
-
           const SizedBox(width: 8),
-
 
           Expanded(
             child: Center(
@@ -51,8 +49,6 @@ class AppBarHeader extends StatelessWidget {
               ),
             ),
           ),
-
-
         ],
       ),
     );

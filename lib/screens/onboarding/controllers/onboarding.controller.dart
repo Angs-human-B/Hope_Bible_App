@@ -7,10 +7,18 @@ import '../../../utilities/app.constants.dart' show Utils;
 /// for different onboarding pages
 class OnboardingController extends GetxController {
   // Store all page data in a single map
-  final RxMap<int, dynamic> _pageData = <int, dynamic>{}.obs;
+  final RxMap<String, dynamic> _pageData = <String, dynamic>{}.obs;
 
   // Track completion status for each page
-  final RxMap<int, bool> _pageCompletion = <int, bool>{}.obs;
+  final RxMap<String, bool> _pageCompletion = <String, bool>{}.obs;
+
+  RxDouble currentProgress = 0.0.obs;
+
+  RxInt currentPageIndex = 0.obs;
+
+  RxBool isSelected = false.obs;
+
+  RxString selectedPlan = 'Annual'.obs;
 
   // Current page index
   final RxInt _currentPage = 0.obs;
@@ -25,20 +33,20 @@ class OnboardingController extends GetxController {
   OnboardingController({required this.totalPages}) {
     // Initialize all pages as incomplete
     for (int i = 0; i < totalPages; i++) {
-      _pageCompletion[i] = false;
+      _pageCompletion[i.toString()] = false;
     }
   }
 
   /// Getters
   int get currentPage => _currentPage.value;
-  Map<int, dynamic> get allPageData => _pageData;
-  bool isPageComplete(int page) => _pageCompletion[page] ?? false;
+  Map<String, dynamic> get allPageData => _pageData;
+  bool isPageComplete(String page) => _pageCompletion[page] ?? false;
 
   // Get data for a specific page
-  T? getPageData<T>(int page) => _pageData[page] as T?;
+  T? getPageData<T>(String page) => _pageData[page] as T?;
 
   // Update data and completion status for a page
-  void updatePageData(int page, dynamic data) {
+  void updatePageData(String page, dynamic data) {
     Utils.logger.f("Updating page $page with data: $data");
     _pageData[page] = data;
     _pageCompletion[page] = true;
@@ -75,9 +83,9 @@ class OnboardingController extends GetxController {
   void setDenomination(String? denomination) {
     _selectedDenomination.value = denomination;
     // Also store in page data for consistency
-    _pageData[0] = denomination;
+    _pageData['0'] = denomination;
     // Update validation for the denomination page
-    _pageCompletion[0] = denomination != null;
+    _pageCompletion['0'] = denomination != null;
     update();
   }
 
@@ -85,7 +93,7 @@ class OnboardingController extends GetxController {
   void resetOnboarding() {
     _pageData.clear();
     for (int i = 0; i < totalPages; i++) {
-      _pageCompletion[i] = false;
+      _pageCompletion[i.toString()] = false;
     }
     _currentPage.value = 0;
     _selectedDenomination.value = null;

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../Constants/colors.dart';
 import '../widgets/MyListSection/my_list_card.dart';
-import '../widgets/bottom_nav_bar.dart';
 import '../widgets/HomeSection/search_bar.dart';
 
 class MyListScreen extends StatefulWidget {
@@ -33,101 +32,85 @@ class _MyListScreenState extends State<MyListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      backgroundColor: CupertinoColors.black,
-      child: SafeArea(
-        bottom: false,
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 20.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 18.w),
-                  child: Text(
-                    'My List',
-                    style: TextStyle(
-                      color: textWhite,
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 24.h),
-                CupertinoSearchBar(),
-                SizedBox(height: 24.h),
+    return SafeArea(
+      top: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 20.h),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 18.w),
+            child: Text(
+              'My List',
+              style: TextStyle(
+                color: textWhite,
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          SizedBox(height: 24.h),
+          CupertinoSearchBar(),
+          SizedBox(height: 24.h),
 
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 14.w),
-                  child: Row(
-                    children: List.generate(tabs.length, (index) {
-                      final isSelected = index == selectedIndex;
-                      return GestureDetector(
-                        onTap: () => onTabTap(index),
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 26.w),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                tabs[index],
-                                style: TextStyle(
-                                  color: isSelected ? textWhite : textGrey,
-                                  fontSize: isSelected ? 17.sp : 16.sp,
-                                  fontWeight:
-                                      isSelected
-                                          ? FontWeight.w600
-                                          : FontWeight.w400,
-                                ),
-                              ),
-                              SizedBox(height: 4.h),
-                              AnimatedContainer(
-                                duration: const Duration(milliseconds: 200),
-                                height: 2,
-                                width: 24.w,
-                                decoration: BoxDecoration(
-                                  color:
-                                      isSelected
-                                          ? textWhite
-                                          : CupertinoColors.transparent,
-                                  borderRadius: BorderRadius.circular(1),
-                                ),
-                              ),
-                            ],
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 14.w),
+            child: Row(
+              children: List.generate(tabs.length, (index) {
+                final isSelected = index == selectedIndex;
+                return GestureDetector(
+                  onTap: () => onTabTap(index),
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 26.w),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          tabs[index],
+                          style: TextStyle(
+                            color: isSelected ? textWhite : textGrey,
+                            fontSize: isSelected ? 17.sp : 16.sp,
+                            fontWeight:
+                                isSelected ? FontWeight.w600 : FontWeight.w400,
                           ),
                         ),
-                      );
-                    }),
+                        SizedBox(height: 4.h),
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          height: 2,
+                          width: 24.w,
+                          decoration: BoxDecoration(
+                            color:
+                                isSelected
+                                    ? textWhite
+                                    : CupertinoColors.transparent,
+                            borderRadius: BorderRadius.circular(1),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                );
+              }),
+            ),
+          ),
 
-                SizedBox(height: 4.h),
+          SizedBox(height: 4.h),
 
-                Expanded(
-                  child: PageView(
-                    controller: _pageController,
-                    onPageChanged: (index) {
-                      setState(() => selectedIndex = index);
-                    },
-                    children: const [
-                      CardGridTab(), // All
-                      CardGridTab(), // Videos
-                      CardGridTab(), // Hymns
-                    ],
-                  ),
-                ),
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() => selectedIndex = index);
+              },
+              children: const [
+                CardGridTab(), // All
+                CardGridTab(), // Videos
+                CardGridTab(), // Hymns
               ],
             ),
-
-            Positioned(
-              bottom: 16.h,
-              left: 0,
-              right: 0,
-              child: BottomNavBar(currentIndex: 2, onTap: (index) {}),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
