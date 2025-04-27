@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'dart:convert';
 import 'package:flutter/cupertino.dart'
     show
@@ -25,7 +24,6 @@ import 'package:flutter/cupertino.dart'
         Widget,
         showCupertinoDialog;
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -33,28 +31,32 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hope/Constants/colors.dart';
 import 'package:hope/Constants/icons.dart';
 import 'package:hope/screens/persistent_botom_nav.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart' show OneSignal;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:crypto/crypto.dart';
-import '../bible/controllers/bible.controller.dart' show BibleController;
-import '../chat.bot.page.dart';
+import '../../utilities/app.constants.dart' show AppConstants, Utils;
+import '../onboarding/controllers/onboarding.controller.dart'
+    show OnboardingController;
+import 'controllers/user.auth.controller.dart' show SignUpController;
 
 class AuthPage extends StatefulWidget {
-  const AuthPage({super.key});
+  final bool login;
+  final bool mainScreenRedirect;
+  const AuthPage({
+    super.key,
+    this.login = false,
+    this.mainScreenRedirect = false,
+  });
 
   @override
   State<AuthPage> createState() => _AuthPageState();
 }
 
 class _AuthPageState extends State<AuthPage> {
-  final controller = Get.find<BibleController>();
-  @override
-  void initState() {
-    // WidgetsBinding.instance.addPostFrameCallback((_) async {
-    //   // controller.getAllBibleBooksFn();
-    // });
-    super.initState();
-  }
+  final controller = Get.find<SignUpController>();
+  final OnboardingController oboardingController =
+      Get.find<OnboardingController>();
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +120,7 @@ class _AuthPageState extends State<AuthPage> {
                   SizedBox(height: 48.h),
                   CupertinoButton(
                     padding: EdgeInsets.zero,
-                    onPressed: () => _handleAppleSignIn(context),
+                    onPressed: () => _handleGoogleSignIn(context),
                     child: Container(
                       height: 54.h,
                       width: double.infinity,
@@ -151,7 +153,7 @@ class _AuthPageState extends State<AuthPage> {
                   SizedBox(height: 12.h),
                   CupertinoButton(
                     padding: EdgeInsets.zero,
-                    onPressed: () => _handleGoogleSignIn(context),
+                    onPressed: () => _handleAppleSignIn(context),
                     child: Container(
                       height: 54.h,
                       width: double.infinity,
@@ -231,11 +233,65 @@ class _AuthPageState extends State<AuthPage> {
           );
 
       if (signedInUser.user != null) {
-        // Navigate to ChatBotPage after successful sign in
-        Navigator.pushReplacement(
-          context,
-          CupertinoPageRoute(builder: (context) => const ChatBotPage()),
-        );
+        final Map<String, dynamic> params = {
+          "username": "username",
+          "password": "Random1@",
+          "name":
+              Supabase
+                  .instance
+                  .client
+                  .auth
+                  .currentSession
+                  ?.user
+                  .userMetadata?['name'] ??
+              '',
+          "email":
+              Supabase.instance.client.auth.currentSession?.user.email ?? '',
+          "role": "user",
+          "providerId": credential.userIdentifier,
+          "provider": "Apple",
+          "revenueCatId": AppConstants.revenueCatId,
+          "currentSubscription": AppConstants.currentSubscription,
+          "supabaseId": Supabase.instance.client.auth.currentUser?.id ?? '',
+          "one_signal_id": OneSignal.User.pushSubscription.id.toString(),
+          // "readingTime": oboardingController.getPageData(page)
+          "denomination": oboardingController.getPageData('denomination'),
+          "age": oboardingController.getPageData('age'),
+          "bibleVersion": oboardingController.getPageData('bibleVersion'),
+          "attendChurch": oboardingController.getPageData('attendChurch'),
+          "meditate": oboardingController.getPageData('meditate'),
+          "studyGroup": oboardingController.getPageData('studyGroup'),
+        };
+        Utils.logger.f(widget.login);
+        Utils.logger.f(params);
+        if (widget.login == false) {
+          await controller.userRegisterFn(params, context);
+          // await Posthog().capture(
+          //   properties: {
+          //     "name":
+          //         Supabase
+          //             .instance
+          //             .client
+          //             .auth
+          //             .currentSession
+          //             ?.user
+          //             .userMetadata?['name']
+          //             .toString() ??
+          //         '',
+          //     "subscriptionType": AppConstants.currentSubscription,
+          //     "revenueCatId": AppConstants.revenueCatId,
+          //     "one_signal_id": OneSignal.User.pushSubscription.id.toString(),
+          //   },
+          //   eventName: 'New User - Apple',
+          // );
+        } else {
+          final Map<String, dynamic> loginParams = {
+            "email":
+                Supabase.instance.client.auth.currentSession?.user.email ?? '',
+          };
+
+          await controller.userLoginFn(loginParams, context);
+        }
       }
     } catch (error) {
       showCupertinoDialog(
@@ -288,10 +344,57 @@ class _AuthPageState extends State<AuthPage> {
 
       if (signedInUser.user != null) {
         // Navigate to ChatBotPage after successful sign in
-        Navigator.pushReplacement(
-          context,
-          CupertinoPageRoute(builder: (context) => const ChatBotPage()),
+        Utils.logger.e(
+          'Signed In Google User -->> ${signedInUser.user?.userMetadata?['full_name'] ?? ''}',
         );
+
+        String? userId = signedInUser.session?.user.id;
+        String? email = signedInUser.user?.email ?? '';
+        String? name = signedInUser.user?.userMetadata?['full_name'] ?? '';
+
+        final Map<String, String> params = {
+          "username": "username",
+          "password": "Random1@",
+          "name": name.toString(),
+          "email": email,
+          "role": "user",
+          "providerId": userId.toString(),
+          "provider": "Google",
+          "revenueCatId": AppConstants.revenueCatId,
+          "currentSubscription": AppConstants.currentSubscription,
+          "supabaseId": Supabase.instance.client.auth.currentUser?.id ?? '',
+          "one_signal_id": OneSignal.User.pushSubscription.id.toString(),
+        };
+
+        Utils.logger.f(params);
+        if (widget.login == false) {
+          await controller.userRegisterFn(params, context);
+          // await Posthog().capture(
+          //   properties: {
+          //     "name":
+          //         Supabase
+          //             .instance
+          //             .client
+          //             .auth
+          //             .currentSession
+          //             ?.user
+          //             .userMetadata?['name']
+          //             .toString() ??
+          //         '',
+          //     "subscriptionType": AppConstants.currentSubscription,
+          //     "revenueCatId": AppConstants.revenueCatId,
+          //     "one_signal_id": OneSignal.User.pushSubscription.id.toString(),
+          //   },
+          //   eventName: 'New User - Google',
+          // );
+        } else {
+          final Map<String, String> loginParams = {"email": email};
+          await controller.userLoginFn(loginParams, context);
+          // await Posthog().capture(
+          //   properties: loginParams,
+          //   eventName: 'Returning User - Google',
+          // );
+        }
       }
     } catch (error) {
       showCupertinoDialog(

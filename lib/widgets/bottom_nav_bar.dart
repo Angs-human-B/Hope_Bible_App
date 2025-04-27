@@ -4,11 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hope/Constants/colors.dart';
 import 'package:hope/screens/chat_home_screen.dart';
 
-import '../screens/bible_screen.dart';
-import '../screens/home_screen.dart';
-import '../screens/my_list_screen.dart';
-import '../screens/profile_screen.dart';
-
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -60,7 +55,7 @@ class BottomNavBar extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: (){
+          onTap: () {
             Navigator.push(
               context,
               CupertinoPageRoute(builder: (_) => ChatHome()),
@@ -90,8 +85,6 @@ class BottomNavBar extends StatelessWidget {
     );
   }
 }
-
-
 
 class _NavIcon extends StatelessWidget {
   final String assetPath;

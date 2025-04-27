@@ -3,12 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hope/Constants/image.dart';
 import 'package:hope/widgets/common_text.dart';
-
 import '../../Constants/colors.dart';
 import '../../Constants/global_variable.dart';
-import '../../widgets/back_button.dart';
-import '../../widgets/OnboardingSection/next_button.dart';
-import '../../widgets/OnboardingSection/progress_bar.dart';
 
 class Onboarding18Screen extends StatefulWidget {
   const Onboarding18Screen({super.key});
@@ -25,15 +21,17 @@ class _Onboarding18ScreenState extends State<Onboarding18Screen> {
       children: [
         SizedBox(height: 50.h),
         SizedBox(height: 84.h),
-        CommonText(onboarding18String, 30.sp, textAlign: TextAlign.start,),
+        CommonText(onboarding18String, 30.sp, textAlign: TextAlign.start),
         SizedBox(height: 22.h),
-        CommonText(onboarding18String2, 14.sp, textAlign: TextAlign.start,textColor: textGrey,),
-        SizedBox(height: 40.h),
-        Image.asset(
-            onboarding18
+        CommonText(
+          onboarding18String2,
+          14.sp,
+          textAlign: TextAlign.start,
+          textColor: textGrey,
         ),
-        SizedBox(height: 16.h,),
-
+        SizedBox(height: 40.h),
+        Image.asset(onboarding18),
+        SizedBox(height: 16.h),
       ],
     );
   }

@@ -1,16 +1,14 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hope/Constants/image.dart';
+import 'package:get/get.dart';
 
 import '../../Constants/colors.dart';
 import '../../Constants/global_variable.dart';
-import '../../widgets/back_button.dart';
 import '../../widgets/common_text.dart';
 import '../../widgets/common_text_box.dart';
-import '../../widgets/OnboardingSection/next_button.dart';
-import '../../widgets/OnboardingSection/progress_bar.dart';
-
+import 'controllers/onboarding.controller.dart' show OnboardingController;
 
 class CommonOnboardingScreen extends StatefulWidget {
   List<String> categoryList;
@@ -18,45 +16,58 @@ class CommonOnboardingScreen extends StatefulWidget {
   String nextRoute;
   String type;
 
-  CommonOnboardingScreen(this.categoryList, this.title, this.nextRoute,this.type,{super.key});
+  CommonOnboardingScreen(
+    this.categoryList,
+    this.title,
+    this.nextRoute,
+    this.type, {
+    super.key,
+  });
 
   @override
   State<CommonOnboardingScreen> createState() => _CommonOnboardingScreenState();
 }
 
-class _CommonOnboardingScreenState extends State<CommonOnboardingScreen> {
+class _CommonOnboardingScreenState extends State<CommonOnboardingScreen>
+    with AutomaticKeepAliveClientMixin {
   int selectedIdx = 9;
 
-  isOptionSelected(String type){
-    if(type == 'age'){
+  isOptionSelected(String type) {
+    if (type == 'age') {
       ageIsSelected = true;
     }
-    if(type == 'attendChurch'){
+    if (type == 'attendChurch') {
       attendChurchIsSelected = true;
     }
-    if(type == 'meditate'){
+    if (type == 'meditate') {
       meditateIsSelected = true;
     }
-    if(type == 'studyGroup'){
+    if (type == 'studyGroup') {
       studyGroupIsSelected = true;
     }
-    if(type == 'spiritualJourney'){
+    if (type == 'spiritualJourney') {
       journeyIsSelected = true;
-    }
-    else{
+    } else {
       return false;
     }
   }
 
+  final OnboardingController onboardingController =
+      Get.find<OnboardingController>();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    isSelected.value = false;
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      onboardingController.isSelected.value = false;
+    });
   }
+
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Stack(
       children: [
         Column(
@@ -66,39 +77,49 @@ class _CommonOnboardingScreenState extends State<CommonOnboardingScreen> {
             //
             CommonText(widget.title, 30.sp),
             SizedBox(height: 40.h),
-            Container(
+            SizedBox(
               height: 256.h,
               child: ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
-                  itemCount: widget.categoryList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        GestureDetector(
-                          onTap: (){
-                            isOptionSelected(widget.type);
-                            setState(() {
-                              selectedIdx = index;
-                            });
-                            isSelected.value = true;
-                          },
-                          child: SizedBox(
-                              width: 350.w, // width is ignored when inside Expanded/full width
-                              height: 52.h,
-                              child: CommonTextBox(widget.categoryList[index],
-                                  selectedIdx == index ? accentYellow:
-                                  textWhite,
-                                  selectedIdx == index
-                                      ? accentYellow.withOpacity(0.25)
-                                      : secondaryGrey,
-                                borderColor: selectedIdx == index ? accentYellow : Colors.transparent,
-                                clicked:  selectedIdx == index ? true : false,
-                              )
-                                            ),
+                itemCount: widget.categoryList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          isOptionSelected(widget.type);
+                          setState(() {
+                            selectedIdx = index;
+                          });
+                          onboardingController.isSelected.value = true;
+                          onboardingController.updatePageData(
+                            widget.type,
+                            widget.categoryList[index],
+                          );
+                        },
+                        child: SizedBox(
+                          width:
+                              350.w, // width is ignored when inside Expanded/full width
+                          height: 52.h,
+                          child: CommonTextBox(
+                            widget.categoryList[index],
+                            selectedIdx == index ? accentYellow : textWhite,
+                            selectedIdx == index
+                                ? accentYellow.withOpacity(0.25)
+                                : secondaryGrey,
+                            borderColor:
+                                selectedIdx == index
+                                    ? accentYellow
+                                    : CupertinoColors.transparent,
+                            clicked: selectedIdx == index ? true : false,
+                          ),
                         ),
-                        SizedBox(height: 15.h,)
-                      ],
-                    );}),
+                      ),
+                      SizedBox(height: 15.h),
+                    ],
+                  );
+                },
+              ),
             ),
             // SizedBox(height: 55.h,)
           ],

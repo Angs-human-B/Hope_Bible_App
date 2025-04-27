@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hope/Constants/colors.dart';
-import 'package:hope/widgets/back_button.dart';
-
 import '../Constants/icons.dart';
 import '../widgets/ProfileSection/custom_text_box.dart';
 
@@ -120,8 +118,7 @@ class ProfileSettingsScreen extends StatelessWidget {
               ),
               SizedBox(height: 20.h),
               GestureDetector(
-                onTap: () {
-                },
+                onTap: () {},
                 child: Container(
                   height: 56.h,
                   // width: 350.w,
@@ -146,7 +143,6 @@ class ProfileSettingsScreen extends StatelessWidget {
           ),
         ),
       ),
-
     );
   }
 }

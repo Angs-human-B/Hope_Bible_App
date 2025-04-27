@@ -2,14 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hope/Constants/image.dart';
-import 'package:hope/widgets/common_text.dart';
-
 import '../../Constants/colors.dart';
-import '../../Constants/global_variable.dart';
 import '../../widgets/OnboardingSection/auto_scroll_caraousel.dart';
-import '../../widgets/back_button.dart';
-import '../../widgets/OnboardingSection/next_button.dart';
-import '../../widgets/OnboardingSection/progress_bar.dart';
 
 class Onboarding15Screen extends StatefulWidget {
   const Onboarding15Screen({super.key});
@@ -26,25 +20,19 @@ class _Onboarding15ScreenState extends State<Onboarding15Screen> {
       children: [
         SizedBox(height: 50.h),
 
-        SizedBox(height: 84.h,),
+        SizedBox(height: 84.h),
         AutoScrollingImage(
-          imageProvider: AssetImage(
-              onboarding15,
-          ),
+          imageProvider: AssetImage(onboarding15),
           direction: ScrollDirection.leftToRight,
-
         ),
         SizedBox(height: 5.h),
         AutoScrollingImage(
-          imageProvider: AssetImage(
-            onboarding15,
-          ),
+          imageProvider: AssetImage(onboarding15),
           direction: ScrollDirection.rightToLeft,
-
         ),
-        SizedBox(height: 63.h,),
+        SizedBox(height: 63.h),
         Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 18.w),
+          padding: EdgeInsets.symmetric(horizontal: 18.w),
           child: Text.rich(
             TextSpan(
               style: TextStyle(
@@ -59,8 +47,7 @@ class _Onboarding15ScreenState extends State<Onboarding15Screen> {
                   style: TextStyle(
                     color: accentYellow,
                     fontWeight: FontWeight.w600,
-                      height: 1.25
-
+                    height: 1.25,
                   ),
                 ),
                 TextSpan(text: ' their spiritual\nlives here.'),
@@ -68,9 +55,7 @@ class _Onboarding15ScreenState extends State<Onboarding15Screen> {
             ),
             textAlign: TextAlign.start,
           ),
-        )
-
-
+        ),
       ],
     );
   }

@@ -1,21 +1,16 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' show Colors;
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hope/screens/Pricing&LoginSection/pricing_screen_2.dart';
-import 'package:hope/screens/ai_call_screen.dart';
-import 'package:hope/screens/app_settings_screen.dart';
-import 'package:hope/screens/auth/auth_page.dart';
-import 'package:hope/screens/Pricing&LoginSection/pricing_screen_1.dart';
-import 'package:hope/screens/persistent_botom_nav.dart';
-import 'package:hope/screens/profile_screen.dart';
-import 'package:hope/screens/onboarding/onboarding1_screen.dart';
-import 'package:hope/screens/profile_settings_screen.dart';
-import 'package:hope/screens/streaks_screen.dart';
-import '../screens/chat_home_screen.dart';
-import '../screens/home_screen.dart';
-import 'bible_screen.dart';
-import 'onboarding/onboarding2_screen.dart';
+import 'package:get/get.dart' show Get, Inst;
+import 'package:hope/screens/home_screen.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart'
+    show CupertinoScaffold;
+import '../utilities/app.constants.dart' show AppConstants;
+import 'Pricing&LoginSection/pricing_screen_1.dart' show PricingScreen1;
+import 'auth/auth_page.dart' show AuthPage;
+import 'auth/controllers/user.auth.controller.dart' show SignUpController;
 import 'onboarding/onboarding_screen_pageview.dart';
-import 'my_list_screen.dart';
+import 'persistent_botom_nav.dart' show PersistentBottomNav;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -25,35 +20,84 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
+  Future<String> _determineInitialScreen() async {
+    await Future.delayed(const Duration(seconds: 3)); // Add splash screen delay
 
-    Future.delayed(const Duration(seconds: 3), () {
-      // Navigator.pushReplacement(
-      //   context,
-      //   PageRouteBuilder(
-      //     pageBuilder:
-      //         (context, animation, secondaryAnimation) =>
-      //     const Onboarding1Screen(),
-      //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      //       return FadeTransition(opacity: animation, child: child);
-      //     },
-      //     transitionDuration: const Duration(milliseconds: 500),
-      //   ),
-      // );
-      Navigator.pushReplacement(
-        context,
-        CupertinoPageRoute(builder: (_) => OnboardingPager()),
-      );
-    });
+    if (AppConstants.userId.isEmpty && !AppConstants.isSubscriptionActive) {
+      return 'onboarding'; // Id Empty & Subscription inactive
+    }
+
+    if (!AppConstants.isSubscriptionActive && AppConstants.userId.isNotEmpty) {
+      return 'paywall'; // Id Exists & Subscription inactive
+    }
+
+    if (AppConstants.isSubscriptionActive && AppConstants.userId.isEmpty) {
+      return 'login'; // Id Empty & Subscription active
+    }
+
+    return 'home'; // Both ID & subscription exists
+  }
+
+  Widget _buildScreen(String route) {
+    final signUpcontroller = Get.find<SignUpController>();
+    switch (route) {
+      case 'paywall':
+        return PricingScreen1(
+          isMainScreen: true,
+          offering: signUpcontroller.offerings?.current,
+        ); // Paywall screen
+      case 'onboarding':
+        return const OnboardingPager(); // Onboarding screen
+      case 'login':
+        return const AuthPage(login: true, mainScreenRedirect: true);
+      default:
+        return const CupertinoScaffold(
+          body: PersistentBottomNav(),
+        ); // Main tab bar
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoPageScaffold(
-      backgroundColor: Color(0xFF0C111D),
-      child: Center(child: LogoOnly()),
+    return CupertinoPageScaffold(
+      backgroundColor: const Color(0xFF0C111D),
+      child: FutureBuilder<String>(
+        future: _determineInitialScreen(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: LogoOnly());
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'An error occurred. Please try again later.',
+                style: TextStyle(color: Colors.white),
+              ),
+            );
+          } else {
+            final route = snapshot.data ?? 'onboarding';
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder:
+                      (context, animation, secondaryAnimation) =>
+                          _buildScreen(route),
+                  transitionsBuilder: (
+                    context,
+                    animation,
+                    secondaryAnimation,
+                    child,
+                  ) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
+                  transitionDuration: const Duration(milliseconds: 500),
+                ),
+              );
+            });
+            return const Center(child: LogoOnly());
+          }
+        },
+      ),
     );
   }
 }

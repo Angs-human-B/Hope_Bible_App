@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart' show Get, Inst;
 import 'package:hope/Constants/global_variable.dart';
+import 'package:hope/utilities/app.constants.dart' show Utils;
 
 import '../Constants/colors.dart';
+import '../screens/onboarding/controllers/onboarding.controller.dart'
+    show OnboardingController;
 import 'common_text_box.dart';
 
 class ManualTwoColumnGrid extends StatefulWidget {
   const ManualTwoColumnGrid({
-    Key? key,
+    super.key,
     required this.denomination,
     this.gridHeight = 324, // default = 600.h
     this.itemWidth = 167, // default = 167.w
@@ -15,7 +19,7 @@ class ManualTwoColumnGrid extends StatefulWidget {
     this.crossSpacing = 14,
     this.mainSpacing = 14,
     this.horizontalPadding = 0,
-  }) : super(key: key);
+  });
 
   /// Data to show in each tile.
   final List<String> denomination;
@@ -35,6 +39,8 @@ class ManualTwoColumnGrid extends StatefulWidget {
 }
 
 class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
+  final OnboardingController onboardingController =
+      Get.find<OnboardingController>();
   int selectedIdx = 9;
 
   @override
@@ -56,22 +62,26 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                 GestureDetector(
                   onTap: () {
                     denominationIsSelected = true;
-                    isSelected.value = true;
+                    onboardingController.isSelected.value = true;
                     setState(() {
                       selectedIdx = i;
                     });
+
+                    onboardingController.updatePageData(
+                      'denomination',
+                      widget.denomination[i],
+                    );
                   },
                   child: _buildBox(
-                      widget.denomination[i],
-                      52.h,
-                      235.w,
-                      selectedIdx == i
-                          ? accentYellow.withOpacity(0.25)
-                          : secondaryGrey,
-                      selectedIdx == i ? accentYellow : textWhite,
-                      selectedIdx == i ? accentYellow : Colors.transparent,
-                      selectedIdx == i ? true : false
-
+                    widget.denomination[i],
+                    52.h,
+                    235.w,
+                    selectedIdx == i
+                        ? accentYellow.withOpacity(0.25)
+                        : secondaryGrey,
+                    selectedIdx == i ? accentYellow : textWhite,
+                    selectedIdx == i ? accentYellow : Colors.transparent,
+                    selectedIdx == i ? true : false,
                   ),
                 ),
                 SizedBox(width: widget.crossSpacing),
@@ -79,20 +89,24 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                   onTap: () {
                     denominationIsSelected = true;
                     setState(() {
-                      selectedIdx = i+1;
+                      selectedIdx = i + 1;
                     });
+
+                    onboardingController.updatePageData(
+                      'denomination',
+                      widget.denomination[i + 1],
+                    );
                   },
                   child: _buildBox(
-                      widget.denomination[i+1],
-                      52.h,
-                      104.w,
-                      selectedIdx == i+1
-                          ? accentYellow.withOpacity(0.25)
-                          : secondaryGrey,
-                      selectedIdx == i+1 ? accentYellow : textWhite,
-                      selectedIdx == i+1 ? accentYellow : Colors.transparent,
-                      selectedIdx == i+1 ? true : false
-
+                    widget.denomination[i + 1],
+                    52.h,
+                    104.w,
+                    selectedIdx == i + 1
+                        ? accentYellow.withOpacity(0.25)
+                        : secondaryGrey,
+                    selectedIdx == i + 1 ? accentYellow : textWhite,
+                    selectedIdx == i + 1 ? accentYellow : Colors.transparent,
+                    selectedIdx == i + 1 ? true : false,
                   ),
                 ),
               ],
@@ -106,22 +120,28 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                   child: GestureDetector(
                     onTap: () {
                       denominationIsSelected = true;
-                      isSelected.value = true;
+                      onboardingController.isSelected.value = true;
                       setState(() {
                         selectedIdx = i;
                       });
+                      Utils.logger.e(selectedIdx);
+                      Utils.logger.f(widget.denomination[i]);
+
+                      onboardingController.updatePageData(
+                        'denomination',
+                        widget.denomination[i],
+                      );
                     },
                     child: _buildBox(
-                        widget.denomination[i],
-                        widget.itemHeight,
-                        widget.itemWidth,
-                        selectedIdx == i
-                            ? accentYellow.withOpacity(0.25)
-                            : secondaryGrey,
-                        selectedIdx == i ? accentYellow : textWhite,
-                        selectedIdx == i ? accentYellow : Colors.transparent,
-                        selectedIdx == i ? true : false
-
+                      widget.denomination[i],
+                      widget.itemHeight,
+                      widget.itemWidth,
+                      selectedIdx == i
+                          ? accentYellow.withOpacity(0.25)
+                          : secondaryGrey,
+                      selectedIdx == i ? accentYellow : textWhite,
+                      selectedIdx == i ? accentYellow : Colors.transparent,
+                      selectedIdx == i ? true : false,
                     ),
                   ),
                 ),
@@ -130,22 +150,26 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                   child: GestureDetector(
                     onTap: () {
                       denominationIsSelected = true;
-                      isSelected.value = true;
+                      onboardingController.isSelected.value = true;
                       setState(() {
-                        selectedIdx = i+1;
+                        selectedIdx = i + 1;
                       });
+
+                      onboardingController.updatePageData(
+                        'denomination',
+                        widget.denomination[i + 1],
+                      );
                     },
                     child: _buildBox(
-                        widget.denomination[i+1],
-                        widget.itemHeight,
-                        widget.itemWidth,
-                        selectedIdx == i+1
-                            ? accentYellow.withOpacity(0.25)
-                            : secondaryGrey,
-                        selectedIdx == i+1 ? accentYellow : textWhite,
-                        selectedIdx == i+1 ? accentYellow : Colors.transparent,
-                        selectedIdx == i+1 ? true : false
-
+                      widget.denomination[i + 1],
+                      widget.itemHeight,
+                      widget.itemWidth,
+                      selectedIdx == i + 1
+                          ? accentYellow.withOpacity(0.25)
+                          : secondaryGrey,
+                      selectedIdx == i + 1 ? accentYellow : textWhite,
+                      selectedIdx == i + 1 ? accentYellow : Colors.transparent,
+                      selectedIdx == i + 1 ? true : false,
                     ),
                   ),
                 ),
@@ -160,22 +184,24 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
             onTap: () {
               setState(() {
                 denominationIsSelected = true;
-                isSelected.value = true;
+                onboardingController.isSelected.value = true;
+
+                onboardingController.updatePageData(
+                  'denomination',
+                  widget.denomination[i],
+                );
 
                 selectedIdx = i;
               });
             },
             child: _buildBox(
-                widget.denomination[i],
-                widget.itemHeight,
-                800.w,
-                selectedIdx == i
-                    ? accentYellow.withOpacity(0.25)
-                    : secondaryGrey,
-                selectedIdx == i ? accentYellow : textWhite,
-                selectedIdx == i ? accentYellow : Colors.transparent,
-                selectedIdx == i ? true : false
-
+              widget.denomination[i],
+              widget.itemHeight,
+              800.w,
+              selectedIdx == i ? accentYellow.withOpacity(0.25) : secondaryGrey,
+              selectedIdx == i ? accentYellow : textWhite,
+              selectedIdx == i ? accentYellow : Colors.transparent,
+              selectedIdx == i ? true : false,
             ),
           ),
         );
@@ -200,16 +226,22 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
 
   /// Builds a single tile wrapped in a SizedBox to keep the original height.
   Widget _buildBox(
-      String label,
-      double height,
-      double width,
-      Color backgroundColor,
-      Color textColor,
-      Color borderColor,
-      bool clicked
-      ) => SizedBox(
+    String label,
+    double height,
+    double width,
+    Color backgroundColor,
+    Color textColor,
+    Color borderColor,
+    bool clicked,
+  ) => SizedBox(
     width: width, // width is ignored when inside Expanded/full width
     height: height,
-    child: CommonTextBox(label, textColor, backgroundColor, borderColor: borderColor,clicked: clicked,),
+    child: CommonTextBox(
+      label,
+      textColor,
+      backgroundColor,
+      borderColor: borderColor,
+      clicked: clicked,
+    ),
   );
 }

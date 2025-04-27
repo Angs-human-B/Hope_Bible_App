@@ -1,14 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../Constants/colors.dart';
-import '../../Constants/global_variable.dart';
-import '../../Constants/image.dart';
-import '../../widgets/back_button.dart';
-import '../../widgets/OnboardingSection/next_button.dart';
-import '../../widgets/OnboardingSection/progress_bar.dart';
-
 
 class Onboarding11Screen extends StatefulWidget {
   const Onboarding11Screen({super.key});
@@ -26,15 +19,14 @@ class _Onboarding11ScreenState extends State<Onboarding11Screen> {
         SizedBox(height: 50.h),
         SizedBox(height: 477.h),
         Padding(
-          padding:  EdgeInsets.only(left: 10.w),
+          padding: EdgeInsets.only(left: 10.w),
           child: Text.rich(
             TextSpan(
               style: TextStyle(
-                  color: textWhite,
-                  fontSize: 30.sp,
-                  fontWeight: FontWeight.w600,
-                  height: 1.25
-
+                color: textWhite,
+                fontSize: 30.sp,
+                fontWeight: FontWeight.w600,
+                height: 1.25,
               ),
               children: [
                 TextSpan(text: 'Daily '),
@@ -50,8 +42,7 @@ class _Onboarding11ScreenState extends State<Onboarding11Screen> {
             ),
             textAlign: TextAlign.start,
           ),
-        )
-
+        ),
       ],
     );
   }

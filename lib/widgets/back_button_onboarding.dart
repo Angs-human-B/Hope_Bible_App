@@ -1,20 +1,29 @@
 import 'package:flutter/cupertino.dart' show CupertinoColors;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import '../Constants/colors.dart';
-import '../Constants/global_variable.dart';
+import '../screens/onboarding/controllers/onboarding.controller.dart'
+    show OnboardingController;
 
-class BackButtonOnboarding extends StatelessWidget {
+class BackButtonOnboarding extends StatefulWidget {
   final PageController? pageController;
 
   const BackButtonOnboarding({this.pageController, super.key});
 
+  @override
+  State<BackButtonOnboarding> createState() => _BackButtonOnboardingState();
+}
+
+class _BackButtonOnboardingState extends State<BackButtonOnboarding> {
+  final OnboardingController onboardingController =
+      Get.find<OnboardingController>();
   void onBack() {
-    if (currentProgress > 0) {
-      currentProgress -= 1;
+    if (onboardingController.currentProgress.value > 0) {
+      onboardingController.currentProgress.value -= 1;
     }
-    if (pageController != null) {
-      pageController!.previousPage(
+    if (widget.pageController != null) {
+      widget.pageController!.previousPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
