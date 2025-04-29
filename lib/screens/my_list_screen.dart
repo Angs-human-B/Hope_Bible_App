@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../Constants/colors.dart';
 import '../widgets/MyListSection/my_list_card.dart';
-import '../widgets/bottom_nav_bar.dart';
 import '../widgets/HomeSection/search_bar.dart';
 
 class MyListScreen extends StatefulWidget {
@@ -72,9 +71,7 @@ class _MyListScreenState extends State<MyListScreen> {
                             color: isSelected ? textWhite : textGrey,
                             fontSize: isSelected ? 17.sp : 16.sp,
                             fontWeight:
-                                isSelected
-                                    ? FontWeight.w600
-                                    : FontWeight.w400,
+                                isSelected ? FontWeight.w600 : FontWeight.w400,
                           ),
                         ),
                         SizedBox(height: 4.h),

@@ -45,7 +45,7 @@ abstract class AppConstants {
 }
 
 abstract class BaseUrl {
-  static String url = "https://54a6-76-64-192-206.ngrok-free.app/";
+  static String url = "https://hope-backend-repo.onrender.com/";
   // https://recipeit-dev-582786b38486.herokuapp.com   https://yumaipipeline-3cc427dc62c5.herokuapp.com/ https://bc6a-142-115-90-76.ngrok-free.app
 }
 

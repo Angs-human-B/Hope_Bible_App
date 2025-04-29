@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hope/Constants/image.dart';
 import 'package:hope/widgets/common_text.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../Constants/colors.dart';
-import '../../Constants/global_variable.dart';
-import '../../widgets/OnboardingSection/progress_bar.dart';
-import '../../widgets/back_button.dart';
-import '../../widgets/OnboardingSection/next_button.dart';
+
 class Onboarding25Screen extends StatefulWidget {
   const Onboarding25Screen({super.key});
 
@@ -23,25 +18,17 @@ class _Onboarding25ScreenState extends State<Onboarding25Screen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 50.h,),
-        SizedBox(height: 465.h,),
-        CommonText(
-          "You’re Not Alone",
-          36.sp,
-          textAlign: TextAlign.start,
-
-        ),
-        SizedBox(height: 18.h,),
+        SizedBox(height: 50.h),
+        SizedBox(height: 465.h),
+        CommonText("You’re Not Alone", 36.sp, textAlign: TextAlign.start),
+        SizedBox(height: 18.h),
         CommonText(
           "Many have already stepped forward—real growth is happening together. Will you join them?",
           14.sp,
           textAlign: TextAlign.start,
           textColor: textGrey,
-
-        )
-
+        ),
       ],
     );
   }
-
 }

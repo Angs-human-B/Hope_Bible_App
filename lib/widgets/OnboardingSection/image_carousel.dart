@@ -22,10 +22,7 @@ class _QuoteCarouselState extends State<QuoteCarousel> {
   void initState() {
     super.initState();
     final middle = _quotes.length ~/ 2; // centre index
-    _controller = PageController(
-      viewportFraction: 0.8,
-      initialPage: middle,
-    );
+    _controller = PageController(viewportFraction: 0.8, initialPage: middle);
   }
 
   @override
@@ -39,31 +36,31 @@ class _QuoteCarouselState extends State<QuoteCarousel> {
           child: PageView.builder(
             controller: _controller,
             itemCount: _quotes.length,
-            itemBuilder: (_, i) => AnimatedBuilder(
-              animation: _controller,
-              builder: (_, child) {
-                final double page = _controller.hasClients
-                    ? (_controller.page ?? _controller.initialPage!.toDouble())
-                    : _controller.initialPage!.toDouble();
-                double value = (page - i).abs().clamp(0.0, 1.0);
-                final scale = 1 - (value * 0.1);
-                return Center(
-                  child: Transform.scale(
-                    scale: scale,
-                    child: child,
+            itemBuilder:
+                (_, i) => AnimatedBuilder(
+                  animation: _controller,
+                  builder: (_, child) {
+                    final double page =
+                        _controller.hasClients
+                            ? (_controller.page ??
+                                _controller.initialPage.toDouble())
+                            : _controller.initialPage.toDouble();
+                    double value = (page - i).abs().clamp(0.0, 1.0);
+                    final scale = 1 - (value * 0.1);
+                    return Center(
+                      child: Transform.scale(scale: scale, child: child),
+                    );
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30.r),
+                    child: Image.asset(
+                      _quotes[i],
+                      fit: BoxFit.contain,
+                      width: 350.w,
+                      height: 416.h,
+                    ),
                   ),
-                );
-              },
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(30.r),
-                child: Image.asset(
-                  _quotes[i],
-                  fit: BoxFit.contain,
-                  width: 350.w,
-                  height: 416.h,
                 ),
-              ),
-            ),
           ),
         ),
 
@@ -73,9 +70,10 @@ class _QuoteCarouselState extends State<QuoteCarousel> {
         AnimatedBuilder(
           animation: _controller,
           builder: (_, __) {
-            final double page = _controller.hasClients
-                ? (_controller.page ?? _controller.initialPage!.toDouble())
-                : _controller.initialPage!.toDouble();
+            final double page =
+                _controller.hasClients
+                    ? (_controller.page ?? _controller.initialPage.toDouble())
+                    : _controller.initialPage.toDouble();
 
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -86,9 +84,10 @@ class _QuoteCarouselState extends State<QuoteCarousel> {
                   width: isActive ? 24.w : 8.w,
                   height: 8.h,
                   decoration: BoxDecoration(
-                    color: isActive
-                        ? const Color(0xFFFFC72C)  // accentYellow
-                        : const Color(0xFF3A3A3A), // secondaryGrey
+                    color:
+                        isActive
+                            ? const Color(0xFFFFC72C) // accentYellow
+                            : const Color(0xFF3A3A3A), // secondaryGrey
                     borderRadius: BorderRadius.circular(4.r),
                   ),
                 );

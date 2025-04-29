@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../screens/home_screen.dart'; // Only for Colors.white.withOpacity
-
 class AppBarHeader extends StatelessWidget {
   final Widget? title;
   final bool showMenu;
@@ -37,9 +35,7 @@ class AppBarHeader extends StatelessWidget {
             ),
           ),
 
-
           const SizedBox(width: 8),
-
 
           Expanded(
             child: Center(
@@ -53,8 +49,6 @@ class AppBarHeader extends StatelessWidget {
               ),
             ),
           ),
-
-
         ],
       ),
     );

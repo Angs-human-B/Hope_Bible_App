@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart' show Get, Inst;
 import 'package:hope/Constants/colors.dart';
+
+import '../../screens/onboarding/controllers/onboarding.controller.dart'
+    show OnboardingController;
 
 class PricingTabSelector extends StatefulWidget {
   const PricingTabSelector({super.key});
@@ -10,6 +14,8 @@ class PricingTabSelector extends StatefulWidget {
 }
 
 class _PricingTabSelectorState extends State<PricingTabSelector> {
+  final OnboardingController oboardingController =
+      Get.find<OnboardingController>();
   String _selectedPlan = 'Annual';
 
   @override
@@ -20,16 +26,11 @@ class _PricingTabSelectorState extends State<PricingTabSelector> {
       decoration: BoxDecoration(
         color: cardGrey.withValues(alpha: .4),
         borderRadius: BorderRadius.circular(99.sp),
-        border: Border.all(color: CupertinoColors.transparent,width: 4.h),
+        border: Border.all(color: CupertinoColors.transparent, width: 4.h),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(99.sp),
-        child: Row(
-          children: [
-            _buildTab('Annual'),
-            _buildTab('Monthly'),
-          ],
-        ),
+        child: Row(children: [_buildTab('Annual'), _buildTab('Monthly')]),
       ),
     );
   }
@@ -42,6 +43,7 @@ class _PricingTabSelectorState extends State<PricingTabSelector> {
           setState(() {
             _selectedPlan = plan;
           });
+          oboardingController.selectedPlan.value = plan;
         },
         child: Container(
           alignment: Alignment.center,

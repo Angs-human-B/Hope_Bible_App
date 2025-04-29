@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hope/Constants/image.dart';
-import 'package:hope/widgets/common_text.dart';
 import 'package:flutter/cupertino.dart';
-
 import '../../Constants/colors.dart';
-import '../../Constants/global_variable.dart';
-import '../../widgets/OnboardingSection/progress_bar.dart';
-import '../../widgets/back_button.dart';
-import '../../widgets/OnboardingSection/next_button.dart';
+
 class Onboarding23Screen extends StatefulWidget {
   const Onboarding23Screen({super.key});
 
@@ -22,8 +16,8 @@ class _Onboarding23ScreenState extends State<Onboarding23Screen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(height: 50.h,),
-        SizedBox(height: 380.h,),
+        SizedBox(height: 50.h),
+        SizedBox(height: 380.h),
         Text.rich(
           TextSpan(
             style: TextStyle(
@@ -31,7 +25,6 @@ class _Onboarding23ScreenState extends State<Onboarding23Screen> {
               fontSize: 36.sp,
               fontWeight: FontWeight.w600,
               height: 1.25,
-
             ),
             children: [
               TextSpan(text: 'Many have\n'),
@@ -46,10 +39,8 @@ class _Onboarding23ScreenState extends State<Onboarding23Screen> {
             ],
           ),
           textAlign: TextAlign.start,
-        )
-
+        ),
       ],
     );
   }
-
 }

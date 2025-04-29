@@ -1,15 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:hope/Constants/image.dart';
-import 'package:hope/widgets/common_text.dart';
-import 'package:hope/widgets/common_text_box.dart';
 
 import '../../Constants/colors.dart';
-import '../../Constants/global_variable.dart';
-import '../../widgets/back_button.dart';
-import '../../widgets/OnboardingSection/next_button.dart';
-import '../../widgets/OnboardingSection/progress_bar.dart';
+import 'controllers/onboarding.controller.dart' show OnboardingController;
 
 class Onboarding9Screen extends StatefulWidget {
   const Onboarding9Screen({super.key});
@@ -19,14 +15,22 @@ class Onboarding9Screen extends StatefulWidget {
 }
 
 class _Onboarding9ScreenState extends State<Onboarding9Screen> {
+  final OnboardingController controller = Get.find<OnboardingController>();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // controller.updatePageData(6, null);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(height: 50.h),
         SizedBox(height: 117.h),
-        Image.asset(
-            onboarding9),
+        Image.asset(onboarding9),
         SizedBox(height: 125.h),
         Text.rich(
           TextSpan(
@@ -34,8 +38,7 @@ class _Onboarding9ScreenState extends State<Onboarding9Screen> {
               color: textWhite,
               fontSize: 24.sp,
               fontWeight: FontWeight.w600,
-                height: 1.25
-
+              height: 1.25,
             ),
             children: [
               TextSpan(text: 'Your '),
@@ -46,13 +49,14 @@ class _Onboarding9ScreenState extends State<Onboarding9Screen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              TextSpan(text: ' aligns with thousands who\'ve found consistent support here.'),
+              TextSpan(
+                text:
+                    ' aligns with thousands who\'ve found consistent support here.',
+              ),
             ],
           ),
           textAlign: TextAlign.start,
-        )
-
-
+        ),
       ],
     );
   }

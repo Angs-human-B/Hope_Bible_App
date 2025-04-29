@@ -1,14 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:hope/Constants/image.dart';
-
 import '../../Constants/colors.dart';
-import '../../Constants/global_variable.dart';
-import '../../widgets/back_button.dart';
-import '../../widgets/OnboardingSection/next_button.dart';
-import '../../widgets/OnboardingSection/progress_bar.dart';
-
+import 'controllers/onboarding.controller.dart' show OnboardingController;
 
 class Onboarding5Screen extends StatefulWidget {
   const Onboarding5Screen({super.key});
@@ -18,12 +14,20 @@ class Onboarding5Screen extends StatefulWidget {
 }
 
 class _Onboarding5ScreenState extends State<Onboarding5Screen> {
+  final OnboardingController controller = Get.find<OnboardingController>();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // controller.updatePageData(3, null);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         SizedBox(height: 50.h),
         SizedBox(height: 84.h),
         Text.rich(
@@ -32,8 +36,7 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
               color: textWhite,
               fontSize: 30.sp,
               fontWeight: FontWeight.w600,
-                height: 1.25
-
+              height: 1.25,
             ),
             children: [
               TextSpan(text: '"'),
@@ -42,7 +45,7 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
                 style: TextStyle(
                   color: accentYellow,
                   fontWeight: FontWeight.w600,
-                  height: 1.25
+                  height: 1.25,
                 ),
               ),
               TextSpan(text: ' of users aged\nunder '),
@@ -51,21 +54,17 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
                 style: TextStyle(
                   color: accentYellow,
                   fontWeight: FontWeight.w600,
-                    height: 1.25
-
+                  height: 1.25,
                 ),
               ),
               TextSpan(text: 'found\nrenewed hope through daily engagement."'),
-
             ],
           ),
           textAlign: TextAlign.start,
         ),
         SizedBox(height: 118.h),
-        Image.asset(
-            onboarding5
-        ),
-        SizedBox(height: 16.h,),
+        Image.asset(onboarding5),
+        SizedBox(height: 16.h),
         Text.rich(
           TextSpan(
             style: TextStyle(
@@ -82,18 +81,12 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
               ),
               TextSpan(
                 text: '80%',
-                style: TextStyle(
-                  color: textWhite,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(color: textWhite, fontWeight: FontWeight.bold),
               ),
               TextSpan(text: ' of users aged under '),
               TextSpan(
                 text: '18y',
-                style: TextStyle(
-                  color: textWhite,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(color: textWhite, fontWeight: FontWeight.bold),
               ),
               TextSpan(text: ' found renewed\nhope through daily engagement.'),
             ],

@@ -52,7 +52,11 @@ class BibleScreen extends StatefulWidget {
   State<BibleScreen> createState() => _BibleScreenState();
 }
 
-class _BibleScreenState extends State<BibleScreen> {
+class _BibleScreenState extends State<BibleScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   final bibleController = Get.find<BibleController>();
   final selectedVersion = 'NIV'.obs;
   final ScrollController _scrollController = ScrollController();
@@ -381,6 +385,7 @@ class _BibleScreenState extends State<BibleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SafeArea(
       top: true,
       child: Stack(
@@ -413,7 +418,7 @@ class _BibleScreenState extends State<BibleScreen> {
                           child: Row(
                             children: [
                               Obx(
-                                    () => Text(
+                                () => Text(
                                   selectedVersion.value,
                                   style: TextStyle(
                                     color: accentYellow,
@@ -456,11 +461,9 @@ class _BibleScreenState extends State<BibleScreen> {
                               Obx(() {
                                 final bookName =
                                     bibleController.getSelectedBookName() ??
-                                        'Select Book';
+                                    'Select Book';
                                 final chapter =
-                                    bibleController
-                                        .selectedChapterNumber
-                                        .value;
+                                    bibleController.selectedChapterNumber.value;
                                 return Text(
                                   '$bookName $chapter',
                                   style: TextStyle(
@@ -499,9 +502,9 @@ class _BibleScreenState extends State<BibleScreen> {
                         final currentChapter = bibleController.chapters.value
                             ?.firstWhereOrNull(
                               (chapter) =>
-                          chapter.chapter ==
-                              bibleController.selectedChapterNumber.value,
-                        );
+                                  chapter.chapter ==
+                                  bibleController.selectedChapterNumber.value,
+                            );
 
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -522,103 +525,34 @@ class _BibleScreenState extends State<BibleScreen> {
                             RichText(
                               text: TextSpan(
                                 children:
-                                bibleController.verses.map((verse) {
-                                  return TextSpan(
-                                    children: [
-                                      WidgetSpan(
-                                        alignment:
-                                        PlaceholderAlignment.top,
-                                        child: Transform.translate(
-                                          offset: Offset(0, -5),
-                                          child: Text(
-                                            '${verse.verse}',
+                                    bibleController.verses.map((verse) {
+                                      return TextSpan(
+                                        children: [
+                                          WidgetSpan(
+                                            alignment: PlaceholderAlignment.top,
+                                            child: Transform.translate(
+                                              offset: Offset(0, -5),
+                                              child: Text(
+                                                '${verse.verse}',
+                                                style: TextStyle(
+                                                  color: textWhite,
+                                                  fontSize: 10.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: ' ${verse.text} ',
                                             style: TextStyle(
                                               color: textWhite,
-                                              fontSize: 10.sp,
+                                              fontSize: 17.sp,
                                               fontWeight: FontWeight.w400,
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: ' ${verse.text} ',
-                                        style: TextStyle(
-                                          color: textWhite,
-                                          fontSize: 17.sp,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ],
-                        );
-                      }),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: ListView(
-                    controller: _scrollController,
-                    children: [
-                      Obx(() {
-                        final currentChapter = bibleController.chapters.value
-                            ?.firstWhereOrNull(
-                              (chapter) =>
-                          chapter.chapter ==
-                              bibleController.selectedChapterNumber.value,
-                        );
-
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (currentChapter?.title != null &&
-                                currentChapter!.title.isNotEmpty)
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 16.h),
-                                child: Text(
-                                  currentChapter.title,
-                                  style: TextStyle(
-                                    color: textWhite,
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            RichText(
-                              text: TextSpan(
-                                children:
-                                bibleController.verses.map((verse) {
-                                  return TextSpan(
-                                    children: [
-                                      WidgetSpan(
-                                        alignment:
-                                        PlaceholderAlignment.top,
-                                        child: Transform.translate(
-                                          offset: Offset(0, -5),
-                                          child: Text(
-                                            '${verse.verse}',
-                                            style: TextStyle(
-                                              color: textWhite,
-                                              fontSize: 10.sp,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: ' ${verse.text} ',
-                                        style: TextStyle(
-                                          color: textWhite,
-                                          fontSize: 17.sp,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                }).toList(),
+                                        ],
+                                      );
+                                    }).toList(),
                               ),
                             ),
                           ],
@@ -631,11 +565,11 @@ class _BibleScreenState extends State<BibleScreen> {
             ),
           ),
           Positioned(
-            bottom: 60.h,
+            bottom: -30.h,
             left: 0,
             right: 0,
             child: Obx(
-                  () => AnimatedOpacity(
+              () => AnimatedOpacity(
                 opacity: _isBottomBarVisible.value ? 1.0 : 0.0,
                 duration: Duration(milliseconds: 200),
                 child: Column(
@@ -652,13 +586,13 @@ class _BibleScreenState extends State<BibleScreen> {
 
                             return GestureDetector(
                               onTap:
-                              isFirstChapter
-                                  ? null
-                                  : () {
-                                bibleController
-                                    .selectedChapterNumber
-                                    .value = currentChapter - 1;
-                              },
+                                  isFirstChapter
+                                      ? null
+                                      : () {
+                                        bibleController
+                                            .selectedChapterNumber
+                                            .value = currentChapter - 1;
+                                      },
                               child: Container(
                                 height: 44.h,
                                 width: 44.w,
@@ -691,19 +625,19 @@ class _BibleScreenState extends State<BibleScreen> {
                             final totalChapters =
                                 bibleController
                                     .getSelectedBookTotalChapters() ??
-                                    0;
+                                0;
                             final isLastChapter =
                                 currentChapter >= totalChapters;
 
                             return GestureDetector(
                               onTap:
-                              isLastChapter
-                                  ? null
-                                  : () {
-                                bibleController
-                                    .selectedChapterNumber
-                                    .value = currentChapter + 1;
-                              },
+                                  isLastChapter
+                                      ? null
+                                      : () {
+                                        bibleController
+                                            .selectedChapterNumber
+                                            .value = currentChapter + 1;
+                                      },
                               child: Container(
                                 height: 44.h,
                                 width: 44.w,
