@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:ui';
 
+import 'package:hope/screens/AudioPlayer/audio_player_screen.dart';
+
 class FeaturedSection extends StatefulWidget {
   const FeaturedSection({super.key});
 
@@ -75,11 +77,7 @@ class _CupertinoFeatureCard extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
-      child:
-
-
-
-      Stack(
+      child: Stack(
         children: [
           // Container(
           //   decoration: BoxDecoration(
@@ -125,8 +123,8 @@ class _CupertinoFeatureCard extends StatelessWidget {
                           BlendMode.srcIn,
                         ),
                       ),
-                       SizedBox(width: 8.w),
-                       Text(
+                      SizedBox(width: 8.w),
+                      Text(
                         'Add to list',
                         style: TextStyle(
                           color: CupertinoColors.white,
@@ -142,10 +140,17 @@ class _CupertinoFeatureCard extends StatelessWidget {
           Positioned(
             bottom: 16,
             right: 12,
-            child: SvgPicture.asset(
-              'assets/icons/play.svg',
-              width: 44.w,
-              height: 44.h,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  CupertinoPageRoute(builder: (_) => const AudioPlayerScreen()),
+                );
+              },
+              child: SvgPicture.asset(
+                'assets/icons/play.svg',
+                width: 44.w,
+                height: 44.h,
+              ),
             ),
           ),
         ],

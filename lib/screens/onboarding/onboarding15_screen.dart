@@ -45,7 +45,7 @@ class _Onboarding15ScreenState extends State<Onboarding15Screen> {
                 TextSpan(
                   text: 'transformed',
                   style: TextStyle(
-                    color: accentYellow,
+                    color: accentWhite,
                     fontWeight: FontWeight.w600,
                     height: 1.25,
                   ),

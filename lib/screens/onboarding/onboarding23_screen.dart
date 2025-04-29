@@ -31,7 +31,7 @@ class _Onboarding23ScreenState extends State<Onboarding23Screen> {
               TextSpan(
                 text: 'rediscovered',
                 style: TextStyle(
-                  color: accentYellow,
+                  color: accentWhite,
                   fontWeight: FontWeight.w600,
                 ),
               ),

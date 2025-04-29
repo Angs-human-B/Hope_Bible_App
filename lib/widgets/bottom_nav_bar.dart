@@ -105,7 +105,7 @@ class _NavIcon extends StatelessWidget {
         height: 55.h,
         width: 55.w,
         decoration: BoxDecoration(
-          color: selected ? accentYellow : secondaryGrey,
+          color: selected ? accentWhite : secondaryGrey,
           shape: BoxShape.circle,
         ),
         padding: EdgeInsets.all(15.sp),

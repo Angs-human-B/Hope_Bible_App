@@ -93,7 +93,7 @@ class _StreaksScreenState extends State<StreaksScreen> {
               CircularProgressIndicator(
                 value: progress,
                 strokeWidth: 4.w,
-                valueColor: AlwaysStoppedAnimation(accentYellow),
+                valueColor: AlwaysStoppedAnimation(accentWhite),
                 backgroundColor: textWhite.withValues(alpha: .2),
               ),
               Text(
@@ -123,7 +123,7 @@ class _StreaksScreenState extends State<StreaksScreen> {
         Text(
           _monthName(month.month),
           style: TextStyle(
-            color: accentYellow,
+            color: accentWhite,
             fontSize: 14.sp,
             fontWeight: FontWeight.w600,
           ),

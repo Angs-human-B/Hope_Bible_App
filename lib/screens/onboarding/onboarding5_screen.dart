@@ -43,7 +43,7 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
               TextSpan(
                 text: '80%',
                 style: TextStyle(
-                  color: accentYellow,
+                  color: accentWhite,
                   fontWeight: FontWeight.w600,
                   height: 1.25,
                 ),
@@ -52,7 +52,7 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
               TextSpan(
                 text: '18y',
                 style: TextStyle(
-                  color: accentYellow,
+                  color: accentWhite,
                   fontWeight: FontWeight.w600,
                   height: 1.25,
                 ),
@@ -75,7 +75,7 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
               TextSpan(
                 text: '*',
                 style: TextStyle(
-                  color: accentYellow,
+                  color: accentWhite,
                   fontWeight: FontWeight.normal,
                 ),
               ),

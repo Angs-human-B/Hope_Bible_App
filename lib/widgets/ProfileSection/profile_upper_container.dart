@@ -117,7 +117,7 @@ class ProfileUpperContainer extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
                           decoration: BoxDecoration(
-                            color: accentYellow,
+                            color: accentWhite,
                             borderRadius: BorderRadius.circular(99.sp),
                           ),
                           child: Text(
@@ -150,6 +150,7 @@ class ProfileUpperContainer extends StatelessWidget {
                         children: [
                           SvgPicture.asset(
                             streaksIcon,
+                            color: accentWhite,
                             height: 18.h,
                             width: 24.w,
                           ),

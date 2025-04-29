@@ -171,7 +171,7 @@ class _NextButtonState extends State<NextButton> {
         height: 56.h,
         width: 350.h,
         decoration: BoxDecoration(
-          color: accentYellow,
+          color: accentWhite,
           borderRadius: BorderRadius.circular(30.sp),
         ),
         child: Center(

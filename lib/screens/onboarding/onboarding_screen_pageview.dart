@@ -329,7 +329,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                         decoration: BoxDecoration(
                           color:
                               oboardingController.isSelected.value
-                                  ? accentYellow
+                                  ? accentWhite
                                   : secondaryGrey,
                           borderRadius: BorderRadius.circular(30.sp),
                         ),

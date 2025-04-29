@@ -45,7 +45,7 @@ class _Onboarding9ScreenState extends State<Onboarding9Screen> {
               TextSpan(
                 text: 'commitment',
                 style: TextStyle(
-                  color: accentYellow,
+                  color: accentWhite,
                   fontWeight: FontWeight.bold,
                 ),
               ),

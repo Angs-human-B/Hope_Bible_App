@@ -45,7 +45,7 @@ void main() async {
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
   await _configureSDK();
-  await fetchRevenueCatDetailsFn();
+  // await fetchRevenueCatDetailsFn();
 
   SharedPreferences sp = await SharedPreferences.getInstance();
 

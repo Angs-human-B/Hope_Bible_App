@@ -95,8 +95,8 @@ class _SettingsButtonListTileState extends State<SettingsButtonListTile> {
                   CupertinoSwitch(
                     value: _toggleState,
                     thumbColor: secondaryBlack,
-                    activeTrackColor: accentYellow,
-                    inactiveThumbColor: accentYellow,
+                    activeTrackColor: accentWhite,
+                    inactiveThumbColor: accentWhite,
                     inactiveTrackColor: secondaryBlack,
                     onChanged: (val) {
                       setState(() {

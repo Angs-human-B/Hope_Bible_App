@@ -123,7 +123,7 @@ class _BibleScreenState extends State<BibleScreen>
                     CupertinoButton(
                       child: Text(
                         'Cancel',
-                        style: TextStyle(color: accentYellow, fontSize: 17.sp),
+                        style: TextStyle(color: accentWhite, fontSize: 17.sp),
                       ),
                       onPressed: () => Navigator.pop(context),
                     ),
@@ -131,7 +131,7 @@ class _BibleScreenState extends State<BibleScreen>
                       child: Text(
                         'Done',
                         style: TextStyle(
-                          color: accentYellow,
+                          color: accentWhite,
                           fontSize: 17.sp,
                           fontWeight: FontWeight.w600,
                         ),
@@ -145,7 +145,7 @@ class _BibleScreenState extends State<BibleScreen>
                 child: Obx(() {
                   if (bibleController.isLoadingVersions.value) {
                     return Center(
-                      child: CupertinoActivityIndicator(color: accentYellow),
+                      child: CupertinoActivityIndicator(color: accentWhite),
                     );
                   }
                   final versions = bibleController.bibleVersions.value;
@@ -252,7 +252,7 @@ class _BibleScreenState extends State<BibleScreen>
                     CupertinoButton(
                       child: Text(
                         'Cancel',
-                        style: TextStyle(color: accentYellow, fontSize: 17.sp),
+                        style: TextStyle(color: accentWhite, fontSize: 17.sp),
                       ),
                       onPressed: () => Navigator.pop(context),
                     ),
@@ -260,7 +260,7 @@ class _BibleScreenState extends State<BibleScreen>
                       child: Text(
                         'Done',
                         style: TextStyle(
-                          color: accentYellow,
+                          color: accentWhite,
                           fontSize: 17.sp,
                           fontWeight: FontWeight.w600,
                         ),
@@ -274,7 +274,7 @@ class _BibleScreenState extends State<BibleScreen>
                 child: Obx(() {
                   if (bibleController.isLoadingBooks.value) {
                     return Center(
-                      child: CupertinoActivityIndicator(color: accentYellow),
+                      child: CupertinoActivityIndicator(color: accentWhite),
                     );
                   }
                   final books = bibleController.bibleBooks;
@@ -421,7 +421,7 @@ class _BibleScreenState extends State<BibleScreen>
                                 () => Text(
                                   selectedVersion.value,
                                   style: TextStyle(
-                                    color: accentYellow,
+                                    color: accentWhite,
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -467,7 +467,7 @@ class _BibleScreenState extends State<BibleScreen>
                                 return Text(
                                   '$bookName $chapter',
                                   style: TextStyle(
-                                    color: accentYellow,
+                                    color: accentWhite,
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.w600,
                                   ),

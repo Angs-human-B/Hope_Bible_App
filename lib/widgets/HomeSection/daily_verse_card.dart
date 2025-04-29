@@ -129,7 +129,7 @@ class _DailyVerseCardState extends State<DailyVerseCard> {
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: accentYellow,
+                                      color: accentWhite,
                                       width: 1.5.w,
                                     ),
                                   ),

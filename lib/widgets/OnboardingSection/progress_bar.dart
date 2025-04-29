@@ -37,7 +37,7 @@ class ProgressBar extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
-                    color: accentYellow, // Active progress color
+                    color: accentWhite, // Active progress color
                   ),
                 ),
               ),

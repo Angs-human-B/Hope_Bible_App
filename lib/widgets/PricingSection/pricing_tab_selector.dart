@@ -48,7 +48,7 @@ class _PricingTabSelectorState extends State<PricingTabSelector> {
         child: Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: isSelected ? accentYellow : CupertinoColors.transparent,
+            color: isSelected ? accentWhite : CupertinoColors.transparent,
             borderRadius: BorderRadius.circular(99.sp),
           ),
           child: Text(

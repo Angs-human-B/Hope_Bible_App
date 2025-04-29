@@ -33,7 +33,7 @@ class _Onboarding11ScreenState extends State<Onboarding11Screen> {
                 TextSpan(
                   text: 'devotionals\n',
                   style: TextStyle(
-                    color: accentYellow,
+                    color: accentWhite,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

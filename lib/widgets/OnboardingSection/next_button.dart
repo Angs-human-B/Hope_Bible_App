@@ -21,7 +21,7 @@ class _NextButtonState extends State<NextButton> {
       height: 56.h,
       width: 350.h,
       decoration: BoxDecoration(
-        color: widget.isOptionSelected ? accentYellow : secondaryGrey,
+        color: widget.isOptionSelected ? accentWhite : secondaryGrey,
         borderRadius: BorderRadius.circular(30.sp),
       ),
       child: Center(

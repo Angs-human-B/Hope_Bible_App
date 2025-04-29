@@ -264,7 +264,7 @@ class _PricingScreen1State extends State<PricingScreen1>
                       height: 56.h,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: accentYellow,
+                        color: accentWhite,
                         borderRadius: BorderRadius.circular(30.sp),
                       ),
                       child: Center(

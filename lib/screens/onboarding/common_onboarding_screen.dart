@@ -103,13 +103,13 @@ class _CommonOnboardingScreenState extends State<CommonOnboardingScreen>
                           height: 52.h,
                           child: CommonTextBox(
                             widget.categoryList[index],
-                            selectedIdx == index ? accentYellow : textWhite,
+                            selectedIdx == index ? accentWhite : textWhite,
                             selectedIdx == index
-                                ? accentYellow.withOpacity(0.25)
+                                ? accentWhite.withOpacity(0.25)
                                 : secondaryGrey,
                             borderColor:
                                 selectedIdx == index
-                                    ? accentYellow
+                                    ? accentWhite
                                     : CupertinoColors.transparent,
                             clicked: selectedIdx == index ? true : false,
                           ),

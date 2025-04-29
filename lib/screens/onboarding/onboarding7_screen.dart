@@ -43,7 +43,7 @@ class _Onboarding7ScreenState extends State<Onboarding7Screen> {
               TextSpan(
                 text: 'NIV\n',
                 style: TextStyle(
-                  color: accentYellow,
+                  color: accentWhite,
                   fontWeight: FontWeight.bold,
                 ),
               ),

@@ -179,7 +179,7 @@ class _PricingScreen2State extends State<PricingScreen2> {
                       height: 56.h,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: accentYellow,
+                        color: accentWhite,
                         borderRadius: BorderRadius.circular(40.sp),
                       ),
                       child: Center(

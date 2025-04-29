@@ -47,7 +47,7 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
               TextSpan(
                 text: 'Baptists\n',
                 style: TextStyle(
-                  color: accentYellow,
+                  color: accentWhite,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -73,7 +73,7 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CommonText("+", 60.sp,textColor: accentYellow,),
+                  CommonText("+", 60.sp,textColor: accentWhite,),
                   AnimatedFlipCounter(
                     value: _count,
                     duration: const Duration(seconds: 1),
@@ -81,7 +81,7 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
                     textStyle: TextStyle(
                       fontSize: 60.sp,
                       fontWeight: FontWeight.bold,
-                      color: accentYellow,
+                      color: accentWhite,
                     ),
                     // optional: you can format with separators:
                     // thousandSeparator: ',',

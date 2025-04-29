@@ -15,7 +15,7 @@ import 'package:hope/utilities/app.constants.dart';
 import 'package:hope/widgets/progress_bar.dart';
 
 import '../../Constants/colors.dart'
-    show accentYellow, secondaryBlack, textGrey;
+    show accentWhite, secondaryBlack, textGrey;
 
 class OnboardingPageView extends StatefulWidget {
   const OnboardingPageView({super.key});
@@ -148,7 +148,7 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                     decoration: BoxDecoration(
                       color:
                           controller.canProceedFromPage(controller.currentPage)
-                              ? accentYellow
+                              ? accentWhite
                               : textGrey.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(30.sp),
                     ),

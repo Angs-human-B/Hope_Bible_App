@@ -40,7 +40,7 @@ class _Onboarding19ScreenState extends State<Onboarding19Screen> {
             onboarding19String,
             18.sp,
             textAlign: TextAlign.start,
-            textColor: accentYellow,
+            textColor: accentWhite,
           ),
         ),
         SizedBox(height: 10.h),

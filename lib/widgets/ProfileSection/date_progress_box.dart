@@ -36,7 +36,7 @@ class DateProgressBox extends StatelessWidget {
                 CircularProgressIndicator(
                   value: 0.85, // Progress (0.0 to 1.0)
                   strokeWidth: 3.w,
-                  valueColor: AlwaysStoppedAnimation(accentYellow), // accentYellow
+                  valueColor: AlwaysStoppedAnimation(accentWhite), // accentYellow
                   backgroundColor: Colors.transparent,
                 ),
                 Text(

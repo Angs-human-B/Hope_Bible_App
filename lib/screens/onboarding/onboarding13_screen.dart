@@ -34,7 +34,7 @@ class _Onboarding13ScreenState extends State<Onboarding13Screen> {
                 TextSpan(
                   text: 'you\'re invited',
                   style: TextStyle(
-                    color: accentYellow,
+                    color: accentWhite,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

@@ -123,7 +123,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                   height: 56.h,
                   // width: 350.w,
                   decoration: BoxDecoration(
-                    color: accentYellow,
+                    color: accentWhite,
                     borderRadius: BorderRadius.circular(30.sp),
                   ),
                   child: Center(

@@ -77,10 +77,10 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                     52.h,
                     235.w,
                     selectedIdx == i
-                        ? accentYellow.withOpacity(0.25)
+                        ? accentWhite.withOpacity(0.25)
                         : secondaryGrey,
-                    selectedIdx == i ? accentYellow : textWhite,
-                    selectedIdx == i ? accentYellow : Colors.transparent,
+                    selectedIdx == i ? accentWhite : textWhite,
+                    selectedIdx == i ? accentWhite : Colors.transparent,
                     selectedIdx == i ? true : false,
                   ),
                 ),
@@ -102,10 +102,10 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                     52.h,
                     104.w,
                     selectedIdx == i + 1
-                        ? accentYellow.withOpacity(0.25)
+                        ? accentWhite.withOpacity(0.25)
                         : secondaryGrey,
-                    selectedIdx == i + 1 ? accentYellow : textWhite,
-                    selectedIdx == i + 1 ? accentYellow : Colors.transparent,
+                    selectedIdx == i + 1 ? accentWhite : textWhite,
+                    selectedIdx == i + 1 ? accentWhite : Colors.transparent,
                     selectedIdx == i + 1 ? true : false,
                   ),
                 ),
@@ -137,10 +137,10 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                       widget.itemHeight,
                       widget.itemWidth,
                       selectedIdx == i
-                          ? accentYellow.withOpacity(0.25)
+                          ? accentWhite.withOpacity(0.25)
                           : secondaryGrey,
-                      selectedIdx == i ? accentYellow : textWhite,
-                      selectedIdx == i ? accentYellow : Colors.transparent,
+                      selectedIdx == i ? accentWhite : textWhite,
+                      selectedIdx == i ? accentWhite : Colors.transparent,
                       selectedIdx == i ? true : false,
                     ),
                   ),
@@ -165,10 +165,10 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                       widget.itemHeight,
                       widget.itemWidth,
                       selectedIdx == i + 1
-                          ? accentYellow.withOpacity(0.25)
+                          ? accentWhite.withOpacity(0.25)
                           : secondaryGrey,
-                      selectedIdx == i + 1 ? accentYellow : textWhite,
-                      selectedIdx == i + 1 ? accentYellow : Colors.transparent,
+                      selectedIdx == i + 1 ? accentWhite : textWhite,
+                      selectedIdx == i + 1 ? accentWhite : Colors.transparent,
                       selectedIdx == i + 1 ? true : false,
                     ),
                   ),
@@ -198,9 +198,9 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
               widget.denomination[i],
               widget.itemHeight,
               800.w,
-              selectedIdx == i ? accentYellow.withOpacity(0.25) : secondaryGrey,
-              selectedIdx == i ? accentYellow : textWhite,
-              selectedIdx == i ? accentYellow : Colors.transparent,
+              selectedIdx == i ? accentWhite.withOpacity(0.25) : secondaryGrey,
+              selectedIdx == i ? accentWhite : textWhite,
+              selectedIdx == i ? accentWhite : Colors.transparent,
               selectedIdx == i ? true : false,
             ),
           ),

@@ -94,7 +94,7 @@ class LanguageScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12.r),
                         border:
                             isSelected
-                                ? Border.all(color: accentYellow, width: 2)
+                                ? Border.all(color: accentWhite, width: 2)
                                 : Border.all(
                                   color: CupertinoColors.systemGrey.withOpacity(
                                     0.3,
@@ -127,7 +127,7 @@ class LanguageScreen extends StatelessWidget {
                           if (isSelected)
                             Icon(
                               CupertinoIcons.checkmark_alt_circle_fill,
-                              color: accentYellow,
+                              color: accentWhite,
                               size: 24.sp,
                             ),
                         ],
