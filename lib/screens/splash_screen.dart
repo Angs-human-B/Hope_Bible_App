@@ -12,6 +12,7 @@ import 'package:hope/screens/profile_settings_screen.dart';
 import 'package:hope/screens/streaks_screen.dart';
 import '../screens/chat_home_screen.dart';
 import '../screens/home_screen.dart';
+import 'AudioPlayer/audio_player_screen.dart';
 import 'bible_screen.dart';
 import 'onboarding/onboarding2_screen.dart';
 import 'onboarding/onboarding_screen_pageview.dart';
@@ -44,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
       // );
       Navigator.pushReplacement(
         context,
-        CupertinoPageRoute(builder: (_) => OnboardingPager()),
+        CupertinoPageRoute(builder: (_) => AudioPlayerScreen()),
       );
     });
   }
