@@ -22,7 +22,7 @@ class _Onboarding20ScreenState extends State<Onboarding20Screen> {
         SizedBox(height: 50.h),
         SizedBox(height: 84.h),
         // SizedBox(height: 40.h),
-        Image.asset(onboarding20),
+        Image.asset(onboarding20, height: 360.h),
         SizedBox(height: 16.h),
         CommonText(onboarding20String, 30.sp, textAlign: TextAlign.center),
         SizedBox(height: 22.h),

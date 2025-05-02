@@ -8,7 +8,6 @@ import 'package:get/get.dart' show Get, Inst, Obx;
 import 'package:hope/Constants/colors.dart';
 import 'package:hope/Constants/icons.dart';
 import 'package:hope/screens/auth/auth_page.dart' show AuthPage;
-import 'package:hope/screens/home_screen.dart';
 import 'package:purchases_flutter/purchases_flutter.dart'
     show CustomerInfo, EntitlementInfo, Offering, Purchases;
 import 'package:intl/intl.dart';
@@ -18,6 +17,7 @@ import '../../widgets/PricingSection/pricing_tab_selector.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../onboarding/controllers/onboarding.controller.dart'
     show OnboardingController;
+import '../persistent_botom_nav.dart' show PersistentBottomNav;
 import 'pricing_screen_2.dart' show PricingScreen2;
 
 class PricingScreen1 extends StatefulWidget {
@@ -196,7 +196,7 @@ class _PricingScreen1State extends State<PricingScreen1>
                             CupertinoPageRoute(
                               builder:
                                   (context) => const CupertinoScaffold(
-                                    body: HomeScreen(),
+                                    body: PersistentBottomNav(),
                                   ),
                             ),
                           );
@@ -212,7 +212,7 @@ class _PricingScreen1State extends State<PricingScreen1>
                             CupertinoPageRoute(
                               builder:
                                   (context) => const CupertinoScaffold(
-                                    body: AuthPage(login: true),
+                                    body: AuthPage(login: false),
                                   ),
                             ),
                           );

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'; // For color constants
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../utilities/text.utility.dart' show AllText;
+
 class SuggestionCard extends StatelessWidget {
   final String iconPath;
   final String label;
@@ -46,13 +48,9 @@ class SuggestionCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Color(0xFFCCCCCC),
-              fontSize: 14,
-              height: 1.4,
-            ),
+          AllText(
+            text: label,
+            style: const TextStyle(color: Color(0xFFCCCCCC), fontSize: 14),
           ),
         ],
       ),

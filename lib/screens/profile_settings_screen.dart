@@ -4,12 +4,43 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart' show Get, Inst;
 import 'package:hope/Constants/colors.dart';
 import '../Constants/icons.dart';
+import '../utilities/app.constants.dart' show AppConstants;
+import '../utilities/text.utility.dart' show AllText;
 import '../widgets/ProfileSection/custom_text_box.dart';
+import 'auth/controllers/user.auth.controller.dart' show SignUpController;
 
-class ProfileSettingsScreen extends StatelessWidget {
+class ProfileSettingsScreen extends StatefulWidget {
   const ProfileSettingsScreen({super.key});
+
+  @override
+  State<ProfileSettingsScreen> createState() => _ProfileSettingsScreenState();
+}
+
+class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
+  late TextEditingController nameController;
+  late TextEditingController emailController;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController(
+      text:
+          AppConstants.name.isNotEmpty
+              ? AppConstants.name
+              : AppConstants.email.split('@')[0].split('+')[0],
+    );
+    emailController = TextEditingController(text: AppConstants.email);
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +75,8 @@ class ProfileSettingsScreen extends StatelessWidget {
             ),
           ),
         ),
-        middle: Text(
-          'My Account',
+        middle: AllText(
+          text: 'My Account',
           style: TextStyle(
             color: textWhite,
             fontSize: 18.sp,
@@ -68,31 +99,31 @@ class ProfileSettingsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 25.h),
-                      Center(
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: 61.w,
-                              backgroundImage: AssetImage(
-                                'assets/images/profile_picture.png',
-                              ),
-                            ),
-                            CupertinoButton(
-                              padding: EdgeInsets.zero,
-                              onPressed: () {},
-                              child: SvgPicture.asset(
-                                editIcon,
-                                height: 24.h,
-                                width: 24.w,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 35.h),
-                      Text(
-                        "Name",
+                      // Center(
+                      //   child: Stack(
+                      //     alignment: Alignment.center,
+                      //     children: [
+                      //       CircleAvatar(
+                      //         radius: 61.w,
+                      //         backgroundImage: AssetImage(
+                      //           'assets/images/profile_picture.png',
+                      //         ),
+                      //       ),
+                      //       CupertinoButton(
+                      //         padding: EdgeInsets.zero,
+                      //         onPressed: () {},
+                      //         child: SvgPicture.asset(
+                      //           editIcon,
+                      //           height: 24.h,
+                      //           width: 24.w,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      // SizedBox(height: 35.h),
+                      AllText(
+                        text: "Name",
                         style: TextStyle(
                           color: textWhite,
                           fontSize: 16.sp,
@@ -100,10 +131,13 @@ class ProfileSettingsScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 12.h),
-                      const CustomTextFieldBox(hintText: "John Doe"),
+                      CustomTextFieldBox(
+                        controller: nameController,
+                        hintText: "Enter your name",
+                      ),
                       SizedBox(height: 25.h),
-                      Text(
-                        "Email",
+                      AllText(
+                        text: "Email",
                         style: TextStyle(
                           color: textWhite,
                           fontSize: 16.sp,
@@ -111,24 +145,37 @@ class ProfileSettingsScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 12.h),
-                      const CustomTextFieldBox(hintText: "johndoe@email.com"),
+                      CustomTextFieldBox(
+                        isEditable: false,
+                        controller: emailController,
+                        hintText: "Enter your email",
+                      ),
                     ],
                   ),
                 ),
               ),
               SizedBox(height: 20.h),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  final controller = Get.find<SignUpController>();
+                  final Map<String, dynamic> params = {
+                    "value": AppConstants.userId,
+                    "data": {"name": nameController.text},
+                  };
+                  controller.userUpdateFn(params, context, true);
+                  setState(() {
+                    AppConstants.name = nameController.text;
+                  });
+                },
                 child: Container(
                   height: 56.h,
-                  // width: 350.w,
                   decoration: BoxDecoration(
                     color: accentWhite,
                     borderRadius: BorderRadius.circular(30.sp),
                   ),
                   child: Center(
-                    child: Text(
-                      "Save Changes",
+                    child: AllText(
+                      text: "Save Changes",
                       style: TextStyle(
                         fontSize: 16.sp,
                         color: secondaryBlack,
@@ -138,7 +185,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 10.h), // bottom spacing if needed
+              SizedBox(height: 10.h),
             ],
           ),
         ),

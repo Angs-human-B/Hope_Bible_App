@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hope/utilities/app.constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Constants/colors.dart';
+import '../../utilities/text.utility.dart' show AllText;
 
 class SettingsButtonListTile extends StatefulWidget {
   final String iconPath;
@@ -40,9 +43,9 @@ class SettingsButtonListTile extends StatefulWidget {
 }
 
 class _SettingsButtonListTileState extends State<SettingsButtonListTile> {
-  bool _expanded = false;
   late String? _selectedItem;
   late bool _toggleState;
+  late SharedPreferences _prefs;
 
   bool get _isDropdownEnabled =>
       widget.dropdownItems != null && widget.enableDropdownTrailing;
@@ -54,6 +57,84 @@ class _SettingsButtonListTileState extends State<SettingsButtonListTile> {
     super.initState();
     _selectedItem = widget.selectedItem;
     _toggleState = widget.toggleValue ?? false;
+    _initPrefs();
+  }
+
+  Future<void> _initPrefs() async {
+    _prefs = await SharedPreferences.getInstance();
+    if (widget.title == "Voiceover") {
+      _selectedItem =
+          _prefs.getString('voiceover_gender') ?? widget.selectedItem;
+    }
+  }
+
+  void _showCupertinoPicker() {
+    showCupertinoModalPopup(
+      context: context,
+      builder:
+          (BuildContext context) => Container(
+            height: 200.h,
+            color: secondaryBlack,
+            child: Column(
+              children: [
+                Container(
+                  height: 60.h,
+                  color: secondaryGrey,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CupertinoButton(
+                        child: const AllText(text: 'Cancel'),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                      CupertinoButton(
+                        child: const AllText(text: 'Done'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          if (widget.title == "Voiceover") {
+                            _prefs.setString(
+                              'voiceover_gender',
+                              _selectedItem!,
+                            );
+
+                            AppConstants.isMale =
+                                _selectedItem == "Male" ? true : false;
+                          }
+                          widget.onDropdownChanged?.call(_selectedItem!);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: CupertinoPicker(
+                    backgroundColor: secondaryBlack,
+                    itemExtent: 32.h,
+                    onSelectedItemChanged: (int index) {
+                      setState(() {
+                        _selectedItem = widget.dropdownItems![index];
+                      });
+                    },
+                    children:
+                        widget.dropdownItems!
+                            .map(
+                              (item) => Center(
+                                child: AllText(
+                                  text: item,
+                                  style: TextStyle(
+                                    color: textWhite,
+                                    fontSize: 16.sp,
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+    );
   }
 
   @override
@@ -61,14 +142,7 @@ class _SettingsButtonListTileState extends State<SettingsButtonListTile> {
     return Column(
       children: [
         GestureDetector(
-          onTap:
-              _isDropdownEnabled
-                  ? () {
-                    setState(() {
-                      _expanded = !_expanded;
-                    });
-                  }
-                  : widget.onTap,
+          onTap: _isDropdownEnabled ? _showCupertinoPicker : widget.onTap,
           child: Container(
             width: 350.w,
             height: 72.h,
@@ -82,8 +156,8 @@ class _SettingsButtonListTileState extends State<SettingsButtonListTile> {
                 SvgPicture.asset(widget.iconPath, height: 24.h, width: 24.w),
                 SizedBox(width: 16.w),
                 Expanded(
-                  child: Text(
-                    widget.title,
+                  child: AllText(
+                    text: widget.title,
                     style: TextStyle(
                       color: textWhite,
                       fontSize: 16.sp,
@@ -109,8 +183,8 @@ class _SettingsButtonListTileState extends State<SettingsButtonListTile> {
                   if (_selectedItem != null)
                     Padding(
                       padding: EdgeInsets.only(right: 6.w),
-                      child: Text(
-                        _selectedItem!,
+                      child: AllText(
+                        text: _selectedItem!,
                         style: TextStyle(
                           color: const Color(0xffF3EDDC),
                           fontSize: 16.sp,
@@ -119,9 +193,7 @@ class _SettingsButtonListTileState extends State<SettingsButtonListTile> {
                       ),
                     ),
                   Icon(
-                    _expanded
-                        ? Icons.keyboard_arrow_up_rounded
-                        : Icons.keyboard_arrow_down_rounded,
+                    Icons.keyboard_arrow_down_rounded,
                     size: 24.sp,
                     color: textWhite.withOpacity(0.8),
                   ),
@@ -135,54 +207,6 @@ class _SettingsButtonListTileState extends State<SettingsButtonListTile> {
             ),
           ),
         ),
-        if (_expanded && _isDropdownEnabled)
-          Container(
-            width: 350.w,
-            margin: EdgeInsets.only(top: 8.h),
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-            decoration: BoxDecoration(
-              color: secondaryGrey,
-              borderRadius: BorderRadius.circular(20.sp),
-            ),
-            child: Column(
-              children:
-                  widget.dropdownItems!
-                      .map(
-                        (item) => GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _selectedItem = item;
-                              _expanded = false;
-                            });
-                            widget.onDropdownChanged?.call(item);
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8.h),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  _selectedItem == item
-                                      ? Icons.radio_button_checked
-                                      : Icons.radio_button_off,
-                                  color: textWhite,
-                                  size: 18.sp,
-                                ),
-                                SizedBox(width: 12.w),
-                                Text(
-                                  item,
-                                  style: TextStyle(
-                                    color: textWhite,
-                                    fontSize: 14.sp,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-            ),
-          ),
       ],
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'; // For some custom colors
 import '../../screens/ai_call_screen.dart';
+import '../../utilities/app.constants.dart' show AppConstants;
 
 class ChatInputBar extends StatelessWidget {
   final TextEditingController controller;
@@ -27,14 +28,12 @@ class ChatInputBar extends StatelessWidget {
             ),
             child: Row(
               children: [
-                const Icon(
-                  CupertinoIcons.add_circled,
-                  color: Color(0xFFCCCCCC),
-                  size: 20,
-                ),
+                // const Icon(
+                //   CupertinoIcons.add_circled,
+                //   color: Color(0xFFCCCCCC),
+                //   size: 20,
+                // ),
                 const SizedBox(width: 8),
-
- 
                 Expanded(
                   child: CupertinoTextField(
                     controller: controller,
@@ -48,7 +47,6 @@ class ChatInputBar extends StatelessWidget {
                     onSubmitted: (_) => onSend(),
                   ),
                 ),
-
 
                 CupertinoButton(
                   padding: EdgeInsets.zero,
@@ -66,13 +64,12 @@ class ChatInputBar extends StatelessWidget {
 
         const SizedBox(width: 10),
 
-
         GestureDetector(
           onTap: () {
             Navigator.push(
               context,
               CupertinoPageRoute(
-                builder: (_) => const AICallScreen(userName: "John"),
+                builder: (_) => AICallScreen(userName: AppConstants.name),
               ),
             );
           },
@@ -80,7 +77,7 @@ class ChatInputBar extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: const BoxDecoration(
-              color: Color(0xFFFFC943),
+              color: Color.fromARGB(255, 251, 251, 251),
               shape: BoxShape.circle,
             ),
             child: const Icon(CupertinoIcons.mic_fill, color: Colors.black),

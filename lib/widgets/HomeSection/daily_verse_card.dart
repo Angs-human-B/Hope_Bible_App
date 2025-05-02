@@ -1,13 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hope/Constants/colors.dart';
 import 'package:hope/services/daily_verse_service.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:flutter/services.dart';
+import 'package:hope/services/pexels.service.dart';
 
 import '../../utilities/app.constants.dart' show Utils;
+import '../../utilities/text.utility.dart' show AllText;
 
 class DailyVerseCard extends StatefulWidget {
   const DailyVerseCard({super.key});
@@ -20,12 +19,14 @@ class _DailyVerseCardState extends State<DailyVerseCard> {
   String _verseText = '';
   String _verseReference = '';
   bool _isLoading = true;
+  String? _imageUrl;
   static const platform = MethodChannel('HopeHomeWidget');
 
   @override
   void initState() {
     super.initState();
     _loadDailyVerse();
+    _loadDailyImage();
   }
 
   Future<void> _loadDailyVerse() async {
@@ -68,30 +69,38 @@ class _DailyVerseCardState extends State<DailyVerseCard> {
     }
   }
 
-  Future<void> _shareVerse() async {
-    final textToShare = '"$_verseText"\n- $_verseReference';
-    await Share.shareWithResult(textToShare);
-  }
-
-  Future<void> _downloadVerse() async {
-    try {
-      // Save to app group to ensure widget gets updated
-      await platform.invokeMethod('saveToAppGroup', {
-        'verse': _verseText,
-        'reference': _verseReference,
-        'lastUpdate': DateTime.now().toIso8601String(),
+  Future<void> _loadDailyImage() async {
+    final imageUrl = await PexelsService.getDailyImage();
+    if (mounted && imageUrl != null) {
+      setState(() {
+        _imageUrl = imageUrl;
       });
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Verse saved successfully')));
-    } catch (e) {
-      print('Error saving verse: $e');
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Failed to save verse')));
     }
   }
+
+  // Future<void> _shareVerse() async {
+  //   final textToShare = '"$_verseText"\n- $_verseReference';
+  //   await Share.shareWithResult(textToShare);
+  // }
+
+  // Future<void> _downloadVerse() async {
+  //   try {
+  //     // Save to app group to ensure widget gets updated
+  //     await platform.invokeMethod('saveToAppGroup', {
+  //       'verse': _verseText,
+  //       'reference': _verseReference,
+  //       'lastUpdate': DateTime.now().toIso8601String(),
+  //     });
+
+  //     // ScaffoldMessenger.of(
+  //     //   context,
+  //     // ).showSnackBar(const SnackBar(content: Text('Verse saved successfully')));
+  //   } catch (e) {
+  //     // ScaffoldMessenger.of(
+  //     //   context,
+  //     // ).showSnackBar(const SnackBar(content: Text('Failed to save verse')));
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -136,9 +145,13 @@ class _DailyVerseCardState extends State<DailyVerseCard> {
                                 ),
                                 CircleAvatar(
                                   radius: 34.w,
-                                  backgroundImage: const AssetImage(
-                                    'assets/images/the_ark.png',
-                                  ),
+                                  backgroundImage:
+                                      _imageUrl != null
+                                          ? NetworkImage(_imageUrl!)
+                                          : const AssetImage(
+                                                'assets/images/the_ark.png',
+                                              )
+                                              as ImageProvider,
                                 ),
                               ],
                             ),
@@ -149,8 +162,8 @@ class _DailyVerseCardState extends State<DailyVerseCard> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "DAILY VERSE",
+                              AllText(
+                                text: "DAILY VERSE",
                                 style: TextStyle(
                                   color: textWhite.withValues(alpha: .66),
                                   fontSize: 12.sp,
@@ -158,7 +171,7 @@ class _DailyVerseCardState extends State<DailyVerseCard> {
                               ),
                               SizedBox(height: 8.h),
                               Text(
-                                '"$_verseText"',
+                                _verseText,
                                 style: TextStyle(
                                   color: textWhite,
                                   fontSize: 20.sp,
@@ -171,9 +184,9 @@ class _DailyVerseCardState extends State<DailyVerseCard> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 8.h),
+                    SizedBox(height: 16.h),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
                           _verseReference,
@@ -182,19 +195,19 @@ class _DailyVerseCardState extends State<DailyVerseCard> {
                             fontSize: 14.sp,
                           ),
                         ),
-                        Row(
-                          children: [
-                            _blackIconBox(
-                              'assets/icons/download.svg',
-                              onTap: _downloadVerse,
-                            ),
-                            SizedBox(width: 8.w),
-                            _blackIconBox(
-                              'assets/icons/share.svg',
-                              onTap: _shareVerse,
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     _blackIconBox(
+                        //       'assets/icons/download.svg',
+                        //       onTap: _downloadVerse,
+                        //     ),
+                        //     SizedBox(width: 8.w),
+                        //     _blackIconBox(
+                        //       'assets/icons/share.svg',
+                        //       onTap: _shareVerse,
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ],
@@ -203,22 +216,22 @@ class _DailyVerseCardState extends State<DailyVerseCard> {
     );
   }
 
-  Widget _blackIconBox(String svgAsset, {VoidCallback? onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(10.sp),
-        decoration: BoxDecoration(
-          color: secondaryBlack,
-          borderRadius: BorderRadius.circular(8.sp),
-        ),
-        child: SvgPicture.asset(
-          svgAsset,
-          width: 20.w,
-          height: 20.h,
-          colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-        ),
-      ),
-    );
-  }
+  // Widget _blackIconBox(String svgAsset, {VoidCallback? onTap}) {
+  //   return GestureDetector(
+  //     onTap: onTap,
+  //     child: Container(
+  //       padding: EdgeInsets.all(10.sp),
+  //       decoration: BoxDecoration(
+  //         color: secondaryBlack,
+  //         borderRadius: BorderRadius.circular(8.sp),
+  //       ),
+  //       child: SvgPicture.asset(
+  //         svgAsset,
+  //         width: 20.w,
+  //         height: 20.h,
+  //         colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

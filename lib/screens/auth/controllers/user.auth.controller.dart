@@ -3,7 +3,6 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:hope/screens/home_screen.dart';
 import 'package:hope/utilities/app.constants.dart' show AppConstants, Utils;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -12,8 +11,10 @@ import '../../../utilities/mixins.dart' show RefreshToken;
 import '../../../utilities/network.call.dart'
     show getAPI, multiPostAPINew, patchAPI;
 import '../../../utilities/text.utility.dart' show AllText;
-import '../../../utilities/toast.widget.dart' show showErrorToast;
+import '../../../utilities/toast.widget.dart'
+    show showErrorToast, showSuccessToast;
 import '../../onboarding/onboarding_screen_pageview.dart' show OnboardingPager;
+import '../../persistent_botom_nav.dart' show PersistentBottomNav;
 import '../models/user.model.dart' show User, UserData, UserResponse;
 
 class SignUpController extends GetxController with RefreshToken {
@@ -23,8 +24,8 @@ class SignUpController extends GetxController with RefreshToken {
   RxBool isError = false.obs;
   RxString error = "".obs;
   RxBool updateEmailPassword = false.obs;
-  String updateUser = "api/user";
-  String getUserValue = "api/user";
+  String updateUser = "api/v1/auth/user";
+  String getUserValue = "api/v1/auth/profile";
   String checkRevenueCatSubscription = "api/user/revenueCat";
   String registerUser = "api/v1/auth/register";
   String deleteUser = "api/user/delete";
@@ -38,10 +39,11 @@ class SignUpController extends GetxController with RefreshToken {
       error("");
       await _checkAuthToken();
       await getAPI(
-        methodName: "$getUserValue/$userId",
+        methodName: getUserValue,
         callback: (value) async {
           Map<String, dynamic> valueMap = json.decode(value.response);
-          if (valueMap["statusCode"] == 201) {
+          Utils.logger.f("valueMap User Details: $valueMap");
+          if (valueMap["success"] == true) {
             final UserResponse userResponse = UserResponse.fromJson(valueMap);
             UserData userData = userResponse.data;
             userDetails = userData;
@@ -96,33 +98,33 @@ class SignUpController extends GetxController with RefreshToken {
       isLoading(true);
       isError(false);
       error("");
-      await _checkAuthToken();
       await multiPostAPINew(
         methodName: registerUser,
         param: param,
         callback: (value) async {
+          Utils.logger.e('User registered Value --_---->>> $value');
           Map<String, dynamic> valueMap = json.decode(value.response);
-          Utils.logger.e('User registered Value --_---->>> $valueMap');
-          if (valueMap["statusCode"] == 201) {
+
+          if (valueMap["success"] == true) {
             SharedPreferences sp = await SharedPreferences.getInstance();
             Utils.logger.e(
-              'Constants auth token ${valueMap['data']['accessToken']}',
+              'Constants auth token ${valueMap['data']['user']['token']}',
             );
 
-            AppConstants.email = valueMap['data']["email"];
-            AppConstants.name = valueMap['data']["name"];
-            AppConstants.userId = valueMap['data']["_id"];
-            AppConstants.authToken = valueMap['data']['accessToken'];
+            AppConstants.email = valueMap['data']['user']['email'];
+            AppConstants.name = valueMap['data']['user']['name'];
+            AppConstants.userId = valueMap['data']['user']['_id'];
+            AppConstants.authToken = valueMap['data']['token'];
 
             // sp.setString('authToken', valueMap['data']['accessToken']);
             // sp.setString('userId', valueMap['data']["_id"]);
             // sp.setString('name', valueMap['data']["name"] ?? '');
             // sp.setString('email', valueMap['data']["email"]);
 
-            sp.setString('authToken', valueMap['data']['accessToken']);
-            sp.setString('userId', valueMap['data']['_id']);
-            sp.setString('name', valueMap['data']['name']);
-            sp.setString('email', valueMap['data']['email']);
+            sp.setString('authToken', valueMap['data']['token']);
+            sp.setString('userId', valueMap['data']['user']['_id']);
+            sp.setString('name', valueMap['data']['user']['name']);
+            sp.setString('email', valueMap['data']['user']['email']);
             // User user = User.fromJson(valueMap['data']['user']);
 
             Utils.logger.e('Constants auth token ${AppConstants.authToken}');
@@ -136,7 +138,8 @@ class SignUpController extends GetxController with RefreshToken {
             Utils.logger.i(valueMap);
             await Navigator.of(context, rootNavigator: true).push(
               CupertinoPageRoute(
-                builder: (context) => CupertinoScaffold(body: HomeScreen()),
+                builder:
+                    (context) => CupertinoScaffold(body: PersistentBottomNav()),
               ),
             );
           } else {
@@ -177,7 +180,17 @@ class SignUpController extends GetxController with RefreshToken {
           Utils.logger.d(param);
           Map<String, dynamic> valueMap = json.decode(value.response);
 
-          if (valueMap["statusCode"] == 201) {
+          if (valueMap["success"] == true) {
+            showSuccessToast(
+              context: context,
+              title: "Update Successful",
+              description:
+                  valueMap["message"] ??
+                  "Something went wrong. Please try again.",
+            );
+            final UserResponse userResponse = UserResponse.fromJson(valueMap);
+            UserData userData = userResponse.data;
+            userDetails = userData;
             // Show success toast
             // CachedQuery.instance.storage?.delete('specialTabQuery');
             // if (preferenceChanged == true) {
@@ -234,12 +247,12 @@ class SignUpController extends GetxController with RefreshToken {
       isLoading(true);
       isError(false);
       error("");
-      await _checkAuthToken();
       await multiPostAPINew(
         methodName: userLogin,
         param: param,
         callback: (value) async {
           Map<String, dynamic> valueMap = json.decode(value.response);
+          Utils.logger.f(valueMap);
 
           if (valueMap["success"] == true) {
             SharedPreferences sp = await SharedPreferences.getInstance();
@@ -264,7 +277,8 @@ class SignUpController extends GetxController with RefreshToken {
             Navigator.of(context, rootNavigator: true).push(
               CupertinoPageRoute(
                 builder:
-                    (context) => CupertinoScaffold(body: const HomeScreen()),
+                    (context) =>
+                        CupertinoScaffold(body: const PersistentBottomNav()),
               ),
             );
             Utils.logger.e(AppConstants.authToken);
@@ -392,9 +406,9 @@ class SignUpController extends GetxController with RefreshToken {
   }
 
   Future<void> _checkAuthToken() async {
-    if (AppConstants.authToken.isNotEmpty) {
-      await tokenRefresh();
-    }
+    // if (AppConstants.authToken.isNotEmpty) {
+    await tokenRefresh();
+    // }
   }
 
   setUserData(User obj) {

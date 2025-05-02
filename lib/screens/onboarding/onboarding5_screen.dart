@@ -15,13 +15,6 @@ class Onboarding5Screen extends StatefulWidget {
 
 class _Onboarding5ScreenState extends State<Onboarding5Screen> {
   final OnboardingController controller = Get.find<OnboardingController>();
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // controller.updatePageData(3, null);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

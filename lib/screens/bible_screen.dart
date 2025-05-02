@@ -7,6 +7,11 @@ import 'package:hope/Constants/colors.dart';
 import 'package:hope/Constants/icons.dart';
 import 'package:hope/screens/bible/controllers/bible.controller.dart'
     show BibleController;
+import 'dart:async';
+import 'package:visibility_detector/visibility_detector.dart';
+
+import '../utilities/app.constants.dart' show Utils;
+import '../utilities/text.utility.dart' show AllText;
 
 class ChapterPicker extends StatelessWidget {
   final BibleController bibleController;
@@ -61,10 +66,57 @@ class _BibleScreenState extends State<BibleScreen>
   final selectedVersion = 'NIV'.obs;
   final ScrollController _scrollController = ScrollController();
   final RxBool _isBottomBarVisible = true.obs;
+  Timer? _scrollTimer;
+  final RxBool _isScreenVisible = false.obs;
+
+  // Add visibility handler
+  void _handleVisibilityChange(double visibleFraction) {
+    Utils.logger.f('Visible fraction: $visibleFraction');
+    final wasVisible = _isScreenVisible.value;
+    _isScreenVisible.value = visibleFraction > 0.5;
+
+    // Only update reading state if visibility actually changed
+    if (wasVisible != _isScreenVisible.value) {
+      if (_isScreenVisible.value) {
+        Utils.logger.f('Bible screen became visible, starting reading timer');
+        bibleController.setReading(true);
+      } else {
+        Utils.logger.f('Bible screen became hidden, pausing reading timer');
+        bibleController.setReading(false);
+      }
+    }
+  }
+
+  void _onScroll() {
+    // Show/hide bottom bar based on scroll direction
+    if (_scrollController.position.isScrollingNotifier.value) {
+      final isScrollingDown =
+          _scrollController.position.pixels >
+          _scrollController.position.minScrollExtent + 50;
+      _isBottomBarVisible.value = !isScrollingDown;
+      BibleScreen.isBottomBarVisible.value = !isScrollingDown;
+
+      // Reset inactivity timer only if screen is visible
+      if (_isScreenVisible.value) {
+        _scrollTimer?.cancel();
+        _scrollTimer = Timer(const Duration(seconds: 30), () {
+          // Only stop reading if screen is still visible but inactive
+          if (_isScreenVisible.value) {
+            Utils.logger.f(
+              'No scroll activity for 30 seconds, pausing reading timer',
+            );
+            bibleController.setReading(false);
+          }
+        });
+      }
+    }
+  }
 
   @override
   void initState() {
     _scrollController.addListener(_onScroll);
+    super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await bibleController.getAllBibleVersionsFn(context);
       // Update selectedVersion text with the current version code
@@ -88,7 +140,6 @@ class _BibleScreenState extends State<BibleScreen>
         context,
       );
     });
-    super.initState();
   }
 
   void _showVersionPicker() {
@@ -121,15 +172,15 @@ class _BibleScreenState extends State<BibleScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CupertinoButton(
-                      child: Text(
-                        'Cancel',
+                      child: AllText(
+                        text: 'Cancel',
                         style: TextStyle(color: accentWhite, fontSize: 17.sp),
                       ),
                       onPressed: () => Navigator.pop(context),
                     ),
                     CupertinoButton(
-                      child: Text(
-                        'Done',
+                      child: AllText(
+                        text: 'Done',
                         style: TextStyle(
                           color: accentWhite,
                           fontSize: 17.sp,
@@ -250,15 +301,15 @@ class _BibleScreenState extends State<BibleScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CupertinoButton(
-                      child: Text(
-                        'Cancel',
+                      child: AllText(
+                        text: 'Cancel',
                         style: TextStyle(color: accentWhite, fontSize: 17.sp),
                       ),
                       onPressed: () => Navigator.pop(context),
                     ),
                     CupertinoButton(
-                      child: Text(
-                        'Done',
+                      child: AllText(
+                        text: 'Done',
                         style: TextStyle(
                           color: accentWhite,
                           fontSize: 17.sp,
@@ -361,320 +412,312 @@ class _BibleScreenState extends State<BibleScreen>
   void dispose() {
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
+    _scrollTimer?.cancel();
+    // Stop reading timer when screen is disposed
+    bibleController.setReading(false);
     super.dispose();
-  }
-
-  void _onScroll() {
-    if (_scrollController.position.pixels >
-            _scrollController.position.minScrollExtent &&
-        _scrollController.position.pixels <
-            _scrollController.position.maxScrollExtent) {
-      if (_scrollController.position.pixels >
-          _scrollController.position.minScrollExtent + 50) {
-        _isBottomBarVisible.value = false;
-        BibleScreen.isBottomBarVisible.value = false;
-      } else {
-        _isBottomBarVisible.value = true;
-        BibleScreen.isBottomBarVisible.value = true;
-      }
-    } else {
-      _isBottomBarVisible.value = true;
-      BibleScreen.isBottomBarVisible.value = true;
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SafeArea(
-      top: true,
-      child: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 20.h),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 20.h),
-                        Text(
-                          "Select version",
-                          style: TextStyle(
-                            color: textWhite,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(height: 4.h),
-                        CupertinoButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: _showVersionPicker,
-                          child: Row(
-                            children: [
-                              Obx(
-                                () => Text(
-                                  selectedVersion.value,
-                                  style: TextStyle(
-                                    color: accentWhite,
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 5.w),
-                              SvgPicture.asset(arrowDownIcon, height: 25.h),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        SizedBox(height: 25.h, width: 45.w),
-                        SvgPicture.asset(slashIcon, height: 30.h),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 20.h),
-                        Text(
-                          "Select chapter",
-                          style: TextStyle(
-                            color: textWhite,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(height: 4.h),
-                        CupertinoButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: _showBookAndChapterPicker,
-                          child: Row(
-                            children: [
-                              Obx(() {
-                                final bookName =
-                                    bibleController.getSelectedBookName() ??
-                                    'Select Book';
-                                final chapter =
-                                    bibleController.selectedChapterNumber.value;
-                                return Text(
-                                  '$bookName $chapter',
-                                  style: TextStyle(
-                                    color: accentWhite,
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                );
-                              }),
-                              SizedBox(width: 4.w),
-                              SvgPicture.asset(arrowDownIcon, height: 25.h),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: 25.h),
-                Obx(() {
-                  return Text(
-                    '${bibleController.getSelectedBookName()} ${bibleController.chapters.value?[0].chapter}-${bibleController.chapters.value?.last.chapter} (${selectedVersion.value})',
-                    style: TextStyle(
-                      color: textWhite,
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  );
-                }),
-                SizedBox(height: 20.h),
-                Expanded(
-                  child: ListView(
-                    controller: _scrollController,
+    return VisibilityDetector(
+      key: const Key('bible-screen-visibility'),
+      onVisibilityChanged: (info) {
+        _handleVisibilityChange(info.visibleFraction);
+      },
+      child: SafeArea(
+        top: true,
+        child: Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20.h),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Obx(() {
-                        final currentChapter = bibleController.chapters.value
-                            ?.firstWhereOrNull(
-                              (chapter) =>
-                                  chapter.chapter ==
-                                  bibleController.selectedChapterNumber.value,
-                            );
-
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (currentChapter?.title != null &&
-                                currentChapter!.title.isNotEmpty)
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 16.h),
-                                child: Text(
-                                  currentChapter.title,
-                                  style: TextStyle(
-                                    color: textWhite,
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w600,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 20.h),
+                          AllText(
+                            text: "Select version",
+                            style: TextStyle(
+                              color: textWhite,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 4.h),
+                          CupertinoButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: _showVersionPicker,
+                            child: Row(
+                              children: [
+                                Obx(
+                                  () => Text(
+                                    selectedVersion.value,
+                                    style: TextStyle(
+                                      color: accentWhite,
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            RichText(
-                              text: TextSpan(
-                                children:
-                                    bibleController.verses.map((verse) {
-                                      return TextSpan(
-                                        children: [
-                                          WidgetSpan(
-                                            alignment: PlaceholderAlignment.top,
-                                            child: Transform.translate(
-                                              offset: Offset(0, -5),
-                                              child: Text(
-                                                '${verse.verse}',
-                                                style: TextStyle(
-                                                  color: textWhite,
-                                                  fontSize: 10.sp,
-                                                  fontWeight: FontWeight.w400,
+                                SizedBox(width: 5.w),
+                                SvgPicture.asset(arrowDownIcon, height: 25.h),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          SizedBox(height: 25.h, width: 45.w),
+                          SvgPicture.asset(slashIcon, height: 30.h),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 20.h),
+                          AllText(
+                            text: "Select chapter",
+                            style: TextStyle(
+                              color: textWhite,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 4.h),
+                          CupertinoButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: _showBookAndChapterPicker,
+                            child: Row(
+                              children: [
+                                Obx(() {
+                                  final bookName =
+                                      bibleController.getSelectedBookName() ??
+                                      'Select Book';
+                                  final chapter =
+                                      bibleController
+                                          .selectedChapterNumber
+                                          .value;
+                                  return Text(
+                                    '$bookName $chapter',
+                                    style: TextStyle(
+                                      color: accentWhite,
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  );
+                                }),
+                                SizedBox(width: 4.w),
+                                SvgPicture.asset(arrowDownIcon, height: 25.h),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 25.h),
+                  Obx(() {
+                    return Text(
+                      '${bibleController.getSelectedBookName()} ${bibleController.chapters.value?[0].chapter}-${bibleController.chapters.value?.last.chapter} (${selectedVersion.value})',
+                      style: TextStyle(
+                        color: textWhite,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    );
+                  }),
+                  SizedBox(height: 20.h),
+                  Expanded(
+                    child: ListView(
+                      controller: _scrollController,
+                      children: [
+                        Obx(() {
+                          final currentChapter = bibleController.chapters.value
+                              ?.firstWhereOrNull(
+                                (chapter) =>
+                                    chapter.chapter ==
+                                    bibleController.selectedChapterNumber.value,
+                              );
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (currentChapter?.title != null &&
+                                  currentChapter!.title.isNotEmpty)
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 16.h),
+                                  child: Text(
+                                    currentChapter.title,
+                                    style: TextStyle(
+                                      color: textWhite,
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              RichText(
+                                text: TextSpan(
+                                  children:
+                                      bibleController.verses.map((verse) {
+                                        return TextSpan(
+                                          children: [
+                                            WidgetSpan(
+                                              alignment:
+                                                  PlaceholderAlignment.top,
+                                              child: Transform.translate(
+                                                offset: Offset(0, -5),
+                                                child: Text(
+                                                  '${verse.verse}',
+                                                  style: TextStyle(
+                                                    color: textWhite,
+                                                    fontSize: 10.sp,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          TextSpan(
-                                            text: ' ${verse.text} ',
-                                            style: TextStyle(
-                                              color: textWhite,
-                                              fontSize: 17.sp,
-                                              fontWeight: FontWeight.w400,
+                                            TextSpan(
+                                              text: ' ${verse.text} ',
+                                              style: TextStyle(
+                                                color: textWhite,
+                                                fontSize: 17.sp,
+                                                fontWeight: FontWeight.w400,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      );
-                                    }).toList(),
+                                          ],
+                                        );
+                                      }).toList(),
+                                ),
                               ),
-                            ),
+                              SizedBox(height: 150.h),
+                            ],
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              bottom: 80.h,
+              left: 0,
+              right: 0,
+              child: Obx(
+                () => AnimatedOpacity(
+                  opacity: _isBottomBarVisible.value ? 1.0 : 0.0,
+                  duration: Duration(milliseconds: 200),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Obx(() {
+                              final currentChapter =
+                                  bibleController.selectedChapterNumber.value;
+                              final isFirstChapter = currentChapter <= 1;
+
+                              return GestureDetector(
+                                onTap:
+                                    isFirstChapter
+                                        ? null
+                                        : () {
+                                          bibleController
+                                              .selectedChapterNumber
+                                              .value = currentChapter - 1;
+                                        },
+                                child: Container(
+                                  height: 44.h,
+                                  width: 44.w,
+                                  padding: EdgeInsets.all(8.sp),
+                                  decoration: BoxDecoration(
+                                    color: secondaryGrey,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Color(0xFF888888),
+                                      width: .5,
+                                    ),
+                                  ),
+                                  child: SvgPicture.asset(
+                                    arrowLeft,
+                                    width: 26.w,
+                                    height: 26.h,
+                                    colorFilter: ColorFilter.mode(
+                                      isFirstChapter
+                                          ? Colors.grey.withOpacity(0.5)
+                                          : Colors.white,
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                            Obx(() {
+                              final currentChapter =
+                                  bibleController.selectedChapterNumber.value;
+                              final totalChapters =
+                                  bibleController
+                                      .getSelectedBookTotalChapters() ??
+                                  0;
+                              final isLastChapter =
+                                  currentChapter >= totalChapters;
+
+                              return GestureDetector(
+                                onTap:
+                                    isLastChapter
+                                        ? null
+                                        : () {
+                                          bibleController
+                                              .selectedChapterNumber
+                                              .value = currentChapter + 1;
+                                        },
+                                child: Container(
+                                  height: 44.h,
+                                  width: 44.w,
+                                  padding: EdgeInsets.all(8.sp),
+                                  decoration: BoxDecoration(
+                                    color: secondaryGrey,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Color(0xFF888888),
+                                      width: .5,
+                                    ),
+                                  ),
+                                  child: SvgPicture.asset(
+                                    arrowRight,
+                                    width: 26.w,
+                                    height: 26.h,
+                                    colorFilter: ColorFilter.mode(
+                                      isLastChapter
+                                          ? Colors.grey.withOpacity(0.5)
+                                          : Colors.white,
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
                           ],
-                        );
-                      }),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: -30.h,
-            left: 0,
-            right: 0,
-            child: Obx(
-              () => AnimatedOpacity(
-                opacity: _isBottomBarVisible.value ? 1.0 : 0.0,
-                duration: Duration(milliseconds: 200),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Obx(() {
-                            final currentChapter =
-                                bibleController.selectedChapterNumber.value;
-                            final isFirstChapter = currentChapter <= 1;
-
-                            return GestureDetector(
-                              onTap:
-                                  isFirstChapter
-                                      ? null
-                                      : () {
-                                        bibleController
-                                            .selectedChapterNumber
-                                            .value = currentChapter - 1;
-                                      },
-                              child: Container(
-                                height: 44.h,
-                                width: 44.w,
-                                padding: EdgeInsets.all(8.sp),
-                                decoration: BoxDecoration(
-                                  color: secondaryGrey,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Color(0xFF888888),
-                                    width: .5,
-                                  ),
-                                ),
-                                child: SvgPicture.asset(
-                                  arrowLeft,
-                                  width: 26.w,
-                                  height: 26.h,
-                                  colorFilter: ColorFilter.mode(
-                                    isFirstChapter
-                                        ? Colors.grey.withOpacity(0.5)
-                                        : Colors.white,
-                                    BlendMode.srcIn,
-                                  ),
-                                ),
-                              ),
-                            );
-                          }),
-                          Obx(() {
-                            final currentChapter =
-                                bibleController.selectedChapterNumber.value;
-                            final totalChapters =
-                                bibleController
-                                    .getSelectedBookTotalChapters() ??
-                                0;
-                            final isLastChapter =
-                                currentChapter >= totalChapters;
-
-                            return GestureDetector(
-                              onTap:
-                                  isLastChapter
-                                      ? null
-                                      : () {
-                                        bibleController
-                                            .selectedChapterNumber
-                                            .value = currentChapter + 1;
-                                      },
-                              child: Container(
-                                height: 44.h,
-                                width: 44.w,
-                                padding: EdgeInsets.all(8.sp),
-                                decoration: BoxDecoration(
-                                  color: secondaryGrey,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Color(0xFF888888),
-                                    width: .5,
-                                  ),
-                                ),
-                                child: SvgPicture.asset(
-                                  arrowRight,
-                                  width: 26.w,
-                                  height: 26.h,
-                                  colorFilter: ColorFilter.mode(
-                                    isLastChapter
-                                        ? Colors.grey.withOpacity(0.5)
-                                        : Colors.white,
-                                    BlendMode.srcIn,
-                                  ),
-                                ),
-                              ),
-                            );
-                          }),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 150.h),
-                    // BottomNavBar(bible: true),
-                  ],
-                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

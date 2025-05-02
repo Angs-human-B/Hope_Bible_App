@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart'; // For colors only
 import 'package:get/get.dart';
 import 'package:hope/utilities/app.constants.dart' show AppConstants;
 import '../../widgets/ChatSection/app_bar_header.dart';
@@ -31,23 +30,30 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
   bool _isTyping = false;
 
   late final AnimationController _titleAnimationController;
-  late final Animation<double> _titleFade;
+  // late final Animation<double> _titleFade;
 
   // Shimmer animation controller
   late final AnimationController _shimmerController;
   late final Animation<double> _shimmerAnimation;
 
+  final chatController = Get.find<ChatController>();
+
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await chatController.fetchSuggestionsFn();
+    });
+
     _titleAnimationController = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
-    _titleFade = CurvedAnimation(
-      parent: _titleAnimationController,
-      curve: Curves.easeIn,
-    );
+    // _titleFade = CurvedAnimation(
+    //   parent: _titleAnimationController,
+    //   curve: Curves.easeIn,
+    // );
 
     // Initialize shimmer animation
     _shimmerController = AnimationController(
@@ -59,8 +65,6 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
       CurvedAnimation(parent: _shimmerController, curve: Curves.easeInOutSine),
     );
   }
-
-  final chatController = Get.find<ChatController>();
 
   void _startTypingAnimation(String text) {
     // Cancel any existing timer
@@ -170,20 +174,20 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
           child: Column(
             children: [
               AppBarHeader(
-                title:
-                    _hasStartedChat
-                        ? FadeTransition(
-                          opacity: _titleFade,
-                          child: const Text(
-                            "Morning Verse",
-                            style: TextStyle(
-                              color: CupertinoColors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
-                            ),
-                          ),
-                        )
-                        : null,
+                title: null,
+                // _hasStartedChat
+                //     ? FadeTransition(
+                //       opacity: _titleFade,
+                //       child: const Text(
+                //         "Morning Verse",
+                //         style: TextStyle(
+                //           color: CupertinoColors.white,
+                //           fontWeight: FontWeight.w600,
+                //           fontSize: 18,
+                //         ),
+                //       ),
+                //     )
+                //     : null,
                 showMenu: !_hasStartedChat,
               ),
               const SizedBox(height: 6),
@@ -199,34 +203,76 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const SizedBox(height: 20),
-                                    const VoiceGreetingBox(userName: 'John'),
-                                    const Spacer(),
-                                    SizedBox(
-                                      height: 140,
-                                      child: ListView(
-                                        scrollDirection: Axis.horizontal,
-                                        children: const [
-                                          SuggestionCard(
-                                            iconPath:
-                                                'assets/icons/chat_home_1.svg',
-                                            label:
-                                                'Explain Matthew 5 in\nsimple terms.',
-                                          ),
-                                          SuggestionCard(
-                                            iconPath:
-                                                'assets/icons/chat_home_2.svg',
-                                            label:
-                                                'How can I grow\nspiritually every day?',
-                                          ),
-                                          SuggestionCard(
-                                            iconPath:
-                                                'assets/icons/chat_home_3.svg',
-                                            label:
-                                                'Help me with\na prayer for peace.',
-                                          ),
-                                        ],
-                                      ),
+                                    VoiceGreetingBox(
+                                      userName: AppConstants.name.split(' ')[0],
                                     ),
+                                    const Spacer(),
+                                    Obx(() {
+                                      return chatController
+                                                  .isSuggestionLoading
+                                                  .value &&
+                                              (chatController
+                                                  .suggestions
+                                                  .isEmpty)
+                                          ? const SizedBox()
+                                          : SizedBox(
+                                            height: 140,
+                                            child: ListView(
+                                              scrollDirection: Axis.horizontal,
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    _sendMessage(
+                                                      chatController
+                                                          .suggestions[0]
+                                                          .trim(),
+                                                    );
+                                                  },
+                                                  child: SuggestionCard(
+                                                    iconPath:
+                                                        'assets/icons/chat_home_1.svg',
+                                                    label:
+                                                        chatController
+                                                            .suggestions[0],
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    _sendMessage(
+                                                      chatController
+                                                          .suggestions[1]
+                                                          .trim(),
+                                                    );
+                                                  },
+                                                  child: SuggestionCard(
+                                                    iconPath:
+                                                        'assets/icons/chat_home_2.svg',
+                                                    label:
+                                                        chatController
+                                                            .suggestions[1],
+                                                  ),
+                                                ),
+
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    _sendMessage(
+                                                      chatController
+                                                          .suggestions[2]
+                                                          .trim(),
+                                                    );
+                                                  },
+                                                  child: SuggestionCard(
+                                                    iconPath:
+                                                        'assets/icons/chat_home_3.svg',
+                                                    label:
+                                                        chatController
+                                                            .suggestions[2],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                    }),
                                     const SizedBox(height: 20),
                                   ],
                                 )

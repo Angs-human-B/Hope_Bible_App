@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../Constants/icons.dart';
 
 class AudioControls extends StatelessWidget {
+  final bool? isSubtitleAvailable;
   final bool isPlaying;
   final bool isMuted;
   final bool isLyricsShown;
@@ -20,6 +21,7 @@ class AudioControls extends StatelessWidget {
     required this.onMute,
     required this.onLyrics,
     required this.isLyricsShown,
+    this.isSubtitleAvailable = true,
   });
 
   @override
@@ -53,11 +55,14 @@ class AudioControls extends StatelessWidget {
                 isMuted ? mutedIcon : unMutedIcon,
               ),
             ),
-            GestureDetector(
-              onTap: onLyrics,
-              child: SvgPicture.asset(
-                height: 24.h,
-                isLyricsShown ? lyricsCutIcon : lyricsIcon,
+            Opacity(
+              opacity: isSubtitleAvailable == true ? 1 : 0.3,
+              child: GestureDetector(
+                onTap: isSubtitleAvailable == true ? onLyrics : null,
+                child: SvgPicture.asset(
+                  height: 24.h,
+                  isLyricsShown ? lyricsCutIcon : lyricsIcon,
+                ),
               ),
             ),
           ],

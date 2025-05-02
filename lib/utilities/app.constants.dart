@@ -37,11 +37,13 @@ abstract class AppConstants {
   static String name = "";
   static String username = "";
   static String email = "";
+  static String readingTime = "";
   static String appleId = "";
   static String googleId = "";
   static int stringLimit = 50;
   static GlobalKey<State> globalKey = GlobalKey();
   static bool showWelcomeScreen = false;
+  static bool isMale = true;
 }
 
 abstract class BaseUrl {

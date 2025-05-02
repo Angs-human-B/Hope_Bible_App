@@ -95,8 +95,13 @@ class _AuthPageState extends State<AuthPage> {
                           );
                         },
                         child: Text(
-                          'Your Subscription \nis Confirmed!',
-                          semanticsLabel: 'Your Subscription is Confirmed!',
+                          widget.login
+                              ? 'Welcome Back!'
+                              : 'Your Subscription \nis Confirmed!',
+                          semanticsLabel:
+                              widget.login
+                                  ? 'Welcome Back!'
+                                  : 'Your Subscription is Confirmed!',
                           style: TextStyle(
                             fontSize: 36.sp,
                             fontWeight: FontWeight.bold,
@@ -106,15 +111,17 @@ class _AuthPageState extends State<AuthPage> {
                         ),
                       ),
                       SizedBox(height: 10.h),
-                      Text(
-                        'Lets create your account.',
-                        semanticsLabel: 'Lets create your account.',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          color: textWhite.withValues(alpha: 0.9),
-                          letterSpacing: -0.41,
-                        ),
-                      ),
+                      widget.login
+                          ? const SizedBox()
+                          : Text(
+                            'Lets create your account.',
+                            semanticsLabel: 'Lets create your account.',
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              color: textWhite.withValues(alpha: 0.9),
+                              letterSpacing: -0.41,
+                            ),
+                          ),
                     ],
                   ),
                   SizedBox(height: 48.h),
@@ -344,9 +351,6 @@ class _AuthPageState extends State<AuthPage> {
 
       if (signedInUser.user != null) {
         // Navigate to ChatBotPage after successful sign in
-        Utils.logger.e(
-          'Signed In Google User -->> ${signedInUser.user?.userMetadata?['full_name'] ?? ''}',
-        );
 
         String? userId = signedInUser.session?.user.id;
         String? email = signedInUser.user?.email ?? '';
@@ -364,10 +368,19 @@ class _AuthPageState extends State<AuthPage> {
           "currentSubscription": AppConstants.currentSubscription,
           "supabaseId": Supabase.instance.client.auth.currentUser?.id ?? '',
           "one_signal_id": OneSignal.User.pushSubscription.id.toString(),
+          "denomination": oboardingController.getPageData('denomination'),
+          "age": oboardingController.getPageData('age'),
+          "bibleVersion": oboardingController.getPageData('bibleVersion'),
+          "attendChurch": oboardingController.getPageData('attendChurch'),
+          "meditate": oboardingController.getPageData('meditate'),
+          "studyGroup": oboardingController.getPageData('studyGroup'),
         };
 
         Utils.logger.f(params);
         if (widget.login == false) {
+          Utils.logger.e(
+            'Registering Google User -->> ${signedInUser.user?.userMetadata?['full_name'] ?? ''}',
+          );
           await controller.userRegisterFn(params, context);
           // await Posthog().capture(
           //   properties: {
@@ -388,7 +401,11 @@ class _AuthPageState extends State<AuthPage> {
           //   eventName: 'New User - Google',
           // );
         } else {
+          Utils.logger.e(
+            'Logging In Google User -->> ${signedInUser.user?.userMetadata?['full_name'] ?? ''}',
+          );
           final Map<String, String> loginParams = {"email": email};
+          Utils.logger.f(loginParams);
           await controller.userLoginFn(loginParams, context);
           // await Posthog().capture(
           //   properties: loginParams,

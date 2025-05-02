@@ -1,3 +1,5 @@
+import '../../../utilities/app.constants.dart' show AppConstants, Utils;
+
 class User {
   User({
     required this.id,
@@ -52,13 +54,13 @@ class User {
 
 class UserResponse {
   final bool success;
-  final int statusCode;
+  final int? statusCode;
   final String message;
   final UserData data;
 
   UserResponse({
     required this.success,
-    required this.statusCode,
+    this.statusCode,
     required this.message,
     required this.data,
   });
@@ -67,7 +69,7 @@ class UserResponse {
   factory UserResponse.fromJson(Map<String, dynamic> json) {
     return UserResponse(
       success: json['success'] as bool,
-      statusCode: json['statusCode'] as int,
+      statusCode: json['statusCode'] ?? 0,
       message: json['message'] as String,
       data: UserData.fromJson(json['data'] as Map<String, dynamic>),
     );
@@ -92,8 +94,11 @@ class UserData {
   final String? password;
   final String? role;
   final String? provider;
+  final int? longestStreak;
+  final int? currentStreak;
+  final String? readingTime;
 
-  final int? version;
+  // final int? version;
   final List<dynamic> subscriptions;
 
   UserData({
@@ -102,9 +107,12 @@ class UserData {
     this.name,
     this.password,
     this.role,
-    this.version,
+    // this.version,
     this.provider,
     this.subscriptions = const [],
+    this.longestStreak,
+    this.currentStreak,
+    this.readingTime,
   });
 
   /// Named constructor to create an empty UserData instance
@@ -115,23 +123,33 @@ class UserData {
       name: '',
       password: '',
       role: '',
-      version: 0,
+      // version: 0,
       provider: '',
       subscriptions: [],
+      longestStreak: 0,
+      currentStreak: 0,
+      readingTime: '',
     );
   }
 
   /// Creates a UserData instance from a JSON map.
   factory UserData.fromJson(Map<String, dynamic> json) {
+    AppConstants.name = json['name'] ?? '';
+    AppConstants.email = json['email'] ?? '';
+    AppConstants.readingTime = json['readingTime'] ?? '';
+    Utils.logger.f("json: $json");
     return UserData(
       id: json['_id'] ?? '',
       email: json['email'] ?? '',
       name: json['name'] ?? '',
       password: json['password'] ?? '',
       role: json['role'] ?? '',
-      version: json['__v'] as int,
+      // version: json['__v'] ?? 0,
       provider: json['provider'] ?? '',
       subscriptions: json['subscriptions'] ?? [],
+      longestStreak: json['longestStreak'] ?? 0,
+      currentStreak: json['currentStreak'] ?? 0,
+      readingTime: json['readingTime'] ?? '',
     );
   }
 
@@ -144,8 +162,11 @@ class UserData {
       'password': password ?? '',
       'role': role ?? '',
       'provider': provider ?? '',
-      '__v': version,
+      // '__v': version,
       'subscriptions': subscriptions,
+      'longestStreak': longestStreak ?? 0,
+      'currentStreak': currentStreak ?? 0,
+      'readingTime': readingTime ?? '',
     };
   }
 }

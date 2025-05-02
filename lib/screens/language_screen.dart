@@ -1,8 +1,14 @@
+import 'dart:ui' show ImageFilter;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart' show SvgPicture;
 import 'package:get/get.dart';
 import 'package:hope/Constants/colors.dart';
 import 'package:hope/utilities/language.utility.dart';
+
+import '../Constants/icons.dart' show arrowLeft;
+import '../utilities/text.utility.dart' show AllText;
 
 class LanguageScreen extends StatelessWidget {
   const LanguageScreen({super.key});
@@ -55,10 +61,38 @@ class LanguageScreen extends StatelessWidget {
     return CupertinoPageScaffold(
       backgroundColor: CupertinoColors.black,
       navigationBar: CupertinoNavigationBar(
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: ClipRRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+              child: Container(
+                width: 42.w,
+                height: 42.h,
+                decoration: BoxDecoration(
+                  color: CupertinoColors.systemGrey.withOpacity(0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: SvgPicture.asset(
+                    arrowLeft,
+                    height: 22.h,
+                    colorFilter: const ColorFilter.mode(
+                      CupertinoColors.white,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         backgroundColor: CupertinoColors.black,
         border: null,
-        middle: Text(
-          'Select Language',
+        middle: AllText(
+          text: 'Select Language',
           style: TextStyle(
             color: textWhite,
             fontSize: 18.sp,

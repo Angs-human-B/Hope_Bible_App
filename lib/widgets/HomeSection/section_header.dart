@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../utilities/text.utility.dart' show AllText;
+
 class SectionHeader extends StatelessWidget {
   final String title;
 
@@ -10,8 +12,8 @@ class SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child: Text(
-        title,
+      child: AllText(
+        text: title,
         style: TextStyle(
           color: CupertinoColors.white,
           fontSize: 20.sp,

@@ -1,6 +1,7 @@
 import 'dart:async' show StreamSubscription;
 import 'dart:convert';
 import 'dart:math' as math;
+import 'package:hope/utilities/app.constants.dart' show AppConstants;
 import 'package:openai_realtime_dart/openai_realtime_dart.dart';
 import 'package:just_audio/just_audio.dart';
 import 'dart:typed_data';
@@ -179,7 +180,7 @@ class OpenAIService {
 10. Always maintain a tone of humility and reverence when discussing spiritual matters
 
 You are not a replacement for pastoral guidance or personal spiritual discernment. Your role is to assist with biblical knowledge and Christian teachings while encouraging users to seek proper spiritual guidance from their church leaders.''',
-        voice: Voice.alloy,
+        voice: AppConstants.isMale ? Voice.alloy : Voice.sage,
         turnDetection: TurnDetection(type: TurnDetectionType.serverVad),
         inputAudioTranscription: InputAudioTranscriptionConfig(
           model: 'whisper-1',
@@ -348,7 +349,7 @@ You are not a replacement for pastoral guidance or personal spiritual discernmen
 
 You are not a replacement for pastoral guidance or personal spiritual discernment. Your role is to assist with biblical knowledge and Christian teachings while encouraging users to seek proper spiritual guidance from their church leaders.''',
           'model': 'gpt-4o-realtime-preview-2024-12-17',
-          'voice': 'verse',
+          'voice': AppConstants.isMale ? 'verse' : 'sage',
         }),
       );
 

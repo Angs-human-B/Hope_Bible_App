@@ -9,10 +9,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  json_annotation: ^4.9.0
   google_cloud_translation: ^0.0.4
   openai_realtime_dart: ^0.0.3+1
   speech_to_text: ^7.0.0
   just_audio: ^0.9.36
+  just_audio_background: ^0.0.1-beta.11
   path_provider: ^2.1.2
   permission_handler: ^11.0.1
   audio_session: ^0.1.18
@@ -43,11 +45,15 @@ dependencies:
   intl: ^0.20.2
   modal_bottom_sheet: ^3.0.0
   toastification: ^2.3.0
+  visibility_detector: ^0.4.0+2
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  json_serializable: ^6.7.1
+  build_runner: ^2.4.8
 
 flutter:
   uses-material-design: true

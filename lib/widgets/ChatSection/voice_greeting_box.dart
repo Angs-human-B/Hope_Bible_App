@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
+import 'package:hope/utilities/text.utility.dart';
 
 class VoiceGreetingBox extends StatelessWidget {
   final String userName;
@@ -19,27 +20,41 @@ class VoiceGreetingBox extends StatelessWidget {
         color: filled ? const Color(0xFF1C1F24) : Colors.transparent,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: RichText(
-        textAlign: TextAlign.left,
-        text: TextSpan(
-          style: const TextStyle(
-            fontSize: 30,
-            fontFamily: 'Inter',
-            color: CupertinoColors.white,
-            fontWeight: FontWeight.w500,
-          ),
-          children: [
-            const TextSpan(text: "Hello, "),
-            TextSpan(
-              text: userName,
-              style: const TextStyle(
-                color: Color(0xFFFFC13C),
-                fontFamily: 'Inter',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              AllText(
+                text: "Hello, ",
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontFamily: 'Inter',
+                  color: CupertinoColors.white,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
+              AllText(
+                text: userName,
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontFamily: 'Inter',
+                  color: Color(0xFFFFC13C),
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+          AllText(
+            text: "How can I help?",
+            style: const TextStyle(
+              fontSize: 30,
+              fontFamily: 'Inter',
+              color: CupertinoColors.white,
+              fontWeight: FontWeight.w500,
             ),
-            const TextSpan(text: "\nHow can I help?"),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
