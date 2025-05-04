@@ -84,10 +84,11 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                     selectedIdx == i ? true : false,
                   ),
                 ),
-                SizedBox(width: widget.crossSpacing),
+                SizedBox(width: 9.w),
                 GestureDetector(
                   onTap: () {
                     denominationIsSelected = true;
+                    onboardingController.isSelected.value = true;
                     setState(() {
                       selectedIdx = i + 1;
                     });
@@ -100,7 +101,7 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                   child: _buildBox(
                     widget.denomination[i + 1],
                     52.h,
-                    104.w,
+                    110.w,
                     selectedIdx == i + 1
                         ? accentWhite.withOpacity(0.25)
                         : secondaryGrey,

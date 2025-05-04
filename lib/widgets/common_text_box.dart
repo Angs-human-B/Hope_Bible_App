@@ -34,7 +34,7 @@ class CommonTextBox extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (clicked) SizedBox(width: 34.w),
-          Expanded(child: CommonText(text, 18.sp, textColor: TextColor)),
+          Expanded(child: CommonText(text, 14.sp, textColor: TextColor)),
           if (clicked)
             Icon(Icons.radio_button_checked_rounded, color: accentWhite),
           if (clicked) SizedBox(width: 12.w),
