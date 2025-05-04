@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'; // For some custom colors
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hope/Constants/colors.dart';
+import '../../Constants/icons.dart';
 import '../../screens/ai_call_screen.dart';
 import '../../utilities/app.constants.dart' show AppConstants;
 
@@ -20,41 +24,37 @@ class ChatInputBar extends StatelessWidget {
         // Input Box
         Expanded(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.h),
             decoration: BoxDecoration(
-              color: const Color(0xFF444444),
+              color: secondaryGrey,
               borderRadius: BorderRadius.circular(30),
               border: Border.all(color: CupertinoColors.systemGrey, width: 0.5),
             ),
             child: Row(
               children: [
-                // const Icon(
-                //   CupertinoIcons.add_circled,
-                //   color: Color(0xFFCCCCCC),
-                //   size: 20,
-                // ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: CupertinoTextField(
-                    controller: controller,
-                    style: const TextStyle(color: Color(0xFFCCCCCC)),
-                    placeholder: 'Ask Bible AI...',
-                    placeholderStyle: const TextStyle(
-                      color: CupertinoColors.systemGrey2,
-                    ),
-                    padding: EdgeInsets.zero,
-                    decoration: const BoxDecoration(color: Color(0xFF444444)),
-                    onSubmitted: (_) => onSend(),
-                  ),
-                ),
-
                 CupertinoButton(
                   padding: EdgeInsets.zero,
                   onPressed: onSend,
-                  child: const Icon(
-                    CupertinoIcons.paperplane_fill,
+                  child: Icon(
+                    CupertinoIcons.plus,
                     color: CupertinoColors.white,
-                    size: 20,
+                    size: 24.sp,
+                  ),
+                ),
+                SizedBox(width: 6.w),
+                Expanded(
+                  child: CupertinoTextField(
+                    controller: controller,
+                    style: TextStyle(color: hintTextGrey),
+                    placeholder: 'Ask Bible AI...',
+                    placeholderStyle: TextStyle(
+                      color: hintTextGrey,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500
+                    ),
+                    padding: EdgeInsets.zero,
+                    decoration: BoxDecoration(color: secondaryGrey),
+                    onSubmitted: (_) => onSend(),
                   ),
                 ),
               ],
@@ -74,13 +74,13 @@ class ChatInputBar extends StatelessWidget {
             );
           },
           child: Container(
-            width: 48,
-            height: 48,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 251, 251, 251),
+            width: 52.w,
+            height: 52.h,
+            decoration: BoxDecoration(
+              color: accentWhite,
               shape: BoxShape.circle,
             ),
-            child: const Icon(CupertinoIcons.mic_fill, color: Colors.black),
+            child: Center(child: SvgPicture.asset(callIcon,height: 25.h,width: 25.w)),
           ),
         ),
       ],

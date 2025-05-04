@@ -2,18 +2,24 @@
 
 import 'dart:convert';
 import 'dart:typed_data';
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:hope/Constants/icons.dart';
 import 'package:lottie/lottie.dart' show Lottie;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:audio_session/audio_session.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import '../Constants/colors.dart';
 import '../services/openai_service.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+
+import '../widgets/ChatSection/app_bar_header.dart';
 
 class AICallScreen extends StatefulWidget {
   final String userName;
@@ -286,67 +292,50 @@ class _AICallScreenState extends State<AICallScreen>
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        leading: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: const Color(0x14FFFFFF),
-            shape: BoxShape.circle,
-          ),
-          child: CupertinoButton(
-            padding: EdgeInsets.zero,
-            onPressed: () {
-              _stopListening();
-              Navigator.of(context).pop();
-            },
-            child: const Icon(
-              CupertinoIcons.back,
-              color: CupertinoColors.white,
-              size: 20,
-            ),
-          ),
-        ),
-        middle: Text(''),
-        backgroundColor: Color(0xFF0C111D),
-        border: null,
-      ),
       backgroundColor: const Color(0xFF0C111D),
       child: Stack(
         children: [
-          // Back Button
+          Column(
+            children: [
+              SizedBox(height: 48.h),
+              AppBarHeader(
+                title: Text(
+                  '',
+                  style: TextStyle(
+                    color: textWhite,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
 
-          // Greeting Box
-          Padding(
-            padding: const EdgeInsets.only(bottom: 140),
+          Positioned(
+            top: screenHeight * 0.25,
+            left: 0,
+            right: 0,
             child: Center(
               child: Container(
-                // width: 280,
-                // height: 280,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  // color: const Color(0xFF1A1A1A),
-                  boxShadow: [
-                    if (_isListening)
-                      BoxShadow(
-                        color: (_isListening
-                                ? CupertinoColors.activeBlue
-                                : CupertinoColors.activeGreen)
-                            .withOpacity(0.35),
-                        blurRadius: 30,
-                        spreadRadius: 10,
-                      ),
-                    if (_isListening)
-                      BoxShadow(
-                        color: (_isListening
-                                ? CupertinoColors.activeGreen
-                                : CupertinoColors.activeGreen)
-                            .withOpacity(0.25),
-                        blurRadius: 30,
-                        spreadRadius: 10,
-                      ),
-                  ],
+                  boxShadow: _isListening
+                      ? [
+                    BoxShadow(
+                      color: CupertinoColors.activeBlue.withOpacity(0.35),
+                      blurRadius: 30,
+                      spreadRadius: 10,
+                    ),
+                    BoxShadow(
+                      color: CupertinoColors.activeGreen.withOpacity(0.25),
+                      blurRadius: 30,
+                      spreadRadius: 10,
+                    ),
+                  ]
+                      : [],
                 ),
                 child: Stack(
                   alignment: Alignment.center,
@@ -384,163 +373,44 @@ class _AICallScreenState extends State<AICallScreen>
                 ),
               ),
             ),
-            // Container(
-            //   padding: const EdgeInsets.symmetric(
-            //     horizontal: 28,
-            //     vertical: 16,
-            //   ),
-            //   decoration: BoxDecoration(
-            //     color: const Color(0xFF2C2F35),
-            //     borderRadius: BorderRadius.circular(12),
-            //   ),
-            //   child: RichText(
-            //     textAlign: TextAlign.center,
-            //     text: TextSpan(
-            //       style: const TextStyle(
-            //         fontSize: 24,
-            //         color: CupertinoColors.white,
-            //       ),
-            //       children: [
-            //         WidgetSpan(
-            //           child: AllText(
-            //             text: "Hello, ",
-            //             style: const TextStyle(
-            //               fontSize: 24,
-            //               color: CupertinoColors.white,
-            //             ),
-            //           ),
-            //         ),
-            //         WidgetSpan(
-            //           child: AllText(
-            //             text: widget.userName,
-            //             style: const TextStyle(
-            //               fontSize: 24,
-            //               fontWeight: FontWeight.bold,
-            //               color: Color(0xFFFFC943),
-            //             ),
-            //           ),
-            //         ),
-            //         WidgetSpan(
-            //           child: AllText(
-            //             text: "\nHow can I help?",
-            //             style: const TextStyle(
-            //               fontSize: 24,
-            //               color: CupertinoColors.white,
-            //             ),
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
           ),
 
-          // Transcription overlay
-          // if (_showTranscription && currentResponse.isNotEmpty)
-          //   Positioned(
-          //     left: 20,
-          //     right: 20,
-          //     bottom: 120,
-          //     child: FadeTransition(
-          //       opacity: _textFadeAnimation,
-          //       child: Container(
-          //         padding: const EdgeInsets.all(20),
-          //         decoration: BoxDecoration(
-          //           color: CupertinoColors.black.withOpacity(0.7),
-          //           borderRadius: BorderRadius.circular(16),
-          //           border: Border.all(
-          //             color: CupertinoColors.white.withOpacity(0.1),
-          //           ),
-          //           boxShadow: [
-          //             BoxShadow(
-          //               color: CupertinoColors.black.withOpacity(0.2),
-          //               blurRadius: 20,
-          //               spreadRadius: 5,
-          //             ),
-          //           ],
-          //         ),
-          //         child: Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: [
-          //             Row(
-          //               children: [
-          //                 Container(
-          //                   padding: const EdgeInsets.symmetric(
-          //                     horizontal: 8,
-          //                     vertical: 4,
-          //                   ),
-          //                   decoration: BoxDecoration(
-          //                     color: CupertinoColors.systemRed.withOpacity(0.1),
-          //                     borderRadius: BorderRadius.circular(6),
-          //                   ),
-          //                   child: Text(
-          //                     'Assistant',
-          //                     style: TextStyle(
-          //                       color: CupertinoColors.systemRed,
-          //                       fontSize: 12,
-          //                       fontWeight: FontWeight.w600,
-          //                     ),
-          //                   ),
-          //                 ),
-          //               ],
-          //             ),
-          //             const SizedBox(height: 12),
-          //             Text(
-          //               _displayedText,
-          //               style: const TextStyle(
-          //                 color: CupertinoColors.white,
-          //                 fontSize: 16,
-          //                 height: 1.5,
-          //                 letterSpacing: 0.3,
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-
-          // Bottom Buttons
           Positioned(
-            bottom: 40,
+            bottom: 40.h,
             left: 0,
             right: 0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 _SvgRoundIcon(
-                  'assets/icons/mute.svg',
-                  radius: 48,
-                  iconColor:
-                      _isMuted ? CupertinoColors.black : CupertinoColors.white,
-                  background:
-                      _isMuted
-                          ? CupertinoColors.white
-                          : const Color(0xFF444444),
-                  onTap: _toggleMute,
-                ),
-                _SvgRoundIcon(
-                  'assets/icons/callcut.svg',
-                  radius: 72,
-                  background: CupertinoColors.systemRed,
+                  endCallIcon,
+                  radius: 56.sp,
+                  background: Color(0xffEE572D),
                   iconColor: CupertinoColors.white,
-                  size: 32,
+                  size: 24.sp,
                   onTap: () {
                     _stopListening();
                     Navigator.of(context).pop();
                   },
                 ),
+                Column(
+                  children: [
+                    _SvgRoundIcon(
+                      'assets/icons/mute.svg',
+                      radius: 88.sp,
+                      iconColor: _isMuted ? textWhite : secondaryBlack,
+                      background: _isMuted ? cardGrey : textWhite,
+                      onTap: _toggleMute,
+                    ),
+                    SizedBox(height: 20.h),
+                  ],
+                ),
                 _SvgRoundIcon(
-                  'assets/icons/soundoff.svg',
-                  radius: 48,
-                  iconColor:
-                      _isSpeakerOn
-                          ? CupertinoColors.white
-                          : CupertinoColors.black,
-                  background:
-                      _isSpeakerOn
-                          ? const Color(0xFF444444)
-                          : CupertinoColors.white,
+                  _isSpeakerOn ? unMutedIcon : mutedIcon,
+                  radius: 56.sp,
+                  iconColor: _isSpeakerOn ? secondaryBlack : textWhite,
+                  background: _isSpeakerOn ? textWhite : cardGrey,
                   onTap: _toggleSpeaker,
                 ),
               ],
@@ -550,6 +420,7 @@ class _AICallScreenState extends State<AICallScreen>
       ),
     );
   }
+
 
   Future<void> startWebRtcSession() async {
     setState(() {

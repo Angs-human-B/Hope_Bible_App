@@ -609,7 +609,7 @@ class _BibleScreenState extends State<BibleScreen>
               ),
             ),
             Positioned(
-              bottom: 80.h,
+              bottom: 150.h,
               left: 0,
               right: 0,
               child: Obx(
