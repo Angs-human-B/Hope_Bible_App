@@ -93,82 +93,79 @@ class _Onboarding33ScreenState extends State<Onboarding33Screen> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 18.w),
-          child: Column(
-            children: [
-              SizedBox(height: 50.h),
-              SizedBox(height: 84.h),
-              //
-              CommonText('When should we remind you?', 30.sp),
-              SizedBox(height: 40.h),
-              Row(
-                children: [
-                  _buildSlotButton(
-                    icon:"assets/images/morning.png", // morning icon
-                    label: "Morning",
-                    index: 0,
-                  ),
-                  SizedBox(width: 10.w,),
-                  _buildSlotButton(
-                    icon: "assets/images/mid-day.png", // mid-day icon
-                    label: "Mid-day",
-                    index: 1,
-                  ),
-                  SizedBox(width: 10.w,),
-                  _buildSlotButton(
-                    icon: "assets/images/night.png", // night icon
-                    label: "Night",
-                    index: 2,
-                  ),
-                ],
-              ),
-              SizedBox(height: 40.h),
-              Text(
-                "or",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: textGrey, fontSize: 14.sp),
-              ),
-              SizedBox(height: 20.h),
-              // Or custom time
-              Text(
-                "We'll remind you at…",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: textWhite, fontSize: 18.sp),
-              ),
-              SizedBox(height: 12),
-              GestureDetector(
-                onTap: _pickCupertinoTime,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-                  decoration: BoxDecoration(
-                    color: secondaryGrey,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        _formattedTime(_selectedDuration),
-                        style: TextStyle(color: Colors.white, fontSize: 16.sp),
-                      ),
-                      SizedBox(width: 20.w),
-                      Image.asset('assets/images/clock.png'),
-                    ],
-                  ),
+        Column(
+          children: [
+            SizedBox(height: 50.h),
+            SizedBox(height: 84.h),
+            //
+            CommonText('When should we remind you?', 30.sp),
+            SizedBox(height: 40.h),
+            Row(
+              children: [
+                _buildSlotButton(
+                  icon:"assets/images/morning.png", // morning icon
+                  label: "Morning",
+                  index: 0,
+                ),
+                SizedBox(width: 10.w,),
+                _buildSlotButton(
+                  icon: "assets/images/mid-day.png", // mid-day icon
+                  label: "Mid-day",
+                  index: 1,
+                ),
+                SizedBox(width: 10.w,),
+                _buildSlotButton(
+                  icon: "assets/images/night.png", // night icon
+                  label: "Night",
+                  index: 2,
+                ),
+              ],
+            ),
+            SizedBox(height: 40.h),
+            Text(
+              "or",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: textGrey, fontSize: 14.sp),
+            ),
+            SizedBox(height: 20.h),
+            // Or custom time
+            Text(
+              "We'll remind you at…",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: textWhite, fontSize: 18.sp),
+            ),
+            SizedBox(height: 12),
+            GestureDetector(
+              onTap: _pickCupertinoTime,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                decoration: BoxDecoration(
+                  color: secondaryGrey,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      _formattedTime(_selectedDuration),
+                      style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                    ),
+                    SizedBox(width: 20.w),
+                    Image.asset('assets/images/clock.png'),
+                  ],
                 ),
               ),
+            ),
 
-              SizedBox(height: 16.h),
-              Text(
-                "*Daily scripture helped them grow—\nand your story could be next.",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white38, fontSize: 12.sp),
-              ),
+            SizedBox(height: 16.h),
+            Text(
+              "*Daily scripture helped them grow—\nand your story could be next.",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white38, fontSize: 12.sp),
+            ),
 
-              // SizedBox(height: 55.h,)
-            ],
-          ),
+            // SizedBox(height: 55.h,)
+          ],
         ),
         //
       ],

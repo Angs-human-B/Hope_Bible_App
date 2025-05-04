@@ -47,7 +47,11 @@ class _CommonOnboardingScreenState extends State<CommonOnboardingScreen>
     }
     if (type == 'spiritualJourney') {
       journeyIsSelected = true;
-    } else {
+    }
+    if (type == 'readingGoal') {
+      journeyIsSelected = true;
+    }
+    else {
       return false;
     }
   }

@@ -300,8 +300,8 @@ class _MainAppState extends State<MainApp> {
                     ),
                   );
                 } else {
-                  // final route = 'onboarding';
-                  final route = "";
+                  final route = 'onboarding';
+                  // final route = "";
                   // final route = snapshot.data ?? 'onboarding';
                   // Utils.logger.d("route: $route");
 

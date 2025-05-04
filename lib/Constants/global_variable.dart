@@ -18,6 +18,13 @@ List<String> spiritualStages = [
   'Exploring',
 ];
 
+List<String> readingGoal = [
+  '5min/Day',
+  '10min/Day',
+  '15min/Day',
+  '25min/Day',
+];
+
 List<String> churchGoingFrequencies = [
   'Weekly',
   'Monthly',
@@ -33,6 +40,7 @@ bool attendChurchIsSelected = false;
 bool meditateIsSelected = false;
 bool studyGroupIsSelected = false;
 bool journeyIsSelected = false;
+bool readingGoalIsSelected = false;
 bool ignorePages = true;
 bool bibleVersionIsSelected = false;
 

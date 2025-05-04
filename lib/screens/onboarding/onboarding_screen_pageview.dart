@@ -84,6 +84,12 @@ class _OnboardingPagerState extends State<OnboardingPager> {
       'spiritualJourney',
     ),
     Onboarding15Screen(),
+    CommonOnboardingScreen(
+      readingGoal,
+      "Whats Your Daily\nReading Goal?",
+      'o15',
+      'readingGoal',
+    ),
     Onboarding33Screen(),
     Onboarding16Screen(),
     Onboarding17Screen(),
@@ -120,19 +126,19 @@ class _OnboardingPagerState extends State<OnboardingPager> {
     if (index == 10) {
       return onboarding11;
     }
-    if (index == 22) {
+    if (index == 24) {
       return onboarding23;
     }
-    if (index == 23) {
+    if (index == 25) {
       return onboarding24;
     }
-    if (index == 24) {
+    if (index == 26) {
       return onboarding25;
     }
-    if (index == 25) {
+    if (index == 27) {
       return onboarding26;
     }
-    if (index == 26) {
+    if (index == 28) {
       return onboarding27;
     } else {
       return spotLight;
@@ -220,7 +226,14 @@ class _OnboardingPagerState extends State<OnboardingPager> {
     }
     if (index == 25 && ignorePages) {
       return true;
-    } else {
+    }
+    if (index == 26 && ignorePages) {
+      return true;
+    }
+    if (index == 27 && ignorePages) {
+      return true;
+    }
+    else {
       return false;
     }
   }
@@ -235,6 +248,8 @@ class _OnboardingPagerState extends State<OnboardingPager> {
             controller: controller,
             itemCount: _pages.length,
             onPageChanged: (index) {
+              print("INDEX :, $index");
+
               oboardingController.currentPageIndex.value = index;
             },
             itemBuilder: (context, index) {
@@ -259,9 +274,9 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                           horizontal:
                               index == 0 ||
                                       index == 14 ||
-                                      index == 15 ||
-                                      index == 18 ||
-                                      index == 21
+                                      index == 17 ||
+                                      index == 20 ||
+                                      index == 23
                                   ? 0.w
                                   : 18.w,
                         ),
@@ -310,12 +325,13 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                     padding: EdgeInsets.symmetric(horizontal: 19.w),
                     child: GestureDetector(
                       onTap: () {
+
                         final enabled = isOptionsSelected(
                           oboardingController.currentPageIndex.value,
                         );
                         if (enabled &&
                             oboardingController.isSelected.value &&
-                            oboardingController.currentPageIndex.value != 26) {
+                            oboardingController.currentPageIndex.value != 28) {
                           oboardingController.currentProgress.value += 1;
                           controller.nextPage(
                             duration: Duration(milliseconds: 300),
@@ -337,10 +353,10 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                         ),
                         child: Center(
                           child: Text(
-                            oboardingController.currentPageIndex.value == 25
+                            oboardingController.currentPageIndex.value == 27
                                 ? "Find Your Way Back"
                                 : oboardingController.currentPageIndex.value ==
-                                    26
+                                    28
                                 ? "Enter the Experience"
                                 : "Next",
                             style: TextStyle(
