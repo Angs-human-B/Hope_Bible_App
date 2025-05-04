@@ -3,17 +3,19 @@ import 'dart:convert' show json;
 import 'package:get/get.dart';
 import 'package:hope/utilities/network.call.dart';
 
-import '../../../utilities/app.constants.dart' show AppConstants;
+import '../../../utilities/app.constants.dart' show AppConstants, Utils;
 import '../../../utilities/mixins.dart' show RefreshToken;
 import '../models/chat.model.dart';
 
 class ChatController extends GetxController with RefreshToken {
   RxBool isLoading = false.obs;
+  RxBool isSuggestionLoading = false.obs;
   RxBool isError = false.obs;
   RxString error = "".obs;
   // RxList<BibleBook> bibleBooks = <BibleBook>[].obs;
   RxString newSession = "api/v1/chat/session".obs;
   RxString sendMessage = "api/v1/chat/chat".obs;
+  RxString fetchSuggestions = "api/v1/chat/suggest-titles".obs;
   RxString sessionId = "".obs;
   RxString currentResponse = "".obs;
   RxList<String> scriptureReferences = <String>[].obs;
@@ -98,6 +100,38 @@ class ChatController extends GetxController with RefreshToken {
       isLoading(false);
     } finally {
       isLoading(false);
+    }
+  }
+
+  List<dynamic> suggestions = [];
+
+  Future fetchSuggestionsFn() async {
+    try {
+      isSuggestionLoading(true);
+      isError(false);
+      error("");
+      await _checkAuthToken();
+
+      await getAPI(
+        methodName: fetchSuggestions.value,
+        callback: (value) async {
+          Map<String, dynamic> valueMap = json.decode(value.response);
+          if (valueMap["success"] == true) {
+            suggestions = valueMap['data'];
+
+            Utils.logger.f(suggestions);
+          } else {
+            isError(true);
+            error(valueMap["message"]);
+            isSuggestionLoading(false);
+          }
+        },
+      );
+    } catch (ex) {
+      error("Failed to send message");
+      isSuggestionLoading(false);
+    } finally {
+      isSuggestionLoading(false);
     }
   }
 }

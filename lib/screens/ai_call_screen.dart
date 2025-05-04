@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:lottie/lottie.dart' show Lottie;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:audio_session/audio_session.dart';
@@ -317,41 +318,121 @@ class _AICallScreenState extends State<AICallScreen>
           // Back Button
 
           // Greeting Box
-          Align(
-            alignment: const Alignment(0, -0.4),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 140),
+            child: Center(
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 28,
-                  vertical: 16,
-                ),
+                // width: 280,
+                // height: 280,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF2C2F35),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    style: const TextStyle(
-                      fontSize: 24,
-                      color: CupertinoColors.white,
-                    ),
-                    children: [
-                      const TextSpan(text: "Hello, "),
-                      TextSpan(
-                        text: widget.userName,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFFFFC943),
-                        ),
+                  shape: BoxShape.circle,
+                  // color: const Color(0xFF1A1A1A),
+                  boxShadow: [
+                    if (_isListening)
+                      BoxShadow(
+                        color: (_isListening
+                                ? CupertinoColors.activeBlue
+                                : CupertinoColors.activeGreen)
+                            .withOpacity(0.35),
+                        blurRadius: 30,
+                        spreadRadius: 10,
                       ),
-                      const TextSpan(text: "\nHow can I help?"),
-                    ],
-                  ),
+                    if (_isListening)
+                      BoxShadow(
+                        color: (_isListening
+                                ? CupertinoColors.activeGreen
+                                : CupertinoColors.activeGreen)
+                            .withOpacity(0.25),
+                        blurRadius: 30,
+                        spreadRadius: 10,
+                      ),
+                  ],
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Background glow
+                    // if (_isListening)
+                    // Container(
+                    //   width: 260,
+                    //   height: 260,
+                    //   decoration: BoxDecoration(
+                    //     shape: BoxShape.circle,
+                    //     gradient: RadialGradient(
+                    //       colors: [
+                    //         CupertinoColors.systemRed.withOpacity(
+                    //           0.2,
+                    //         ),
+                    //         CupertinoColors.black.withOpacity(0),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    // Lottie animation
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(140),
+                      child: Lottie.asset(
+                        'assets/animations/chatBlob.json',
+                        width: 260,
+                        height: 260,
+                        // fit: BoxFit.cover,
+                        animate: _isListening,
+                        repeat: true,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
+            // Container(
+            //   padding: const EdgeInsets.symmetric(
+            //     horizontal: 28,
+            //     vertical: 16,
+            //   ),
+            //   decoration: BoxDecoration(
+            //     color: const Color(0xFF2C2F35),
+            //     borderRadius: BorderRadius.circular(12),
+            //   ),
+            //   child: RichText(
+            //     textAlign: TextAlign.center,
+            //     text: TextSpan(
+            //       style: const TextStyle(
+            //         fontSize: 24,
+            //         color: CupertinoColors.white,
+            //       ),
+            //       children: [
+            //         WidgetSpan(
+            //           child: AllText(
+            //             text: "Hello, ",
+            //             style: const TextStyle(
+            //               fontSize: 24,
+            //               color: CupertinoColors.white,
+            //             ),
+            //           ),
+            //         ),
+            //         WidgetSpan(
+            //           child: AllText(
+            //             text: widget.userName,
+            //             style: const TextStyle(
+            //               fontSize: 24,
+            //               fontWeight: FontWeight.bold,
+            //               color: Color(0xFFFFC943),
+            //             ),
+            //           ),
+            //         ),
+            //         WidgetSpan(
+            //           child: AllText(
+            //             text: "\nHow can I help?",
+            //             style: const TextStyle(
+            //               fontSize: 24,
+            //               color: CupertinoColors.white,
+            //             ),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
           ),
 
           // Transcription overlay
@@ -473,15 +554,13 @@ class _AICallScreenState extends State<AICallScreen>
   Future<void> startWebRtcSession() async {
     setState(() {
       _isConnected = false;
+      _isConnecting = true;
+      currentResponse = 'Initializing connection...';
     });
 
     try {
       // Ensure any existing connection is properly closed
       await _cleanupConnections();
-
-      setState(() {
-        currentResponse = 'Initializing connection...';
-      });
 
       emphemeralKey = await OpenAIService.getEphemeralToken();
       print("Key Generated: $emphemeralKey");
@@ -492,17 +571,43 @@ class _AICallScreenState extends State<AICallScreen>
             'urls': [
               'stun:stun1.1.google.com:19302',
               'stun:stun2.1.google.com:19302',
+              'stun:stun.l.google.com:19302',
             ],
           },
         ],
         'sdpSemantics': 'unified-plan',
         'enableDtlsSrtp': true,
+        'iceCandidatePoolSize': 10,
       };
 
       peerConnection = await createPeerConnection(configs);
       if (peerConnection == null) {
         throw Exception("Failed to create peer connection");
       }
+
+      // Set up connection state handling
+      peerConnection?.onConnectionState = (state) {
+        print("Connection state changed to: $state");
+        switch (state) {
+          case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
+            setState(() {
+              _isConnected = true;
+              _isConnecting = false;
+              currentResponse = 'Connected';
+            });
+            break;
+          case RTCPeerConnectionState.RTCPeerConnectionStateFailed:
+            print("Connection failed - attempting reconnection...");
+            _handleConnectionFailure();
+            break;
+          case RTCPeerConnectionState.RTCPeerConnectionStateDisconnected:
+            print("Connection disconnected - attempting reconnection...");
+            _handleConnectionFailure();
+            break;
+          default:
+            break;
+        }
+      };
 
       peerConnection?.onIceCandidate = (candidate) async {
         print("Got ICE Candidate: ${candidate.candidate ?? ""}");
@@ -511,14 +616,15 @@ class _AICallScreenState extends State<AICallScreen>
             await peerConnection!.addCandidate(candidate);
           } catch (e) {
             print("Error adding candidate: $e");
+            // Don't throw here, just log the error and continue
           }
         }
       };
 
-      peerConnection?.onConnectionState = (state) {
-        if (state == RTCPeerConnectionState.RTCPeerConnectionStateFailed ||
-            state == RTCPeerConnectionState.RTCPeerConnectionStateClosed) {
-          stopWebRtcConnection();
+      peerConnection?.onIceConnectionState = (state) {
+        print("ICE Connection State: $state");
+        if (state == RTCIceConnectionState.RTCIceConnectionStateFailed) {
+          _handleConnectionFailure();
         }
       };
 
@@ -526,7 +632,7 @@ class _AICallScreenState extends State<AICallScreen>
       final mediaConfigs = {
         'audio': true,
         'video': false,
-        'audioReceive': false, // Disable receiving audio from WebRTC
+        'audioReceive': false,
       };
 
       localStream = await navigator.mediaDevices.getUserMedia(mediaConfigs);
@@ -555,9 +661,10 @@ class _AICallScreenState extends State<AICallScreen>
       }
 
       final offerOptions = {
-        'offerToReceiveAudio': false, // Disable receiving audio in offer
+        'offerToReceiveAudio': false,
         'offerToReceiveVideo': false,
         'voiceActivityDetection': true,
+        'iceRestart': true,
       };
 
       RTCSessionDescription? offer = await peerConnection?.createOffer(
@@ -589,31 +696,38 @@ class _AICallScreenState extends State<AICallScreen>
         final answer = RTCSessionDescription(sdpResponse, 'answer');
         await peerConnection?.setRemoteDescription(answer);
         print('WebRTC connection established');
-
-        peerConnection?.onConnectionState = (state) async {
-          print('Connection State: $state');
-          setState(() {
-            currentResponse = 'Connection State: $state';
-          });
-        };
       }
-
-      // Update connection state when connected
-      setState(() {
-        _isConnected = true;
-      });
     } catch (e) {
-      setState(() {
-        _isConnecting = false;
-        _isConnected = false;
-        currentResponse = 'Error: $e';
-      });
       print('Error in startWebRtcSession: $e');
+      _handleConnectionFailure();
+    }
+  }
+
+  void _handleConnectionFailure() async {
+    if (!mounted) return;
+
+    setState(() {
+      _isConnecting = false;
+      _isConnected = false;
+      currentResponse = 'Connection issue detected. Reconnecting...';
+    });
+
+    // Wait a bit before attempting reconnection
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (!mounted) return;
+
+    // Only attempt reconnection if we're still listening
+    if (_isListening) {
+      print("Attempting to reconnect...");
+      await startWebRtcSession();
     }
   }
 
   void setupDataChannel() {
     dataChannel?.onMessage = (message) {
+      if (!mounted) return;
+
       try {
         final data = json.decode(message.text);
         print('\n==================== OpenAI Response ====================');
@@ -634,6 +748,14 @@ class _AICallScreenState extends State<AICallScreen>
         print('======================================================\n');
       } catch (e) {
         print('Error processing OpenAI message: $e');
+      }
+    };
+
+    dataChannel?.onDataChannelState = (state) {
+      print("DataChannel State: $state");
+      if (state == RTCDataChannelState.RTCDataChannelClosed ||
+          state == RTCDataChannelState.RTCDataChannelClosing) {
+        _handleConnectionFailure();
       }
     };
   }
@@ -658,16 +780,17 @@ class _AICallScreenState extends State<AICallScreen>
 
       if (dataChannel != null) {
         print("Closing data channel...");
-        dataChannel?.onMessage = null; // Remove message handler
+        dataChannel?.onMessage = null;
+        dataChannel?.onDataChannelState = null;
         await dataChannel?.close();
         dataChannel = null;
       }
 
       if (localStream != null) {
         print("Stopping local stream tracks...");
-        localStream?.getTracks().forEach((track) {
-          track.stop();
-          track.dispose();
+        localStream?.getTracks().forEach((track) async {
+          await track.stop();
+          await track.dispose();
         });
         await localStream?.dispose();
         localStream = null;
@@ -675,7 +798,6 @@ class _AICallScreenState extends State<AICallScreen>
 
       if (peerConnection != null) {
         print("Closing peer connection...");
-        // Remove all tracks and close all connections
         final senders = await peerConnection?.getSenders();
         if (senders != null) {
           for (var sender in senders) {
@@ -683,12 +805,11 @@ class _AICallScreenState extends State<AICallScreen>
           }
         }
 
-        // Remove all event handlers
         peerConnection?.onIceCandidate = null;
         peerConnection?.onConnectionState = null;
+        peerConnection?.onIceConnectionState = null;
         peerConnection?.onTrack = null;
 
-        // Close the peer connection
         await peerConnection?.close();
         await peerConnection?.dispose();
         peerConnection = null;

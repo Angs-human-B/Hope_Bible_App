@@ -10,7 +10,7 @@ import 'package:logger/logger.dart';
 Map<String, String> getHeaders() {
   Map<String, String> header = {};
   header['Content-Type'] = "application/json";
-  header["authorization"] = AppConstants.authToken;
+  header["authorization"] = "Bearer ${AppConstants.authToken}";
   Utils.logger.e(header);
   return header;
 }

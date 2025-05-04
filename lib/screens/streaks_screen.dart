@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart' show Get, Inst;
 import 'package:hope/Constants/colors.dart';
 import '../Constants/icons.dart';
+import '../streak/controllers/streak.controller.dart' show StreakController;
 
 class StreaksScreen extends StatefulWidget {
   const StreaksScreen({super.key});
@@ -47,25 +49,26 @@ class _StreaksScreenState extends State<StreaksScreen> {
     28: 0.6,
     29: 0.3,
     30: 0.85,
-    31: 0.5
+    31: 0.5,
   };
 
   void _showMonthPicker(BuildContext context) {
     showCupertinoModalPopup(
       context: context,
-      builder: (_) => Container(
-        height: 300.h,
-        color: secondaryGrey,
-        child: CupertinoDatePicker(
-          mode: CupertinoDatePickerMode.date,
-          initialDateTime: selectedDate,
-          onDateTimeChanged: (DateTime newDate) {
-            setState(() {
-              selectedDate = DateTime(newDate.year, newDate.month);
-            });
-          },
-        ),
-      ),
+      builder:
+          (_) => Container(
+            height: 300.h,
+            color: secondaryGrey,
+            child: CupertinoDatePicker(
+              mode: CupertinoDatePickerMode.date,
+              initialDateTime: selectedDate,
+              onDateTimeChanged: (DateTime newDate) {
+                setState(() {
+                  selectedDate = DateTime(newDate.year, newDate.month);
+                });
+              },
+            ),
+          ),
     );
   }
 
@@ -82,7 +85,20 @@ class _StreaksScreenState extends State<StreaksScreen> {
     }
 
     for (int day = 1; day <= daysInMonth; day++) {
-      double progress = sampleStreakData[day] ?? 0.0;
+      // Create current date to check against streak dates
+      final currentDate = DateTime(month.year, month.month, day);
+
+      // Check if the current date exists in streak dates
+      final hasStreak = controller.streakDates.any(
+        (date) =>
+            date.year == currentDate.year &&
+            date.month == currentDate.month &&
+            date.day == currentDate.day,
+      );
+
+      // Set progress to 1.0 if date matches, 0.0 if it doesn't
+      double progress = hasStreak ? 1.0 : 0.0;
+
       dateWidgets.add(
         SizedBox(
           width: 40.w,
@@ -131,21 +147,24 @@ class _StreaksScreenState extends State<StreaksScreen> {
         SizedBox(height: 16.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: weekdays
-              .map((day) => SizedBox(
-            width: 43.w,
-            child: Center(
-              child: Text(
-                day,
-                style: TextStyle(
-                  color: textGrey,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ))
-              .toList(),
+          children:
+              weekdays
+                  .map(
+                    (day) => SizedBox(
+                      width: 43.w,
+                      child: Center(
+                        child: Text(
+                          day,
+                          style: TextStyle(
+                            color: textGrey,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
         ),
         SizedBox(height: 12.h),
         Wrap(
@@ -156,6 +175,8 @@ class _StreaksScreenState extends State<StreaksScreen> {
       ],
     );
   }
+
+  final controller = Get.find<StreakController>();
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +227,7 @@ class _StreaksScreenState extends State<StreaksScreen> {
           ),
         ),
         trailing: GestureDetector(
-          onTap: (){
+          onTap: () {
             Navigator.pop(context);
           },
           child: ClipRRect(
@@ -253,8 +274,18 @@ class _StreaksScreenState extends State<StreaksScreen> {
 
   String _monthName(int month) {
     const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
     return months[month - 1];
   }

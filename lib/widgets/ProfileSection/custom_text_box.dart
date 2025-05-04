@@ -4,13 +4,15 @@ import 'package:hope/Constants/colors.dart';
 
 class CustomTextFieldBox extends StatelessWidget {
   final String hintText;
+  final bool? isEditable;
   final TextEditingController? controller;
 
   const CustomTextFieldBox({
-    Key? key,
+    super.key,
     required this.hintText,
     this.controller,
-  }) : super(key: key);
+    this.isEditable = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +23,19 @@ class CustomTextFieldBox extends StatelessWidget {
       decoration: BoxDecoration(
         color: secondaryGrey,
         borderRadius: BorderRadius.circular(12.sp),
-        border: Border.all(color: const Color(0xFFEFEFEF).withValues(alpha: .1)),
+        border: Border.all(
+          color: const Color(0xFFEFEFEF).withValues(alpha: .1),
+        ),
       ),
       alignment: Alignment.centerLeft,
       child: CupertinoTextField(
+        onChanged: (value) {
+          controller?.text = value;
+        },
+        readOnly: isEditable == false ? true : false,
         controller: controller,
         placeholder: hintText,
-        placeholderStyle: TextStyle(
-          color: hintTextGrey,
-        ),
+        placeholderStyle: TextStyle(color: hintTextGrey),
         style: TextStyle(color: textWhite),
         decoration: null,
         padding: EdgeInsets.zero,

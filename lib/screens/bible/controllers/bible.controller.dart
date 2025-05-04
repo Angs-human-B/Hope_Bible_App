@@ -1,5 +1,6 @@
 // ignore_for_file: unused_element
 
+import 'dart:async' show Timer;
 import 'dart:convert' show json;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../utilities/app.constants.dart' show AppConstants, Utils;
@@ -16,6 +17,7 @@ import '../models/bible.models.dart'
         BibleChapter,
         BibleVerse,
         BibleVerseResponse;
+import 'package:hope/streak/controllers/streak.controller.dart';
 
 class BibleController extends GetxController with RefreshToken {
   RxBool isLoadingVersions = false.obs;
@@ -40,10 +42,21 @@ class BibleController extends GetxController with RefreshToken {
   static const String _lastVersionCodeKey = 'last_bible_version_code';
   static const String _lastBookIdKey = 'last_bible_book_id';
   static const String _lastChapterNumberKey = 'last_bible_chapter_number';
+  static const String _dailyReadingTimeKey = 'daily_reading_time';
+  static const String _lastReadingDateKey = 'last_reading_date';
+  static const String _lastStreakUpdateKey = 'last_streak_update_date';
 
   Worker? _chapterWorker;
   Worker? _versionWorker;
   Worker? _bookWorker;
+
+  // Timer related variables
+  Timer? _readingTimer;
+  final _readingDuration = 0.obs;
+  final _isReading = false.obs;
+  final _streakController = Get.find<StreakController>();
+  final _dailyReadingSeconds = 0.obs;
+  final _hasUpdatedStreakToday = false.obs;
 
   @override
   void onInit() {
@@ -81,6 +94,21 @@ class BibleController extends GetxController with RefreshToken {
       }
     });
 
+    // Initialize daily reading time
+    _loadDailyReadingTime();
+
+    // Start listening to scroll events or other indicators of reading activity
+    ever(_isReading, (bool isReading) {
+      if (isReading) {
+        _startReadingTimer();
+      } else {
+        _pauseReadingTimer();
+      }
+    });
+
+    // Check if streak was already updated today
+    _checkStreakUpdateStatus();
+
     initializeData();
   }
 
@@ -89,6 +117,8 @@ class BibleController extends GetxController with RefreshToken {
     _chapterWorker?.dispose();
     _versionWorker?.dispose();
     _bookWorker?.dispose();
+    _readingTimer?.cancel();
+    _saveDailyReadingTime();
     super.onClose();
   }
 
@@ -400,5 +430,134 @@ class BibleController extends GetxController with RefreshToken {
     } catch (e) {
       Utils.logger.e('Error loading session: $e');
     }
+  }
+
+  Future<void> _loadDailyReadingTime() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final lastDate = prefs.getString(_lastReadingDateKey);
+      final today = DateTime.now().toIso8601String().split('T')[0];
+
+      if (lastDate != today) {
+        // Reset daily reading time if it's a new day
+        await prefs.setInt(_dailyReadingTimeKey, 0);
+        await prefs.setString(_lastReadingDateKey, today);
+        _dailyReadingSeconds.value = 0;
+      } else {
+        // Load today's accumulated reading time
+        _dailyReadingSeconds.value = prefs.getInt(_dailyReadingTimeKey) ?? 0;
+      }
+      Utils.logger.f(
+        'Loaded daily reading time: ${_dailyReadingSeconds.value} seconds',
+      );
+    } catch (e) {
+      Utils.logger.e('Error loading daily reading time: $e');
+    }
+  }
+
+  Future<void> _saveDailyReadingTime() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final today = DateTime.now().toIso8601String().split('T')[0];
+
+      await prefs.setString(_lastReadingDateKey, today);
+      await prefs.setInt(_dailyReadingTimeKey, _dailyReadingSeconds.value);
+
+      Utils.logger.f(
+        'Saved daily reading time: ${_dailyReadingSeconds.value} seconds',
+      );
+    } catch (e) {
+      Utils.logger.e('Error saving daily reading time: $e');
+    }
+  }
+
+  void _startReadingTimer() {
+    _readingTimer?.cancel();
+    _readingTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _readingDuration.value++;
+      _dailyReadingSeconds.value++;
+
+      // Update reading time every minute
+      if (_readingDuration.value % 60 == 0) {
+        _updateReadingTime();
+        _saveDailyReadingTime();
+      }
+    });
+  }
+
+  void _pauseReadingTimer() {
+    _readingTimer?.cancel();
+    // Update reading time when pausing
+    _updateReadingTime();
+    _saveDailyReadingTime();
+  }
+
+  void setReading(bool isReading) {
+    Utils.logger.f('Setting reading to: $isReading');
+    _isReading.value = isReading;
+  }
+
+  Future<void> _updateReadingTime() async {
+    try {
+      final minutes = _readingDuration.value ~/ 60;
+
+      // Parse the target reading time from AppConstants (format: "09:00")
+      final targetMinutes =
+          int.tryParse(AppConstants.readingTime.split(':')[0]) ?? 9;
+
+      Utils.logger.f(
+        'Current reading minutes: $minutes, Target: $targetMinutes',
+      );
+
+      if (minutes >= targetMinutes && !_hasUpdatedStreakToday.value) {
+        Utils.logger.f('Updating streak');
+        await _streakController.updateStreakFn({
+          'localDate': DateTime.now().toIso8601String(),
+        }, Get.context);
+
+        // Mark streak as updated for today
+        await _markStreakUpdated();
+
+        // Reset duration after updating
+        _readingDuration.value = 0;
+        Utils.logger.f(
+          'Streak updated after reading for $minutes minutes (target: $targetMinutes)',
+        );
+      }
+    } catch (e) {
+      Utils.logger.e('Error updating reading time: $e');
+    }
+  }
+
+  Future<void> _checkStreakUpdateStatus() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final lastUpdateDate = prefs.getString(_lastStreakUpdateKey);
+      final today = DateTime.now().toIso8601String().split('T')[0];
+
+      _hasUpdatedStreakToday.value = lastUpdateDate == today;
+      Utils.logger.f(
+        'Streak already updated today: ${_hasUpdatedStreakToday.value}',
+      );
+    } catch (e) {
+      Utils.logger.e('Error checking streak update status: $e');
+    }
+  }
+
+  Future<void> _markStreakUpdated() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final today = DateTime.now().toIso8601String().split('T')[0];
+      await prefs.setString(_lastStreakUpdateKey, today);
+      _hasUpdatedStreakToday.value = true;
+      Utils.logger.f('Marked streak as updated for today');
+    } catch (e) {
+      Utils.logger.e('Error marking streak as updated: $e');
+    }
+  }
+
+  // Helper method to get today's reading time in minutes
+  int getTodayReadingMinutes() {
+    return _dailyReadingSeconds.value ~/ 60;
   }
 }

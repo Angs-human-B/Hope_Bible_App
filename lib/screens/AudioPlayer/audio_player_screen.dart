@@ -3,46 +3,108 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import '../../Constants/colors.dart';
 import '../../Constants/icons.dart';
 import '../../services/audio_service.dart';
+import '../../services/favorites_service.dart' show FavoritesController;
 import '../../widgets/AudioPlayer/audio_controls.dart';
 import '../../widgets/AudioPlayer/audio_slider.dart';
-import '../../Models/lyric_line.dart';
+import '../../media/models/media.model.dart' show Media;
 
 class AudioPlayerScreen extends StatefulWidget {
-  const AudioPlayerScreen({Key? key}) : super(key: key);
+  final Media media;
+  final List<Media> mediaList;
+  final int currentIndex;
+
+  const AudioPlayerScreen({
+    super.key,
+    required this.media,
+    required this.mediaList,
+    required this.currentIndex,
+  });
 
   @override
   State<AudioPlayerScreen> createState() => _AudioPlayerScreenState();
 }
 
 class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
+  final favouritesController = Get.find<FavoritesController>();
   final AudioService _audio = AudioService();
   late final PageController _pageController;
   bool _isLyricsShown = false;
-  List<LyricLine> _lines = [];
-  int _currentLyricIndex = 0;
+  int _currentSubtitleIndex = 0;
+  late int _currentMediaIndex;
+  late Media _currentMedia;
 
   @override
   void initState() {
     super.initState();
+    _currentMediaIndex = widget.currentIndex;
+    _currentMedia = widget.media;
     _pageController = PageController();
     _audio.init();
-    _audio.positionStream.listen((_) => setState(() {}));
-    _loadLyrics();
+    _initAudio();
+    _checkFavoriteStatus();
+    _audio.positionStream.listen(_updateCurrentSubtitle);
   }
 
-  Future<void> _loadLyrics() async {
-    _lines = await LyricLine.loadFromAsset('assets/lyrics/sample.lrc');
-    setState(() {});
-    _audio.positionStream.listen((pos) {
-      final idx = LyricLine.findIndex(_lines, pos);
-      if (idx != _currentLyricIndex) {
-        setState(() => _currentLyricIndex = idx);
+  void _updateCurrentSubtitle(Duration position) {
+    if (_currentMedia.subtitleInfo == null ||
+        _currentMedia.subtitleInfo!.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      // Find the appropriate subtitle for the current position
+      for (int i = 0; i < _currentMedia.subtitleInfo!.length; i++) {
+        final timecode = _currentMedia.subtitleInfo![i].timecode;
+        final minutes = int.parse(timecode.split(':')[0]);
+        final seconds = int.parse(timecode.split(':')[1]);
+        final subtitlePosition = Duration(minutes: minutes, seconds: seconds);
+
+        if (position < subtitlePosition) {
+          _currentSubtitleIndex = (i - 1).clamp(
+            0,
+            _currentMedia.subtitleInfo!.length - 1,
+          );
+          return;
+        }
       }
+      _currentSubtitleIndex = _currentMedia.subtitleInfo!.length - 1;
     });
+  }
+
+  Future<void> _initAudio() async {
+    if (_currentMedia.signedUrl != null) {
+      await _audio.setSource(_currentMedia.signedUrl!, _currentMedia);
+      await _audio.play();
+    }
+  }
+
+  Future<void> _checkFavoriteStatus() async {
+    await _audio.checkFavorite(_currentMedia.id);
+  }
+
+  void _playNext() async {
+    if (_currentMediaIndex < widget.mediaList.length - 1) {
+      setState(() {
+        _currentMediaIndex++;
+        _currentMedia = widget.mediaList[_currentMediaIndex];
+      });
+      await _initAudio();
+    }
+  }
+
+  void _playPrevious() async {
+    if (_currentMediaIndex > 0) {
+      setState(() {
+        _currentMediaIndex--;
+        _currentMedia = widget.mediaList[_currentMediaIndex];
+      });
+      await _initAudio();
+    }
   }
 
   @override
@@ -69,21 +131,32 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   Widget build(BuildContext context) {
     final position = _audio.position;
     final duration = _audio.duration;
-    final safeDuration = duration.inMilliseconds == 0
-        ? const Duration(milliseconds: 1)
-        : duration;
+    final safeDuration =
+        duration.inMilliseconds == 0
+            ? const Duration(milliseconds: 1)
+            : duration;
 
     return CupertinoPageScaffold(
       child: Stack(
         children: [
           // blurred background
           Positioned.fill(
-            child: Image.asset('assets/images/the_ark.png', fit: BoxFit.cover),
+            child: Image.network(
+              _currentMedia.thumbnail ?? '',
+              fit: BoxFit.cover,
+              errorBuilder:
+                  (_, __, ___) => Image.asset(
+                    'assets/images/the_ark.png',
+                    fit: BoxFit.cover,
+                  ),
+            ),
           ),
           Positioned.fill(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: Container(color: CupertinoColors.black.withValues(alpha: 0.7)),
+              child: Container(
+                color: CupertinoColors.black.withValues(alpha: 0.7),
+              ),
             ),
           ),
           SafeArea(
@@ -103,7 +176,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                         child: _buildBlurButton(icon: arrowLeft),
                       ),
                       Text(
-                        'The ArK Part 01',
+                        _currentMedia.title,
                         style: TextStyle(
                           color: textWhite,
                           fontSize: 18.sp,
@@ -111,8 +184,49 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: null,
-                        child: _buildBlurButton(icon: bookmarkIcon),
+                        onTap: () async {
+                          if (!favouritesController.isFavorite(
+                            _currentMedia.id,
+                          )) {
+                            await favouritesController.toggleFavorite(
+                              _currentMedia.id,
+                              mediaData: _currentMedia,
+                            );
+                          } else {
+                            await favouritesController.toggleFavorite(
+                              _currentMedia.id,
+                              mediaData: _currentMedia,
+                            );
+                          }
+                        },
+                        child: ClipRRect(
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                            child: Container(
+                              width: 42.w,
+                              height: 42.h,
+                              decoration: BoxDecoration(
+                                color: CupertinoColors.systemGrey.withOpacity(
+                                  0.2,
+                                ),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: Obx(() {
+                                  final isFavorite = favouritesController
+                                      .isFavorite(_currentMedia.id);
+                                  return Icon(
+                                    isFavorite
+                                        ? CupertinoIcons.bookmark_fill
+                                        : CupertinoIcons.bookmark,
+                                    color: CupertinoColors.white,
+                                    size: 20.0,
+                                  );
+                                }),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -128,45 +242,66 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                             width: 240.w,
                             height: 240.h,
                             decoration: BoxDecoration(
-                              image: const DecorationImage(
-                                image: AssetImage('assets/images/the_ark.png'),
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  _currentMedia.thumbnail ?? '',
+                                ),
                                 fit: BoxFit.cover,
+                                onError:
+                                    (_, __) => const AssetImage(
+                                      'assets/images/the_ark.png',
+                                    ),
                               ),
                               borderRadius: BorderRadius.circular(12.sp),
                             ),
                           ),
                         ),
-                        // Page 1: Lyrics list
-                        ListView.builder(
-                          padding: EdgeInsets.symmetric(vertical: 16.h),
-                          itemCount: _lines.length,
-                          itemBuilder: (context, index) {
-                            final line = _lines[index];
-                            final isCurrent = index == _currentLyricIndex;
-                            return AnimatedOpacity(
-                              opacity: isCurrent ? 1.0 : 0.5,
-                              duration: const Duration(milliseconds: 200),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 6.h),
-                                child: Text(
-                                  line.text,
-                                  style: TextStyle(
-                                    color: CupertinoColors.white,
-                                    fontSize: isCurrent ? 22.sp : 20.sp,
-                                    fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
+                        // Page 1: Subtitles list
+                        if (_currentMedia.subtitleInfo != null)
+                          ListView.builder(
+                            padding: EdgeInsets.symmetric(vertical: 16.h),
+                            itemCount: _currentMedia.subtitleInfo!.length,
+                            itemBuilder: (context, index) {
+                              final subtitle =
+                                  _currentMedia.subtitleInfo![index];
+                              final isCurrent = index == _currentSubtitleIndex;
+                              return AnimatedOpacity(
+                                opacity: isCurrent ? 1.0 : 0.5,
+                                duration: const Duration(milliseconds: 200),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 6.h),
+                                  child: Text(
+                                    subtitle.subtitle,
+                                    style: TextStyle(
+                                      color: CupertinoColors.white,
+                                      fontSize: isCurrent ? 22.sp : 20.sp,
+                                      fontWeight:
+                                          isCurrent
+                                              ? FontWeight.bold
+                                              : FontWeight.normal,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
+                              );
+                            },
+                          )
+                        else
+                          Center(
+                            child: Text(
+                              'No subtitles available',
+                              style: TextStyle(
+                                color: CupertinoColors.white,
+                                fontSize: 18.sp,
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          ),
                       ],
                     ),
                   ),
                   SizedBox(height: 16.h),
                   Text(
-                    'The ArK Part 01',
+                    _currentMedia.title,
                     style: TextStyle(
                       color: textWhite,
                       fontSize: 18.sp,
@@ -181,12 +316,14 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                   ),
                   SizedBox(height: 19.h),
                   AudioControls(
+                    isSubtitleAvailable:
+                        _currentMedia.subtitleInfo?.isNotEmpty == true,
                     isPlaying: _audio.isPlaying,
                     isMuted: _audio.isMuted,
                     isLyricsShown: _isLyricsShown,
                     onPlayPause: _audio.togglePlay,
-                    onNext: _audio.next,
-                    onPrevious: _audio.previous,
+                    onNext: _playNext,
+                    onPrevious: _playPrevious,
                     onMute: _audio.toggleMute,
                     onLyrics: _togglePage,
                   ),
@@ -199,9 +336,6 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
       ),
     );
   }
-
-
-
 
   Widget _buildBlurButton({required String icon}) {
     return ClipRRect(

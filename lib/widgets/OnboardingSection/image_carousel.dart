@@ -86,7 +86,12 @@ class _QuoteCarouselState extends State<QuoteCarousel> {
                   decoration: BoxDecoration(
                     color:
                         isActive
-                            ? const Color(0xFFFFC72C) // accentYellow
+                            ? const Color.fromARGB(
+                              255,
+                              255,
+                              255,
+                              255,
+                            ) // accentYellow
                             : const Color(0xFF3A3A3A), // secondaryGrey
                     borderRadius: BorderRadius.circular(4.r),
                   ),

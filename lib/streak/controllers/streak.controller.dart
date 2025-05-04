@@ -3,7 +3,7 @@ import 'dart:convert' show json;
 import 'package:get/get.dart';
 import 'package:hope/utilities/mixins.dart';
 
-import '../../utilities/app.constants.dart' show AppConstants;
+import '../../utilities/app.constants.dart' show AppConstants, Utils;
 import '../../utilities/network.call.dart' show getAPI, multiPostAPINew, putAPI;
 import '../models/streak.model.dart';
 
@@ -28,6 +28,7 @@ class StreakController extends GetxController with RefreshToken {
   }
 
   RxString streak = "api/v1/streak".obs;
+  RxString streakUpdate = "api/v1/streak/update".obs;
   RxString getStreak = "api/v1/streak/status".obs;
   RxString getStreakHistory = "api/v1/streak/history".obs;
 
@@ -40,7 +41,7 @@ class StreakController extends GetxController with RefreshToken {
       error("");
       await _checkAuthToken();
       await multiPostAPINew(
-        methodName: streak.value,
+        methodName: streakUpdate.value,
         param: params,
         callback: (value) async {
           Map<String, dynamic> valueMap = json.decode(value.response);
@@ -108,9 +109,11 @@ class StreakController extends GetxController with RefreshToken {
         methodName: getStreakHistory.value,
         callback: (value) async {
           Map<String, dynamic> valueMap = json.decode(value.response);
+          Utils.logger.f("Streak History valueMap: $valueMap");
           if (valueMap["success"] == true) {
             final response = StreakHistoryResponse.fromJson(valueMap["data"]);
             streakDates.value = response.streakDates;
+            Utils.logger.f("Streak History streakDates: $streakDates");
           } else {
             isError(true);
             error(valueMap["message"]);
@@ -128,7 +131,7 @@ class StreakController extends GetxController with RefreshToken {
 
   Future updateReadingTimeFn(Map<String, dynamic> params, context) async {
     try {
-      isLoading(true);
+      // isLoading(true);
       isError(false);
       error("");
       await _checkAuthToken();
@@ -150,9 +153,9 @@ class StreakController extends GetxController with RefreshToken {
       );
     } catch (ex) {
       error("something went wrong");
-      isLoading(false);
+      // isLoading(false);
     } finally {
-      isLoading(false);
+      // isLoading(false);
     }
   }
 }

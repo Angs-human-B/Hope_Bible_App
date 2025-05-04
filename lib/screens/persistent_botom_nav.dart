@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart' show Obx;
+import 'package:get/get.dart' show Get, Inst, Obx;
 import 'package:hope/screens/profile_screen.dart';
 
+import '../streak/controllers/streak.controller.dart' show StreakController;
 import '../widgets/bottom_nav_bar.dart';
 import 'bible_screen.dart';
 import 'home_screen.dart';
@@ -16,6 +17,16 @@ class PersistentBottomNav extends StatefulWidget {
 }
 
 class _PersistentBottomNavState extends State<PersistentBottomNav> {
+  final StreakController streakController = Get.find<StreakController>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await streakController.getStreakFn({}, context);
+    });
+  }
+
   int _selectedIndex = 0;
   double _opacity = 1.0;
 

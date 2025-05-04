@@ -103,7 +103,7 @@ class _Onboarding16ScreenState extends State<Onboarding16Screen> {
                               color: _iconBackground,
                               shape: BoxShape.circle,
                             ),
-                            child: Image.asset(star),
+                            child: Image.asset(star, color: textWhite),
                           ),
                           SizedBox(width: 12.w),
                           Expanded(
