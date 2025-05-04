@@ -66,7 +66,7 @@ Future<void> _initializeApp() async {
 
   await _configureSDK();
   WidgetsFlutterBinding.ensureInitialized();
-  await fetchRevenueCatDetailsFn();
+  // await fetchRevenueCatDetailsFn();
 
   SharedPreferences sp = await SharedPreferences.getInstance();
 
@@ -271,7 +271,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      // designSize: const Size(390, 844),
+      designSize: const Size(390, 844),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
@@ -300,8 +300,10 @@ class _MainAppState extends State<MainApp> {
                     ),
                   );
                 } else {
-                  final route = snapshot.data ?? 'onboarding';
-                  Utils.logger.d("route: $route");
+                  final route = 'onboarding';
+                  // final route = "";
+                  // final route = snapshot.data ?? 'onboarding';
+                  // Utils.logger.d("route: $route");
 
                   return _buildScreen(route);
                   // AnimatedSwitcher(

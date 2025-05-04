@@ -74,9 +74,9 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             );
           } else {
-            final route = 'onboarding';
-            // final route = "";  /// snapshot.data ?? 'onboarding';
-            // final route = "";  /// snapshot.data ?? 'onboarding';
+            // final route = 'onboarding';
+            final route = "";
+            // final route = snapshot.data ?? 'onboarding';
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.pushReplacement(
                 context,
