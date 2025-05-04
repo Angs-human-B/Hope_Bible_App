@@ -336,7 +336,7 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
                             controller: _controller,
                             onSend: () => _sendMessage(_controller.text.trim()),
                           ),
-                           SizedBox(height: 10.h),
+                           SizedBox(height: 25.h),
                         ],
                       ),
                     ),
