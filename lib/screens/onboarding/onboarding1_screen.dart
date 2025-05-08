@@ -53,11 +53,7 @@ class _Onboarding1ScreenState extends State<Onboarding1Screen> {
               width: 340.w,
               child: Column(
                 children: [
-                  SizedBox(height: 30.h),
-                  CommonText(
-                    "Ready to\n Personalize Your Spiritual Journey?",
-                    36.sp,
-                  ),
+                  CommonText("Ready to\n become a better Christian?", 36.sp),
                   SizedBox(height: 34.h),
                   GestureDetector(
                     onTap: () {
@@ -142,7 +138,7 @@ class _Onboarding1ScreenState extends State<Onboarding1Screen> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 33.h),
+                  SizedBox(height: 8.h),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 26.w),
                     child: Text.rich(

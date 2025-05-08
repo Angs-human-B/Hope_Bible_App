@@ -209,24 +209,27 @@ class _CardGridTabState extends State<CardGridTab> {
         child: CustomScrollView(
           controller: _scrollController,
           slivers: [
-            SliverGrid(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 2.h,
-                crossAxisSpacing: 8.w,
-                childAspectRatio: 167.w / 300.h,
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
+              sliver: SliverGrid(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 2.h,
+                  crossAxisSpacing: 4.w,
+                  childAspectRatio: 167.w / 300.h,
+                ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final favorite = favorites[index];
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: MyListCard(
+                      key: ValueKey(favorite.media.id),
+                      media: favorite.media,
+                      mediaList: favorites.map((e) => e.media).toList(),
+                    ),
+                  );
+                }, childCount: favorites.length),
               ),
-              delegate: SliverChildBuilderDelegate((context, index) {
-                final favorite = favorites[index];
-                return AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  child: MyListCard(
-                    key: ValueKey(favorite.media.id),
-                    media: favorite.media,
-                    mediaList: favorites.map((e) => e.media).toList(),
-                  ),
-                );
-              }, childCount: favorites.length),
             ),
             if (favouritesController.isLoading.value)
               SliverToBoxAdapter(

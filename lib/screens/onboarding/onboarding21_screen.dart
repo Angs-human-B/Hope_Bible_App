@@ -20,8 +20,8 @@ class _Onboarding21ScreenState extends State<Onboarding21Screen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(height: 50.h),
-        SizedBox(height: 84.h),
-        CommonText(onboarding21String, 30.sp, textAlign: TextAlign.center),
+        SizedBox(height: 124.h),
+        CommonText(onboarding21String, 36.sp, textAlign: TextAlign.center),
         SizedBox(height: 22.h),
         CommonText(
           onboarding21String2,

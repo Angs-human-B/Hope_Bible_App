@@ -7,7 +7,6 @@ class DailyVerseService {
   static const String _lastUpdateKey = 'last_verse_update';
   static const String _verseTextKey = 'daily_verse_text';
   static const String _verseReferenceKey = 'daily_verse_reference';
-  static const String _backgroundImageUrlKey = 'daily_background_image_url';
   static const MethodChannel platform = MethodChannel('HopeHomeWidget');
 
   static Future<Map<String, dynamic>> getDailyVerse() async {
@@ -20,21 +19,18 @@ class DailyVerseService {
         DateTime.parse(lastUpdate).day != now.day ||
         DateTime.parse(lastUpdate).month != now.month ||
         DateTime.parse(lastUpdate).year != now.year) {
-      // Fetch new verse and image
+      // Fetch new verse
       return _fetchAndSaveNewVerse();
     }
 
     // Return cached verse if available
     final verseText = prefs.getString(_verseTextKey);
     final verseReference = prefs.getString(_verseReferenceKey);
-    final imageUrl = prefs.getString(_backgroundImageUrlKey);
 
     if (verseText != null && verseReference != null) {
-      return {
-        'verse': verseText,
-        'reference': verseReference,
-        'imageUrl': imageUrl,
-      };
+      // Always sync with widget storage
+      await _saveToUserDefaults(verseText, verseReference);
+      return {'verse': verseText, 'reference': verseReference};
     }
 
     // Fallback to fetching new verse if cache is incomplete
@@ -43,7 +39,7 @@ class DailyVerseService {
 
   static Future<Map<String, dynamic>> _fetchAndSaveNewVerse() async {
     try {
-      // Fetch verse from the same API as the widget
+      // Fetch verse from the API
       final verseResponse = await http.get(
         Uri.parse('https://labs.bible.org/api/?passage=random&type=json'),
       );
@@ -62,58 +58,46 @@ class DailyVerseService {
       final reference =
           '${verseData['bookname']} ${verseData['chapter']}:${verseData['verse']}';
 
-      // Fetch image
-      final imageResponse = await http.get(
-        Uri.parse(
-          'https://api.unsplash.com/photos/random?query=nature,landscape&orientation=landscape',
-        ),
-        headers: {
-          'Authorization':
-              'Client-ID PHxdVOQofLiiK4IaORPHnxCLT2k49QLSV_SEPScYI5U',
-        },
-      );
+      final now = DateTime.now().toIso8601String();
 
-      String? imageUrl;
-      if (imageResponse.statusCode == 200) {
-        final imageData = json.decode(imageResponse.body);
-        imageUrl = imageData['urls']['regular'];
-      }
+      // First save to widget storage to ensure it's always up to date
+      await _saveToUserDefaults(verseText, reference);
 
-      // Save to SharedPreferences
+      // Then save to SharedPreferences
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(_lastUpdateKey, DateTime.now().toIso8601String());
+      await prefs.setString(_lastUpdateKey, now);
       await prefs.setString(_verseTextKey, verseText);
       await prefs.setString(_verseReferenceKey, reference);
-      if (imageUrl != null) {
-        await prefs.setString(_backgroundImageUrlKey, imageUrl);
-      }
 
-      // Also save to UserDefaults for widget access
-      await _saveToUserDefaults(verseText, reference, imageUrl ?? '');
-
-      return {'verse': verseText, 'reference': reference, 'imageUrl': imageUrl};
+      return {'verse': verseText, 'reference': reference};
     } catch (e) {
       print('Error fetching daily verse: $e');
-      // Return default verse if fetch fails
-      return {
-        'verse':
-            'For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life.',
-        'reference': 'John 3:16',
-        'imageUrl': null,
-      };
+
+      // Default verse
+      const defaultVerse =
+          'For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life.';
+      const defaultReference = 'John 3:16';
+
+      // Save default verse to both storages
+      await _saveToUserDefaults(defaultVerse, defaultReference);
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_lastUpdateKey, DateTime.now().toIso8601String());
+      await prefs.setString(_verseTextKey, defaultVerse);
+      await prefs.setString(_verseReferenceKey, defaultReference);
+
+      return {'verse': defaultVerse, 'reference': defaultReference};
     }
   }
 
   static Future<void> _saveToUserDefaults(
     String verse,
     String reference,
-    String imageUrl,
   ) async {
     try {
       await platform.invokeMethod('saveToAppGroup', {
         'verse': verse,
         'reference': reference,
-        'imageUrl': imageUrl,
         'lastUpdate': DateTime.now().toIso8601String(),
       });
     } catch (e) {

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hope/Constants/colors.dart';
 import 'package:hope/screens/chat_home_screen.dart';
+import 'package:hope/utilities/text.utility.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -20,8 +21,8 @@ class BottomNavBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          height: 72.h,
-          width: 240.w,
+          height: 90.h,
+          width: 260.w,
           margin: EdgeInsets.symmetric(horizontal: 12.w),
           padding: EdgeInsets.all(8.sp),
           decoration: BoxDecoration(
@@ -32,21 +33,25 @@ class BottomNavBar extends StatelessWidget {
           child: Row(
             children: [
               _NavIcon(
+                label: 'Home',
                 assetPath: 'assets/icons/home.svg',
                 selected: currentIndex == 0,
                 onTap: () => onTap(0),
               ),
               _NavIcon(
+                label: 'Bible',
                 assetPath: 'assets/icons/bible.svg',
                 selected: currentIndex == 1,
                 onTap: () => onTap(1),
               ),
               _NavIcon(
+                label: 'Saved',
                 assetPath: 'assets/icons/bookmark.svg',
                 selected: currentIndex == 2,
                 onTap: () => onTap(2),
               ),
               _NavIcon(
+                label: 'Profile',
                 assetPath: 'assets/icons/profile.svg',
                 selected: currentIndex == 3,
                 onTap: () => onTap(3),
@@ -87,6 +92,7 @@ class BottomNavBar extends StatelessWidget {
 }
 
 class _NavIcon extends StatelessWidget {
+  final String label;
   final String assetPath;
   final bool selected;
   final VoidCallback onTap;
@@ -95,6 +101,7 @@ class _NavIcon extends StatelessWidget {
     required this.assetPath,
     required this.onTap,
     this.selected = false,
+    required this.label,
   });
 
   @override
@@ -102,21 +109,42 @@ class _NavIcon extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 55.h,
-        width: 55.w,
+        height: 60.h,
+        width: 60.w,
         decoration: BoxDecoration(
           color: selected ? accentWhite : secondaryGrey,
           shape: BoxShape.circle,
         ),
-        padding: EdgeInsets.all(15.sp),
-        child: SvgPicture.asset(
-          assetPath,
-          width: 19.w,
-          height: 19.h,
-          colorFilter: ColorFilter.mode(
-            selected ? CupertinoColors.black : CupertinoColors.white,
-            BlendMode.srcIn,
-          ),
+        padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 4.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              assetPath,
+              width: 24.w,
+              height: 24.h,
+              colorFilter: ColorFilter.mode(
+                selected ? CupertinoColors.black : CupertinoColors.white,
+                BlendMode.srcIn,
+              ),
+            ),
+            SizedBox(height: 3.h),
+            Flexible(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: AllText(
+                  text: label,
+                  style: TextStyle(
+                    fontSize: 10.sp,
+                    color:
+                        selected
+                            ? CupertinoColors.black
+                            : CupertinoColors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -264,10 +264,17 @@ class _AuthPageState extends State<AuthPage> {
           // "readingTime": oboardingController.getPageData(page)
           "denomination": oboardingController.getPageData('denomination'),
           "age": oboardingController.getPageData('age'),
-          "bibleVersion": oboardingController.getPageData('bibleVersion'),
+          "bibleVersion": oboardingController.getPageData('translations'),
           "attendChurch": oboardingController.getPageData('attendChurch'),
           "meditate": oboardingController.getPageData('meditate'),
           "studyGroup": oboardingController.getPageData('studyGroup'),
+          "readingTime":
+              formatReadingTime(
+                oboardingController.getPageData('readingTime').toString(),
+              ).toString(),
+          "spiritualJourney": oboardingController.getPageData(
+            'spiritualJourney',
+          ),
         };
         Utils.logger.f(widget.login);
         Utils.logger.f(params);
@@ -318,6 +325,12 @@ class _AuthPageState extends State<AuthPage> {
     }
   }
 
+  String formatReadingTime(String readingGoal) {
+    final minutes = int.tryParse(readingGoal.split('min').first.trim()) ?? 0;
+    final formattedMinutes = minutes.toString().padLeft(2, '0');
+    return '$formattedMinutes:00';
+  }
+
   Future<void> _handleGoogleSignIn(BuildContext context) async {
     try {
       const iosClientId =
@@ -356,28 +369,38 @@ class _AuthPageState extends State<AuthPage> {
         String? email = signedInUser.user?.email ?? '';
         String? name = signedInUser.user?.userMetadata?['full_name'] ?? '';
 
-        final Map<String, String> params = {
-          "username": "username",
-          "password": "Random1@",
-          "name": name.toString(),
-          "email": email,
-          "role": "user",
-          "providerId": userId.toString(),
-          "provider": "Google",
-          "revenueCatId": AppConstants.revenueCatId,
-          "currentSubscription": AppConstants.currentSubscription,
-          "supabaseId": Supabase.instance.client.auth.currentUser?.id ?? '',
-          "one_signal_id": OneSignal.User.pushSubscription.id.toString(),
-          "denomination": oboardingController.getPageData('denomination'),
-          "age": oboardingController.getPageData('age'),
-          "bibleVersion": oboardingController.getPageData('bibleVersion'),
-          "attendChurch": oboardingController.getPageData('attendChurch'),
-          "meditate": oboardingController.getPageData('meditate'),
-          "studyGroup": oboardingController.getPageData('studyGroup'),
-        };
+        Utils.logger.f(
+          "params google: ${oboardingController.getPageData('translations') ?? ''}",
+        );
 
-        Utils.logger.f(params);
         if (widget.login == false) {
+          final Map<String, String> params = {
+            "username": "username",
+            "password": "Random1@",
+            "name": name.toString(),
+            "email": email,
+            "role": "user",
+            "providerId": userId.toString(),
+            "provider": "Google",
+            "revenueCatId": AppConstants.revenueCatId,
+            "currentSubscription": AppConstants.currentSubscription,
+            "supabaseId": Supabase.instance.client.auth.currentUser?.id ?? '',
+            "one_signal_id": OneSignal.User.pushSubscription.id.toString(),
+            "denomination": oboardingController.getPageData('denomination'),
+            "age": oboardingController.getPageData('age'),
+            "bibleVersion":
+                oboardingController.getPageData('translations') ?? '',
+            "attendChurch": oboardingController.getPageData('attendChurch'),
+            "meditate": oboardingController.getPageData('meditate'),
+            "studyGroup": oboardingController.getPageData('studyGroup'),
+            "readingTime":
+                formatReadingTime(
+                  oboardingController.getPageData('readingGoal').toString(),
+                ).toString(),
+            "spiritualJourney": oboardingController.getPageData(
+              'spiritualJourney',
+            ),
+          };
           Utils.logger.e(
             'Registering Google User -->> ${signedInUser.user?.userMetadata?['full_name'] ?? ''}',
           );

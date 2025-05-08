@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart'
+    show CachedNetworkImage;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -44,21 +46,48 @@ class FeatureCard extends StatelessWidget {
         height: height,
         margin: const EdgeInsets.only(right: 8),
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(media.thumbnail ?? ''),
-            fit: BoxFit.cover,
-            onError: (_, __) => const AssetImage('assets/images/the_ark.png'),
-          ),
+          // image: DecorationImage(
+          //   image: NetworkImage(media.thumbnail ?? ''),
+          //   fit: BoxFit.cover,
+          //   onError: (_, __) => const AssetImage('assets/images/the_ark.png'),
+          // ),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Stack(
           alignment: Alignment.bottomLeft,
           children: [
             // Optional overlay
-            Container(
-              decoration: BoxDecoration(
-                color: CupertinoColors.black.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
+            // Container(
+            //   decoration: BoxDecoration(
+            //     color: CupertinoColors.black.withOpacity(0.1),
+            //     borderRadius: BorderRadius.circular(8),
+            //   ),
+            // ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8.sp),
+              child: CachedNetworkImage(
+                imageUrl: media.thumbnail ?? '',
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+                memCacheWidth:
+                    (260.w * MediaQuery.of(context).devicePixelRatio).toInt(),
+                memCacheHeight:
+                    (345.h * MediaQuery.of(context).devicePixelRatio).toInt(),
+                placeholder:
+                    (context, url) => Center(
+                      child: CupertinoActivityIndicator(
+                        color: CupertinoColors.white,
+                      ),
+                    ),
+                errorWidget:
+                    (context, url, error) => Container(
+                      color: const Color(0xFF1E2127),
+                      child: const Icon(
+                        CupertinoIcons.photo,
+                        color: CupertinoColors.systemGrey,
+                      ),
+                    ),
               ),
             ),
 

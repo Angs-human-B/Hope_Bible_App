@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart' show Get, Inst;
 import 'package:hope/Constants/colors.dart';
 import 'package:hope/screens/onboarding/onboarding_screen_pageview.dart'
     show OnboardingPager;
@@ -12,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart'
     show SharedPreferences;
 import '../Constants/icons.dart';
 import '../widgets/ProfileSection/settings_button_listtile.dart';
+import 'auth/controllers/user.auth.controller.dart' show SignUpController;
 
 class AppSettingsScreen extends StatelessWidget {
   const AppSettingsScreen({super.key});
@@ -127,8 +129,14 @@ class AppSettingsScreen extends StatelessWidget {
                 title: "Notifications",
                 trailingIconPath: arrowRight2,
                 enableToggle: true,
-                toggleValue: true,
-                onToggleChanged: (val) {
+                toggleValue: AppConstants.receiveNotifications,
+                onToggleChanged: (val) async {
+                  final controller = Get.find<SignUpController>();
+                  final Map<String, dynamic> params = {
+                    "value": AppConstants.userId,
+                    "data": {"receiveNotifications": val},
+                  };
+                  await controller.userUpdateFn(params, context, true);
                   print("Notifications: $val");
                 },
               ),

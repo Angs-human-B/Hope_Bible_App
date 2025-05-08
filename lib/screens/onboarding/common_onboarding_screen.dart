@@ -48,10 +48,9 @@ class _CommonOnboardingScreenState extends State<CommonOnboardingScreen>
     if (type == 'spiritualJourney') {
       journeyIsSelected = true;
     }
-    if (type == 'readingGoal') {
-      journeyIsSelected = true;
-    }
-    else {
+    if (type == 'readingTime') {
+      readingGoalIsSelected = true;
+    } else {
       return false;
     }
   }
@@ -82,7 +81,7 @@ class _CommonOnboardingScreenState extends State<CommonOnboardingScreen>
             CommonText(widget.title, 30.sp),
             SizedBox(height: 40.h),
             SizedBox(
-              height: 256.h,
+              height: MediaQuery.of(context).size.height * 0.45,
               child: ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: widget.categoryList.length,

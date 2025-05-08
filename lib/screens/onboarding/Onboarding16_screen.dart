@@ -76,8 +76,9 @@ class _Onboarding16ScreenState extends State<Onboarding16Screen> {
             // ListView.separated scrolls if needed and builds dividers automatically
             child: SizedBox(
               // constrain height so ListView knows its bounds
-              height: benefits.length * (32.h + 24.h),
               child: ListView.separated(
+                padding: EdgeInsets.only(bottom: 16.0),
+                shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: benefits.length,
                 separatorBuilder:
@@ -95,6 +96,7 @@ class _Onboarding16ScreenState extends State<Onboarding16Screen> {
                         horizontal: 16.w,
                       ),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
                             width: 32.w,

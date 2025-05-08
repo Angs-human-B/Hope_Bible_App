@@ -32,60 +32,63 @@ class _Onboarding5ScreenState extends State<Onboarding5Screen> {
               height: 1.25,
             ),
             children: [
-              TextSpan(text: '"'),
+              TextSpan(text: '"Over '),
               TextSpan(
                 text: '80%',
                 style: TextStyle(
                   color: accentWhite,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w800,
                   height: 1.25,
                 ),
               ),
-              TextSpan(text: ' of users aged\nunder '),
               TextSpan(
-                text: '18y',
+                text:
+                    ' of young people reported feeling spiritually hopeful and optimistic about their future up from ',
+              ),
+              TextSpan(
+                text: '72%',
                 style: TextStyle(
                   color: accentWhite,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w800,
                   height: 1.25,
                 ),
               ),
-              TextSpan(text: 'found\nrenewed hope through daily engagement."'),
+              TextSpan(text: ' during the pandemic."'),
             ],
           ),
           textAlign: TextAlign.start,
         ),
-        SizedBox(height: 118.h),
+        SizedBox(height: 60.h),
         Image.asset(onboarding5),
-        SizedBox(height: 16.h),
-        Text.rich(
-          TextSpan(
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: textWhite, // default color for text
-            ),
-            children: [
-              TextSpan(
-                text: '*',
-                style: TextStyle(
-                  color: accentWhite,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              TextSpan(
-                text: '80%',
-                style: TextStyle(color: textWhite, fontWeight: FontWeight.bold),
-              ),
-              TextSpan(text: ' of users aged under '),
-              TextSpan(
-                text: '18y',
-                style: TextStyle(color: textWhite, fontWeight: FontWeight.bold),
-              ),
-              TextSpan(text: ' found renewed\nhope through daily engagement.'),
-            ],
-          ),
-          textAlign: TextAlign.left,
-        ),
+        // SizedBox(height: 16.h),
+        // Text.rich(
+        //   TextSpan(
+        //     style: TextStyle(
+        //       fontSize: 14.sp,
+        //       color: textWhite, // default color for text
+        //     ),
+        //     children: [
+        //       TextSpan(
+        //         text: '*',
+        //         style: TextStyle(
+        //           color: accentWhite,
+        //           fontWeight: FontWeight.normal,
+        //         ),
+        //       ),
+        //       TextSpan(
+        //         text: 'Over 80% ',
+        //         style: TextStyle(color: textWhite, fontWeight: FontWeight.bold),
+        //       ),
+        //       TextSpan(text: 'boost in '),
+        //       TextSpan(
+        //         text: 'optimism',
+        //         style: TextStyle(color: textWhite, fontWeight: FontWeight.bold),
+        //       ),
+        //       TextSpan(text: ' in young people.'),
+        //     ],
+        //   ),
+        //   textAlign: TextAlign.left,
+        // ),
       ],
     );
   }

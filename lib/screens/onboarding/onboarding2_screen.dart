@@ -28,6 +28,9 @@ class _Onboarding2ScreenState extends State<Onboarding2Screen>
     "Lutheran",
     "Pentecostal",
     "Orthodox",
+    "Coptic",
+    "Syrian",
+    "Greek",
     "Other",
     "Non-denominational",
   ];

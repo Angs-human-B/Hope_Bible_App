@@ -1,9 +1,11 @@
 import 'dart:ui';
+import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart' show ProcessingState;
 
 import '../../Constants/colors.dart';
 import '../../Constants/icons.dart';
@@ -37,6 +39,8 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   int _currentSubtitleIndex = 0;
   late int _currentMediaIndex;
   late Media _currentMedia;
+  StreamSubscription? _positionSubscription;
+  StreamSubscription? _playerStateSubscription;
 
   @override
   void initState() {
@@ -47,7 +51,40 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
     _audio.init();
     _initAudio();
     _checkFavoriteStatus();
-    _audio.positionStream.listen(_updateCurrentSubtitle);
+
+    // Set up position stream subscription
+    _positionSubscription = _audio.positionStream.listen((position) {
+      if (mounted) {
+        _updateCurrentSubtitle(position);
+        // Force UI update for slider
+        setState(() {});
+      }
+    });
+
+    // Set up player state stream subscription
+    _playerStateSubscription = _audio.playerStateStream.listen((playerState) {
+      print(
+        'Player State: ${playerState.processingState}, Playing: ${playerState.playing}',
+      );
+
+      if (mounted) {
+        setState(() {
+          // Update play/pause state
+          if (playerState.processingState != ProcessingState.completed) {
+            // Only update playing state if not completed
+            _audio.updatePlayingState(playerState.playing);
+          }
+        });
+      }
+
+      // Check if the current track has completed
+      if (playerState.processingState == ProcessingState.completed) {
+        if (mounted) {
+          _playNext();
+        }
+        print('Track completed, attempting to play next');
+      }
+    });
   }
 
   void _updateCurrentSubtitle(Duration position) {
@@ -78,8 +115,13 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
 
   Future<void> _initAudio() async {
     if (_currentMedia.signedUrl != null) {
-      await _audio.setSource(_currentMedia.signedUrl!, _currentMedia);
-      await _audio.play();
+      try {
+        await _audio.setSource(_currentMedia.signedUrl!, _currentMedia);
+        // Force a rebuild after audio is initialized
+        if (mounted) setState(() {});
+      } catch (e) {
+        print('Error initializing audio: $e');
+      }
     }
   }
 
@@ -93,7 +135,10 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
         _currentMediaIndex++;
         _currentMedia = widget.mediaList[_currentMediaIndex];
       });
+      // Wait for audio to be initialized
       await _initAudio();
+      // Update state again after audio is initialized
+      setState(() {});
     }
   }
 
@@ -109,6 +154,8 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
 
   @override
   void dispose() {
+    _positionSubscription?.cancel();
+    _playerStateSubscription?.cancel();
     _audio.dispose();
     _pageController.dispose();
     super.dispose();

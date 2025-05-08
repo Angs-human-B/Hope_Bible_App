@@ -4,9 +4,7 @@ import 'dart:convert' show json;
 import 'dart:io' show Platform;
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' show Colors, TextStyle;
-import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart' show ScreenUtilInit;
 import 'package:get/get.dart';
 import 'package:hope/utilities/app.constants.dart'
     show AppConstants, EntitleMents, Utils;
@@ -27,8 +25,6 @@ import 'package:purchases_flutter/purchases_flutter.dart'
 import 'package:shared_preferences/shared_preferences.dart'
     show SharedPreferences;
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart'
-    show CupertinoScaffold;
 import 'config/store.config.dart' show StoreConfig;
 import 'config/supabase_config.dart';
 import 'screens/auth/controllers/user.auth.controller.dart'
@@ -36,23 +32,11 @@ import 'screens/auth/controllers/user.auth.controller.dart'
 import 'utilities/initial.bindings.dart' show InitialBinding;
 import 'core/controllers/translation.controller.dart';
 import 'utilities/network.call.dart' show multiPostAPINew;
-import 'services/audio_service.dart';
-import 'screens/Pricing&LoginSection/pricing_screen_1.dart' show PricingScreen1;
-import 'screens/auth/auth_page.dart' show AuthPage;
-import 'screens/onboarding/onboarding_screen_pageview.dart'
-    show OnboardingPager;
-import 'screens/persistent_botom_nav.dart' show PersistentBottomNav;
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'utilities/splash.screen.dart' show SplashScreen;
+import 'screens/chat.bot.page.dart' show routeObserver;
 
-Future<void> main() async {
-  await _initializeApp();
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(const MainApp());
-}
-
-Future<void> _initializeApp() async {
-  await AudioService.initBackgroundService();
 
   InitialBinding();
   // Apply bindings manually
@@ -65,8 +49,8 @@ Future<void> _initializeApp() async {
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
   await _configureSDK();
-  WidgetsFlutterBinding.ensureInitialized();
-  // await fetchRevenueCatDetailsFn();
+
+  await fetchRevenueCatDetailsFn();
 
   SharedPreferences sp = await SharedPreferences.getInstance();
 
@@ -98,6 +82,8 @@ Future<void> _initializeApp() async {
 
   // Initialize controllers
   Get.put(TranslationController());
+
+  runApp(const MainApp());
 }
 
 tokenRefresh() async {
@@ -170,9 +156,7 @@ Future<void> _configureSDK() async {
 
 Future<void> fetchRevenueCatDetailsFn() async {
   final signUpcontroller = Get.find<SignUpController>();
-
   CustomerInfo customerInfo = await Purchases.getCustomerInfo();
-
   signUpcontroller.offerings = await Purchases.getOfferings();
 
   EntitlementInfo? entitlement =
@@ -214,52 +198,6 @@ Future<void> fetchRevenueCatDetailsFn() async {
           : true;
 }
 
-Future<String> _determineInitialScreen() async {
-  String route;
-  if (AppConstants.userId.isEmpty) {
-    route = 'onboarding'; // Id Empty & Subscription inactive
-  } else if (!AppConstants.isSubscriptionActive &&
-      AppConstants.userId.isNotEmpty) {
-    route = 'paywall'; // Id Exists & Subscription inactive
-  } else if (AppConstants.isSubscriptionActive && AppConstants.userId.isEmpty) {
-    route = 'login'; // Id Empty & Subscription active
-  } else {
-    route = 'home'; // Both ID & subscription exists
-  }
-
-  return route;
-}
-
-Widget _buildScreen(String route) {
-  final signUpcontroller = Get.find<SignUpController>();
-  switch (route) {
-    case 'paywall':
-      return PricingScreen1(
-        isMainScreen: true,
-        offering: signUpcontroller.offerings!.current,
-      ); // Paywall screen
-    case 'onboarding':
-      return const OnboardingPager(); // Onboarding screen
-    case 'login':
-      return const AuthPage(login: true, mainScreenRedirect: true);
-    default:
-      return const CupertinoScaffold(
-        body: PersistentBottomNav(),
-      ); // Main tab bar
-  }
-}
-
-class LogoOnly extends StatelessWidget {
-  const LogoOnly({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SvgPicture.asset('assets/images/logo.svg', width: 80, height: 80),
-    );
-  }
-}
-
 class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
@@ -269,9 +207,20 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   @override
+  void initState() {
+    super.initState();
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    //   await fetchRevenueCatDetailsFn();
+    // });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(390, 844),
+      designSize: const Size(
+        390,
+        844,
+      ), // iPhone 13 dimensions; adjust as needed
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
@@ -283,37 +232,8 @@ class _MainAppState extends State<MainApp> {
             primaryColor: CupertinoColors.systemBlue,
             scaffoldBackgroundColor: CupertinoColors.black,
           ),
-          home: CupertinoPageScaffold(
-            backgroundColor: const Color(0xFF0C111D),
-            child: FutureBuilder<String>(
-              future: _determineInitialScreen(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CupertinoPageScaffold(
-                    child: Center(child: SizedBox()),
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text(
-                      'An error occurred. Please try again later.',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  );
-                } else {
-                  final route = 'onboarding';
-                  // final route = "";
-                  // final route = snapshot.data ?? 'onboarding';
-                  // Utils.logger.d("route: $route");
-
-                  return _buildScreen(route);
-                  // AnimatedSwitcher(
-                  //   duration: const Duration(milliseconds: 500),
-                  //   child: _buildScreen(route),
-                  // );
-                }
-              },
-            ),
-          ),
+          navigatorObservers: [routeObserver],
+          home: const SplashScreen(),
         );
       },
     );

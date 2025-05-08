@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hope/Constants/colors.dart';
 import 'package:hope/services/daily_verse_service.dart';
 import 'package:flutter/services.dart';
-import 'package:hope/services/pexels.service.dart';
+// import 'dart:io' show Platform;
+// import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../utilities/app.constants.dart' show Utils;
 import '../../utilities/text.utility.dart' show AllText;
@@ -19,38 +20,20 @@ class _DailyVerseCardState extends State<DailyVerseCard> {
   String _verseText = '';
   String _verseReference = '';
   bool _isLoading = true;
-  String? _imageUrl;
   static const platform = MethodChannel('HopeHomeWidget');
 
   @override
   void initState() {
     super.initState();
     _loadDailyVerse();
-    _loadDailyImage();
+    // _loadDailyImage();
   }
 
   Future<void> _loadDailyVerse() async {
     try {
       setState(() => _isLoading = true);
 
-      // First try to read from app group
-      try {
-        final Map<dynamic, dynamic> sharedData = await platform.invokeMethod(
-          'getSharedData',
-        );
-        if (sharedData['verse'] != null && sharedData['reference'] != null) {
-          setState(() {
-            _verseText = sharedData['verse'] as String;
-            _verseReference = sharedData['reference'] as String;
-            _isLoading = false;
-          });
-          return;
-        }
-      } catch (e) {
-        print('Error reading from app group: $e');
-      }
-
-      // If app group read fails, fallback to DailyVerseService
+      // Get verse from DailyVerseService (this will also sync to widget storage)
       final verseData = await DailyVerseService.getDailyVerse();
       setState(() {
         _verseText = verseData['verse'] as String;
@@ -66,17 +49,63 @@ class _DailyVerseCardState extends State<DailyVerseCard> {
         _verseReference = 'John 3:16';
         _isLoading = false;
       });
+
+      // Even for fallback verse, sync with widget
+      try {
+        await platform.invokeMethod('saveToAppGroup', {
+          'verse': _verseText,
+          'reference': _verseReference,
+          'lastUpdate': DateTime.now().toIso8601String(),
+        });
+      } catch (e) {
+        print('Error syncing fallback verse to widget: $e');
+      }
     }
   }
 
-  Future<void> _loadDailyImage() async {
-    final imageUrl = await PexelsService.getDailyImage();
-    if (mounted && imageUrl != null) {
-      setState(() {
-        _imageUrl = imageUrl;
-      });
-    }
-  }
+  // Future<void> _loadDailyImage() async {
+  //   final imageUrl = await PexelsService.getDailyImage();
+  //   if (mounted && imageUrl != null) {
+  //     setState(() {
+  //       _imageUrl = imageUrl;
+  //     });
+  //   }
+  // }
+
+  // Future<void> _addHomeScreenWidget() async {
+  //   try {
+  //     if (Platform.isIOS) {
+  //       await platform.invokeMethod('addHomeScreenWidget', {
+  //         'verse': _verseText,
+  //         'reference': _verseReference,
+  //         'lastUpdate': DateTime.now().toIso8601String(),
+  //       });
+  //       if (mounted) {
+  //         Fluttertoast.showToast(
+  //           msg:
+  //               'Added to Home Screen. Go to your home screen and tap "Edit" to add the widget.',
+  //           toastLength: Toast.LENGTH_LONG,
+  //           gravity: ToastGravity.BOTTOM,
+  //           backgroundColor: Colors.black87,
+  //           textColor: Colors.white,
+  //           fontSize: 14.sp,
+  //         );
+  //       }
+  //     }
+  //   } catch (e) {
+  //     if (mounted) {
+  //       Fluttertoast.showToast(
+  //         msg: 'Failed to add widget to Home Screen',
+  //         toastLength: Toast.LENGTH_SHORT,
+  //         gravity: ToastGravity.BOTTOM,
+  //         backgroundColor: Colors.red,
+  //         textColor: Colors.white,
+  //         fontSize: 14.sp,
+  //       );
+  //     }
+  //     print('Error adding widget: $e');
+  //   }
+  // }
 
   // Future<void> _shareVerse() async {
   //   final textToShare = '"$_verseText"\n- $_verseReference';
@@ -126,48 +155,53 @@ class _DailyVerseCardState extends State<DailyVerseCard> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          children: [
-                            SizedBox(height: 26.h),
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Container(
-                                  width: 76.w,
-                                  height: 76.h,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: accentWhite,
-                                      width: 1.5.w,
-                                    ),
-                                  ),
-                                ),
-                                CircleAvatar(
-                                  radius: 34.w,
-                                  backgroundImage:
-                                      _imageUrl != null
-                                          ? NetworkImage(_imageUrl!)
-                                          : const AssetImage(
-                                                'assets/images/the_ark.png',
-                                              )
-                                              as ImageProvider,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(width: 12.w),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              AllText(
-                                text: "DAILY VERSE",
-                                style: TextStyle(
-                                  color: textWhite.withValues(alpha: .66),
-                                  fontSize: 12.sp,
-                                ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  AllText(
+                                    text: "DAILY VERSE",
+                                    style: TextStyle(
+                                      color: textWhite.withValues(alpha: .66),
+                                      fontSize: 12.sp,
+                                    ),
+                                  ),
+                                  // if (Platform.isIOS)
+                                  //   GestureDetector(
+                                  //     onTap: _addHomeScreenWidget,
+                                  //     child: Container(
+                                  //       padding: EdgeInsets.all(8.sp),
+                                  //       decoration: BoxDecoration(
+                                  //         color: secondaryBlack,
+                                  //         borderRadius: BorderRadius.circular(
+                                  //           8.sp,
+                                  //         ),
+                                  //       ),
+                                  //       child: Row(
+                                  //         mainAxisSize: MainAxisSize.min,
+                                  //         children: [
+                                  //           Icon(
+                                  //             Icons.widgets_outlined,
+                                  //             color: Colors.white,
+                                  //             size: 16.sp,
+                                  //           ),
+                                  //           SizedBox(width: 4.w),
+                                  //           AllText(
+                                  //             text: "Add Widget",
+                                  //             style: TextStyle(
+                                  //               color: Colors.white,
+                                  //               fontSize: 12.sp,
+                                  //             ),
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                ],
                               ),
                               SizedBox(height: 8.h),
                               Text(

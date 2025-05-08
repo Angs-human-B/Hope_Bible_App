@@ -38,6 +38,7 @@ abstract class AppConstants {
   static String username = "";
   static String email = "";
   static String readingTime = "";
+  static bool receiveNotifications = true;
   static String appleId = "";
   static String googleId = "";
   static int stringLimit = 50;

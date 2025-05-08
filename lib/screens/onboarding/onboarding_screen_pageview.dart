@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show PlatformException;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart' show Inst, Obx;
@@ -36,7 +35,6 @@ import 'onboarding2_screen.dart';
 // …
 import 'onboarding26_screen.dart';
 import 'onboarding33_screen.dart';
-import 'onboarding3_screen.dart';
 import 'onboarding5_screen.dart';
 import 'onboarding6_screen.dart';
 import 'onboarding7_screen.dart';
@@ -56,7 +54,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
   final List<Widget> _pages = [
     Onboarding1Screen(controller),
     Onboarding2Screen(),
-    Onboarding3Screen(),
+    // Onboarding3Screen(),
     CommonOnboardingScreen(ageGroup, onboarding4String, 'o5', 'age'),
     Onboarding5Screen(),
     Onboarding6Screen(),
@@ -90,7 +88,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
       'o15',
       'readingGoal',
     ),
-    Onboarding33Screen(),
+    // Onboarding33Screen(),
     Onboarding16Screen(),
     Onboarding17Screen(),
     Onboarding18Screen(),
@@ -123,22 +121,22 @@ class _OnboardingPagerState extends State<OnboardingPager> {
   getBackgroundImage(int index) {
     print(index);
 
-    if (index == 10) {
+    if (index == 9) {
       return onboarding11;
     }
-    if (index == 24) {
+    if (index == 22) {
       return onboarding23;
     }
-    if (index == 25) {
+    if (index == 23) {
       return onboarding24;
     }
-    if (index == 26) {
+    if (index == 24) {
       return onboarding25;
     }
-    if (index == 27) {
+    if (index == 25) {
       return onboarding26;
     }
-    if (index == 28) {
+    if (index == 26) {
       return onboarding27;
     } else {
       return spotLight;
@@ -232,8 +230,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
     }
     if (index == 27 && ignorePages) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
@@ -254,39 +251,37 @@ class _OnboardingPagerState extends State<OnboardingPager> {
             },
             itemBuilder: (context, index) {
               print("index: ${oboardingController.currentProgress.value}");
-              return SafeArea(
-                bottom: false,
-                child: CupertinoPageScaffold(
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.topCenter,
-                        child: Image.asset(
-                          getBackgroundImage(index),
-                          fit: BoxFit.cover,
-                          width: MediaQuery.of(context).size.width,
-                        ),
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height,
+              return CupertinoPageScaffold(
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Image.asset(
+                        getBackgroundImage(index),
+                        fit: BoxFit.cover,
                         width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.symmetric(
-                          horizontal:
-                              index == 0 ||
-                                      index == 14 ||
-                                      index == 17 ||
-                                      index == 20 ||
-                                      index == 23
-                                  ? 0.w
-                                  : 18.w,
-                        ),
-                        // color: Colors.black,
-                        child: _pages[index],
                       ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.symmetric(
+                        horizontal:
+                            index == 0 ||
+                                    index == 13 ||
+                                    index == 14 ||
+                                    index == 15 ||
+                                    index == 18 ||
+                                    index == 21
+                                ? 0.w
+                                : 18.w,
+                      ),
+                      // color: Colors.black,
+                      child: _pages[index],
+                    ),
 
-                      // if (index != 0)
-                    ],
-                  ),
+                    // if (index != 0)
+                  ],
                 ),
               );
               // }
@@ -325,13 +320,12 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                     padding: EdgeInsets.symmetric(horizontal: 19.w),
                     child: GestureDetector(
                       onTap: () {
-
                         final enabled = isOptionsSelected(
                           oboardingController.currentPageIndex.value,
                         );
                         if (enabled &&
                             oboardingController.isSelected.value &&
-                            oboardingController.currentPageIndex.value != 28) {
+                            oboardingController.currentPageIndex.value != 26) {
                           oboardingController.currentProgress.value += 1;
                           controller.nextPage(
                             duration: Duration(milliseconds: 300),

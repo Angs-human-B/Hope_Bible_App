@@ -12,6 +12,7 @@ dependencies:
   json_annotation: ^4.9.0
   google_cloud_translation: ^0.0.4
   openai_realtime_dart: ^0.0.3+1
+  cached_network_image: ^3.3.1
   speech_to_text: ^7.0.0
   just_audio: ^0.9.36
   just_audio_background: ^0.0.1-beta.11
@@ -27,7 +28,7 @@ dependencies:
   crypto: ^3.0.3
   google_sign_in: ^6.3.0
   onesignal_flutter: ^5.2.8
-  purchases_flutter: ^8.3.2
+  purchases_flutter: ^8.7.5
   logger: ^2.5.0
   fluttertoast: ^8.2.12
   jwt_decode: ^0.3.1
@@ -47,6 +48,7 @@ dependencies:
   toastification: ^2.3.0
   visibility_detector: ^0.4.0+2
   shimmer: ^3.0.0
+  flutter_tts: ^3.8.5
 
 dev_dependencies:
   flutter_test:

@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 double totalProgress = 26;
 List<String> ageGroup = ['Under 18', '18-30', '31-50', '51+'];
 List<String> readingFrequencies = [
-  'Daily',
-  'Few times a week',
+  'Weekly',
+  'Monthly',
   'Occasionally',
-  'Rarely/Never',
+  'Rarely',
 ];
 List<String> studyGroup = ['Yes', 'Occasionally', 'No'];
 
@@ -18,18 +18,13 @@ List<String> spiritualStages = [
   'Exploring',
 ];
 
-List<String> readingGoal = [
-  '5min/Day',
-  '10min/Day',
-  '15min/Day',
-  '25min/Day',
-];
+List<String> readingGoal = ['5min/Day', '10min/Day', '15min/Day', '25min/Day'];
 
 List<String> churchGoingFrequencies = [
-  'Weekly',
-  'Monthly',
+  'Daily',
+  'Few times a week',
   'Occasionally',
-  'Rarely',
+  'Rarely/Never',
 ];
 
 PageController controller = PageController();
@@ -50,8 +45,7 @@ bool bibleVersionIsSelected = false;
 String onboarding2String = "What is your Denomination?";
 String onboarding4String = "What is your Age\ngroup?";
 String onboarding6String = "Which Bible version speaks to you most";
-String onboarding7String =
-    "*80% of users aged under 18y found\nrenewed hope through daily engagement.";
+String onboarding7String = "*30% boost in hope through connection and support.";
 String onboarding8String = "How often do you\nattend church?";
 String onboarding10String = "How often do you pray or meditate?";
 String onboarding12String = "Do you participate in Bible study groups?";

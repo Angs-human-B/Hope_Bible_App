@@ -54,41 +54,44 @@ class _PricingScreen1State extends State<PricingScreen1>
           SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 18.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  widget.isMainScreen
-                      ? const SizedBox()
-                      : Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 15.h),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: ClipRRect(
-                                child: BackdropFilter(
-                                  filter: ImageFilter.blur(
-                                    sigmaX: 6,
-                                    sigmaY: 6,
-                                  ),
-                                  child: Container(
-                                    width: 42.w,
-                                    height: 42.h,
-                                    decoration: BoxDecoration(
-                                      color: CupertinoColors.systemGrey
-                                          .withOpacity(0.2),
-                                      shape: BoxShape.circle,
+              child: SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    widget.isMainScreen
+                        ? const SizedBox()
+                        : Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top: 15.h),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: ClipRRect(
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                      sigmaX: 6,
+                                      sigmaY: 6,
                                     ),
-                                    child: Center(
-                                      child: SvgPicture.asset(
-                                        closeIcon,
-                                        height: 22.h,
-                                        colorFilter: const ColorFilter.mode(
-                                          CupertinoColors.white,
-                                          BlendMode.srcIn,
+                                    child: Container(
+                                      width: 42.w,
+                                      height: 42.h,
+                                      decoration: BoxDecoration(
+                                        color: CupertinoColors.systemGrey
+                                            .withOpacity(0.2),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Center(
+                                        child: SvgPicture.asset(
+                                          closeIcon,
+                                          height: 22.h,
+                                          colorFilter: const ColorFilter.mode(
+                                            CupertinoColors.white,
+                                            BlendMode.srcIn,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -96,200 +99,209 @@ class _PricingScreen1State extends State<PricingScreen1>
                                 ),
                               ),
                             ),
+                          ],
+                        ),
+                    SizedBox(height: 50.h),
+                    Text(
+                      'Transform your \nSpiritual Journey \nToday',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color(0xFFFFF5DE),
+                        fontSize: 30.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 55.h),
+                    PricingTabSelector(),
+                    SizedBox(height: 18.h),
+                    Container(
+                      width: 357.w,
+                      height: 334.h,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 10.h,
+                        horizontal: 16.w,
+                      ),
+                      decoration: BoxDecoration(
+                        color: cardGrey.withValues(alpha: .4),
+                        borderRadius: BorderRadius.circular(12.sp),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _featureRow(
+                            'assets/images/pricing_option_1.png',
+                            'Your Faith, Your Way',
+                            'Instantly tailor your experience based on your denomination, age, and spiritual journey—get content that actually speaks to you.',
+                          ),
+                          Divider(color: textWhite.withValues(alpha: .08)),
+                          _featureRow(
+                            'assets/images/pricing_option_2.png',
+                            ' Peace on Demand',
+                            'Access daily devotionals, guided prayers, and calming reflections anytime you need clarity or calm.',
+                          ),
+                          Divider(color: textWhite.withValues(alpha: .08)),
+                          _featureRow(
+                            'assets/images/pricing_option_3.png',
+                            'Growing Spiritual Community',
+                            'You’re not alone—10,000+ believers like you are already praying, growing, and sharing through the app.',
                           ),
                         ],
                       ),
-                  SizedBox(height: 50.h),
-                  Text(
-                    'Transform your \nSpiritual Journey \nToday',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFFFFF5DE),
-                      fontSize: 30.sp,
-                      fontWeight: FontWeight.w600,
                     ),
-                  ),
-                  SizedBox(height: 55.h),
-                  PricingTabSelector(),
-                  SizedBox(height: 18.h),
-                  Container(
-                    width: 357.w,
-                    height: 334.h,
-                    padding: EdgeInsets.symmetric(
-                      vertical: 10.h,
-                      horizontal: 16.w,
-                    ),
-                    decoration: BoxDecoration(
-                      color: cardGrey.withValues(alpha: .4),
-                      borderRadius: BorderRadius.circular(12.sp),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _featureRow(
-                          'assets/images/pricing_option_1.png',
-                          'Your Faith, Your Way',
-                          'Instantly tailor your experience based on your denomination, age, and spiritual journey—get content that actually speaks to you.',
-                        ),
-                        Divider(color: textWhite.withValues(alpha: .08)),
-                        _featureRow(
-                          'assets/images/pricing_option_2.png',
-                          ' Peace on Demand',
-                          'Access daily devotionals, guided prayers, and calming reflections anytime you need clarity or calm.',
-                        ),
-                        Divider(color: textWhite.withValues(alpha: .08)),
-                        _featureRow(
-                          'assets/images/pricing_option_3.png',
-                          'Growing Spiritual Community',
-                          'You’re not alone—10,000+ believers like you are already praying, growing, and sharing through the app.',
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () async {
-                      Utils.logger.e(myProductList);
-                      setState(() {
-                        isLoading = true;
-                      });
-                      HapticFeedback.mediumImpact();
+                    const SizedBox(height: 20.0),
+                    GestureDetector(
+                      onTap: () async {
+                        Utils.logger.e(myProductList);
+                        setState(() {
+                          isLoading = true;
+                        });
+                        HapticFeedback.mediumImpact();
 
-                      int index =
-                          oboardingController.selectedPlan.value == "Annual"
-                              ? 1
-                              : 2;
-                      try {
-                        CustomerInfo customerInfo =
-                            await Purchases.purchasePackage(
-                              myProductList![index],
+                        int index =
+                            oboardingController.selectedPlan.value == "Annual"
+                                ? 1
+                                : 2;
+                        try {
+                          CustomerInfo customerInfo =
+                              await Purchases.purchasePackage(
+                                myProductList![index],
+                              );
+
+                          EntitlementInfo? entitlement =
+                              customerInfo.entitlements.all[EntitleMents
+                                  .entitlementId];
+
+                          AppConstants.revenueCatId =
+                              customerInfo.originalAppUserId;
+                          AppConstants.currentSubscription =
+                              entitlement?.productIdentifier ?? '';
+
+                          if (AppConstants.existingUser) {
+                            await Purchases.restorePurchases();
+                          }
+
+                          if (entitlement?.isActive == true &&
+                              AppConstants.userId.isEmpty) {
+                            await Navigator.of(
+                              context,
+                              rootNavigator: true,
+                            ).push(
+                              CupertinoPageRoute(
+                                builder:
+                                    (context) => CupertinoScaffold(
+                                      body: AuthPage(
+                                        login: AppConstants.existingUser,
+                                      ),
+                                    ),
+                              ),
                             );
+                          } else if (entitlement?.isActive == true &&
+                              AppConstants.userId.isNotEmpty) {
+                            await Navigator.of(
+                              context,
+                              rootNavigator: true,
+                            ).push(
+                              CupertinoPageRoute(
+                                builder:
+                                    (context) => const CupertinoScaffold(
+                                      body: PersistentBottomNav(),
+                                    ),
+                              ),
+                            );
+                          } else if (entitlement?.isActive == true &&
+                              AppConstants.userId.isNotEmpty) {
+                            setState(() {
+                              AppConstants.isSubscriptionActive = true;
+                            });
+                            Navigator.pop(context);
+                          } else {
+                            await Purchases.restorePurchases();
+                            await Navigator.of(
+                              context,
+                              rootNavigator: true,
+                            ).push(
+                              CupertinoPageRoute(
+                                builder:
+                                    (context) => const CupertinoScaffold(
+                                      body: AuthPage(login: false),
+                                    ),
+                              ),
+                            );
+                          }
+                        } on PlatformException catch (e) {
+                          Utils.logger.i(e);
+                          if (e.message == 'Purchase was cancelled.') {
+                            // await Posthog().capture(
+                            //   properties: {
+                            //     'revenueCatId': AppConstants.revenueCatId,
+                            //   },
+                            //   eventName: "Viewed One-Time Offer",
+                            // );
 
-                        EntitlementInfo? entitlement =
-                            customerInfo.entitlements.all[EntitleMents
-                                .entitlementId];
-
-                        AppConstants.revenueCatId =
-                            customerInfo.originalAppUserId;
-                        AppConstants.currentSubscription =
-                            entitlement?.productIdentifier ?? '';
-
-                        if (AppConstants.existingUser) {
-                          await Purchases.restorePurchases();
-                        }
-
-                        if (entitlement?.isActive == true &&
-                            AppConstants.userId.isEmpty) {
-                          await Navigator.of(context, rootNavigator: true).push(
-                            CupertinoPageRoute(
+                            await showCupertinoModalBottomSheet(
+                              topRadius: Radius.circular(32.sp),
+                              context: context,
                               builder:
-                                  (context) => CupertinoScaffold(
-                                    body: AuthPage(
-                                      login: AppConstants.existingUser,
+                                  (context) => SizedBox(
+                                    height: 351.h,
+                                    child: PricingScreen2(
+                                      offering: widget.offering!,
                                     ),
                                   ),
-                            ),
-                          );
-                        } else if (entitlement?.isActive == true &&
-                            AppConstants.userId.isNotEmpty) {
-                          await Navigator.of(context, rootNavigator: true).push(
-                            CupertinoPageRoute(
-                              builder:
-                                  (context) => const CupertinoScaffold(
-                                    body: PersistentBottomNav(),
-                                  ),
-                            ),
-                          );
-                        } else if (entitlement?.isActive == true &&
-                            AppConstants.userId.isNotEmpty) {
+                            );
+
+                            // await Navigator.of(context, rootNavigator: true).push(
+                            //   CupertinoPageRoute(
+                            //     fullscreenDialog: true,
+                            //     builder:
+                            //         (context) => CupertinoScaffold(
+                            //           body: AuthPage(
+                            //             login: AppConstants.existingUser,
+                            //           ),
+                            //         ),
+                            //   ),
+                            // );
+                          }
+                          // Handle other purchase errors if needed.
+                        } catch (e) {
+                          // Handle any other unexpected errors.
+                        } finally {
                           setState(() {
-                            AppConstants.isSubscriptionActive = true;
+                            isLoading = false;
                           });
-                          Navigator.pop(context);
-                        } else {
-                          await Purchases.restorePurchases();
-                          await Navigator.of(context, rootNavigator: true).push(
-                            CupertinoPageRoute(
-                              builder:
-                                  (context) => const CupertinoScaffold(
-                                    body: AuthPage(login: false),
-                                  ),
-                            ),
-                          );
                         }
-                      } on PlatformException catch (e) {
-                        Utils.logger.i(e);
-                        if (e.message == 'Purchase was cancelled.') {
-                          // await Posthog().capture(
-                          //   properties: {
-                          //     'revenueCatId': AppConstants.revenueCatId,
-                          //   },
-                          //   eventName: "Viewed One-Time Offer",
-                          // );
-
-                          await showCupertinoModalBottomSheet(
-                            topRadius: Radius.circular(32.sp),
-                            context: context,
-                            builder:
-                                (context) => SizedBox(
-                                  height: 351.h,
-                                  child: PricingScreen2(
-                                    offering: widget.offering!,
+                      },
+                      child: Container(
+                        height: 56.h,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: accentWhite,
+                          borderRadius: BorderRadius.circular(30.sp),
+                        ),
+                        child: Center(
+                          child: Obx(() {
+                            return isLoading == true
+                                ? const CupertinoActivityIndicator(
+                                  color: CupertinoColors.black,
+                                )
+                                : Text(
+                                  oboardingController.selectedPlan.value ==
+                                          "Annual"
+                                      ? "Subscribe for ${NumberFormat.currency(symbol: getCurrencySymbol(myProductList![1].storeProduct.currencyCode.toUpperCase()), decimalDigits: 2).format(myProductList[1].storeProduct.price)}/y"
+                                      : "Subscribe for ${NumberFormat.currency(symbol: getCurrencySymbol(myProductList![2].storeProduct.currencyCode.toUpperCase()), decimalDigits: 2).format(myProductList[2].storeProduct.price)}/mo",
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: secondaryBlack,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                ),
-                          );
-
-                          // await Navigator.of(context, rootNavigator: true).push(
-                          //   CupertinoPageRoute(
-                          //     fullscreenDialog: true,
-                          //     builder:
-                          //         (context) => CupertinoScaffold(
-                          //           body: AuthPage(
-                          //             login: AppConstants.existingUser,
-                          //           ),
-                          //         ),
-                          //   ),
-                          // );
-                        }
-                        // Handle other purchase errors if needed.
-                      } catch (e) {
-                        // Handle any other unexpected errors.
-                      } finally {
-                        setState(() {
-                          isLoading = false;
-                        });
-                      }
-                    },
-                    child: Container(
-                      height: 56.h,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: accentWhite,
-                        borderRadius: BorderRadius.circular(30.sp),
-                      ),
-                      child: Center(
-                        child: Obx(() {
-                          return isLoading == true
-                              ? const CupertinoActivityIndicator(
-                                color: CupertinoColors.black,
-                              )
-                              : Text(
-                                oboardingController.selectedPlan.value ==
-                                        "Annual"
-                                    ? "Subscribe for ${NumberFormat.currency(symbol: getCurrencySymbol(myProductList![1].storeProduct.currencyCode.toUpperCase()), decimalDigits: 2).format(myProductList[1].storeProduct.price)}/y"
-                                    : "Subscribe for ${NumberFormat.currency(symbol: getCurrencySymbol(myProductList![2].storeProduct.currencyCode.toUpperCase()), decimalDigits: 2).format(myProductList[2].storeProduct.price)}/mo",
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: secondaryBlack,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              );
-                        }),
+                                );
+                          }),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 18.h),
-                ],
+                    SizedBox(height: 18.h),
+                  ],
+                ),
               ),
             ),
           ),

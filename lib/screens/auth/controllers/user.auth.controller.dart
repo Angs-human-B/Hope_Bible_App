@@ -136,7 +136,7 @@ class SignUpController extends GetxController with RefreshToken {
             // await setUserData(user);
 
             Utils.logger.i(valueMap);
-            await Navigator.of(context, rootNavigator: true).push(
+            await Navigator.of(context, rootNavigator: true).pushReplacement(
               CupertinoPageRoute(
                 builder:
                     (context) => CupertinoScaffold(body: PersistentBottomNav()),
@@ -274,7 +274,7 @@ class SignUpController extends GetxController with RefreshToken {
 
             await setUserData(user);
 
-            Navigator.of(context, rootNavigator: true).push(
+            Navigator.of(context, rootNavigator: true).pushReplacement(
               CupertinoPageRoute(
                 builder:
                     (context) =>

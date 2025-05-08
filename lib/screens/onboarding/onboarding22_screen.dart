@@ -18,9 +18,9 @@ class _Onboarding22ScreenState extends State<Onboarding22Screen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 30.h),
-        SizedBox(height: 84.h),
+        SizedBox(height: 124.h),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 18.w),
+          padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
           child: CommonText(
             'Feeling Disconnected?',
             36.sp,

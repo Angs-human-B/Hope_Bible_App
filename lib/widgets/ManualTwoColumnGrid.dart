@@ -13,7 +13,7 @@ class ManualTwoColumnGrid extends StatefulWidget {
   const ManualTwoColumnGrid({
     super.key,
     required this.denomination,
-    this.gridHeight = 324, // default = 600.h
+    this.gridHeight = 400, // default = 600.h
     this.itemWidth = 167, // default = 167.w
     this.itemHeight = 52, // default =  65.h
     this.crossSpacing = 14,
@@ -41,7 +41,7 @@ class ManualTwoColumnGrid extends StatefulWidget {
 class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
   final OnboardingController onboardingController =
       Get.find<OnboardingController>();
-  int selectedIdx = 9;
+  int selectedIdx = 12;
 
   @override
   Widget build(BuildContext context) {

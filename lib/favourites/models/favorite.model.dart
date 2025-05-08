@@ -1,3 +1,5 @@
+import '../../media/models/media.model.dart' show SubtitleInfo;
+
 class FavoriteMedia {
   final String id;
   final String userId;
@@ -36,6 +38,8 @@ class MediaContent {
   final List<String> tags;
   final bool featured;
   final String? url;
+  final String? audio;
+  final List<SubtitleInfo>? subtitleInfo;
 
   MediaContent({
     required this.id,
@@ -46,6 +50,8 @@ class MediaContent {
     required this.tags,
     required this.featured,
     this.url,
+    this.audio,
+    this.subtitleInfo,
   });
 
   factory MediaContent.fromJson(Map<String, dynamic> json) {
@@ -58,6 +64,11 @@ class MediaContent {
       tags: List<String>.from(json['tags'] ?? []),
       featured: json['featured'] ?? false,
       url: json['url'],
+      audio: json['audio'],
+      subtitleInfo:
+          (json['subtitleInfo'] as List?)
+              ?.map((item) => SubtitleInfo.fromJson(item))
+              .toList(),
     );
   }
 }

@@ -97,6 +97,7 @@ class UserData {
   final int? longestStreak;
   final int? currentStreak;
   final String? readingTime;
+  final bool? receiveNotifications;
 
   // final int? version;
   final List<dynamic> subscriptions;
@@ -113,6 +114,7 @@ class UserData {
     this.longestStreak,
     this.currentStreak,
     this.readingTime,
+    this.receiveNotifications = true,
   });
 
   /// Named constructor to create an empty UserData instance
@@ -129,6 +131,7 @@ class UserData {
       longestStreak: 0,
       currentStreak: 0,
       readingTime: '',
+      receiveNotifications: true,
     );
   }
 
@@ -137,6 +140,7 @@ class UserData {
     AppConstants.name = json['name'] ?? '';
     AppConstants.email = json['email'] ?? '';
     AppConstants.readingTime = json['readingTime'] ?? '';
+    AppConstants.receiveNotifications = json['receiveNotifications'] ?? true;
     Utils.logger.f("json: $json");
     return UserData(
       id: json['_id'] ?? '',
@@ -150,6 +154,7 @@ class UserData {
       longestStreak: json['longestStreak'] ?? 0,
       currentStreak: json['currentStreak'] ?? 0,
       readingTime: json['readingTime'] ?? '',
+      receiveNotifications: json['receiveNotifications'] ?? true,
     );
   }
 
@@ -167,6 +172,7 @@ class UserData {
       'longestStreak': longestStreak ?? 0,
       'currentStreak': currentStreak ?? 0,
       'readingTime': readingTime ?? '',
+      'receiveNotifications': receiveNotifications ?? true,
     };
   }
 }

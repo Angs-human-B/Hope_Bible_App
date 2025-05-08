@@ -173,12 +173,7 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
       child: Stack(
         children: [
           // Background image
-          Positioned.fill(
-            child: Image.asset(
-              onboarding1,
-              fit: BoxFit.cover,
-            ),
-          ),
+          Positioned.fill(child: Image.asset(onboarding1, fit: BoxFit.cover)),
           if (_hasStartedChat) ...[
             Positioned.fill(
               child: BackdropFilter(
@@ -188,12 +183,14 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
             ),
             Positioned.fill(
               child: Container(
-                decoration:  BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      const Color(0xCC0C111D).withValues(alpha: .0), //transparent
+                      const Color(
+                        0xCC0C111D,
+                      ).withValues(alpha: .0), //transparent
                       const Color(0xCC0C111D),
                     ],
                   ),
@@ -201,23 +198,25 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
               ),
             ),
           ] else ...[
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    const Color(0xCC0C111D).withValues(alpha: .0), //transparent
-                    const Color(0xCC0C111D), //semi-transparent
-                    secondaryGrey, // dark shade, semi-transparent
-                  ],
-                  stops: const [0.2, .5,1.0],
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      const Color(
+                        0xCC0C111D,
+                      ).withValues(alpha: .0), //transparent
+                      const Color(0xCC0C111D), //semi-transparent
+                      secondaryGrey, // dark shade, semi-transparent
+                    ],
+                    stops: const [0.2, .5, 1.0],
+                  ),
                 ),
               ),
             ),
-          ),
-],
+          ],
           // Foreground content
           GestureDetector(
             onTap: () {
@@ -229,7 +228,7 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
                 children: [
                   AppBarHeader(
                     title: Text(
-                      _hasStartedChat?'Morning Verse':'',
+                      _hasStartedChat ? '' : '',
                       style: TextStyle(
                         color: textWhite,
                         fontSize: 18.sp,
@@ -240,18 +239,20 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
                   SizedBox(height: 6.h),
                   Expanded(
                     child: Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: 16.w),
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Column(
                         children: [
                           Expanded(
                             child:
                                 !_hasStartedChat
                                     ? Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         const SizedBox(height: 20),
                                         VoiceGreetingBox(
-                                          userName: AppConstants.name.split(' ')[0],
+                                          userName:
+                                              AppConstants.name.split(' ')[0],
                                         ),
                                         const Spacer(),
                                         Obx(() {
@@ -265,7 +266,8 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
                                               : SizedBox(
                                                 height: 140,
                                                 child: ListView(
-                                                  scrollDirection: Axis.horizontal,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
                                                   children: [
                                                     GestureDetector(
                                                       onTap: () {
@@ -331,12 +333,12 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
                                       shimmerAnimation: _shimmerAnimation,
                                     ),
                           ),
-                           SizedBox(height: 10.h),
+                          SizedBox(height: 10.h),
                           ChatInputBar(
                             controller: _controller,
                             onSend: () => _sendMessage(_controller.text.trim()),
                           ),
-                           SizedBox(height: 25.h),
+                          SizedBox(height: 25.h),
                         ],
                       ),
                     ),

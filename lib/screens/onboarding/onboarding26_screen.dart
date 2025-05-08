@@ -18,7 +18,7 @@ class _Onboarding26ScreenState extends State<Onboarding26Screen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(height: 50.h),
-        SizedBox(height: 43.h),
+        SizedBox(height: 80.h),
         CommonText(
           "When You Needed\nLight Most",
           36.sp,

@@ -6,7 +6,7 @@ import 'dart:ui';
 import '../../media/controllers/media.controller.dart' show MediaController;
 import '../../media/models/media.model.dart' show Media;
 import 'package:shimmer/shimmer.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../screens/AudioPlayer/audio_player_screen.dart'
     show AudioPlayerScreen;
 import '../../services/favorites_service.dart' show FavoritesController;
@@ -62,7 +62,7 @@ class _FeaturedSectionState extends State<FeaturedSection> {
   Widget _buildContent() {
     return SizedBox(
       height: 345.h,
-      width: 230.w,
+      width: 260.w,
       child: PageView.builder(
         controller: _pageController,
         itemCount: mediaController.mediaList.length,
@@ -76,13 +76,10 @@ class _FeaturedSectionState extends State<FeaturedSection> {
             opacity: opacity,
             child: Transform.scale(
               scale: scale,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 2.w),
-                child: _CupertinoFeatureCard(
-                  media: mediaController.mediaList[index],
-                  mediaList: mediaController.mediaList,
-                  index: index,
-                ),
+              child: _CupertinoFeatureCard(
+                media: mediaController.mediaList[index],
+                mediaList: mediaController.mediaList,
+                index: index,
               ),
             ),
           );
@@ -124,7 +121,7 @@ class _FeaturedSectionState extends State<FeaturedSection> {
   }
 }
 
-class _CupertinoFeatureCard extends StatelessWidget {
+class _CupertinoFeatureCard extends StatefulWidget {
   final Media media;
   final List<Media> mediaList;
   final int index;
@@ -136,34 +133,64 @@ class _CupertinoFeatureCard extends StatelessWidget {
   });
 
   @override
+  State<_CupertinoFeatureCard> createState() => _CupertinoFeatureCardState();
+}
+
+class _CupertinoFeatureCardState extends State<_CupertinoFeatureCard>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     final favouritesController = Get.find<FavoritesController>();
     return Container(
       height: 345.h,
-      width: 230.w,
+      width: 260.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.sp),
-        image: DecorationImage(
-          image: NetworkImage(media.thumbnail ?? ''),
-          fit: BoxFit.cover,
-        ),
+        color: const Color(0xFF1E2127),
       ),
       child: Stack(
         children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.sp),
+            child: CachedNetworkImage(
+              imageUrl: widget.media.thumbnail ?? '',
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+              memCacheWidth:
+                  (260.w * MediaQuery.of(context).devicePixelRatio).toInt(),
+              memCacheHeight:
+                  (345.h * MediaQuery.of(context).devicePixelRatio).toInt(),
+              placeholder:
+                  (context, url) => Center(
+                    child: CupertinoActivityIndicator(
+                      color: CupertinoColors.white,
+                    ),
+                  ),
+              errorWidget:
+                  (context, url, error) => Container(
+                    color: const Color(0xFF1E2127),
+                    child: const Icon(
+                      CupertinoIcons.photo,
+                      color: CupertinoColors.systemGrey,
+                    ),
+                  ),
+            ),
+          ),
           Positioned(
             bottom: 16,
             left: 12,
             child: GestureDetector(
               onTap: () async {
-                if (!favouritesController.isFavorite(media.id)) {
+                if (!favouritesController.isFavorite(widget.media.id)) {
                   await favouritesController.toggleFavorite(
-                    media.id,
-                    mediaData: media,
+                    widget.media.id,
+                    mediaData: widget.media,
                   );
-
-                  // favouritesController.favoriteStatus[media.id] = true;
-
-                  // await favouritesController.getFavorites();
                 }
               },
               child: ClipRRect(
@@ -172,7 +199,7 @@ class _CupertinoFeatureCard extends StatelessWidget {
                   filter: ImageFilter.blur(sigmaX: 6.0, sigmaY: 6.0),
                   child: Container(
                     height: 44.h,
-                    width: 130.w,
+                    width: 120.w,
                     padding: EdgeInsets.symmetric(horizontal: 12.w),
                     decoration: BoxDecoration(
                       color: const Color.fromRGBO(68, 68, 68, 0.5),
@@ -187,7 +214,7 @@ class _CupertinoFeatureCard extends StatelessWidget {
                       children: [
                         Obx(() {
                           final isFavorite = favouritesController.isFavorite(
-                            media.id,
+                            widget.media.id,
                           );
                           return isFavorite
                               ? Icon(
@@ -208,7 +235,7 @@ class _CupertinoFeatureCard extends StatelessWidget {
                         SizedBox(width: 6.w),
                         Obx(() {
                           final isFavorite = favouritesController.isFavorite(
-                            media.id,
+                            widget.media.id,
                           );
                           return AllText(
                             text: isFavorite ? 'Added to list' : 'Add to list',
@@ -227,16 +254,16 @@ class _CupertinoFeatureCard extends StatelessWidget {
           ),
           Positioned(
             bottom: 16,
-            right: 12,
+            right: 16,
             child: GestureDetector(
               onTap: () {
                 Navigator.of(context).push(
                   CupertinoPageRoute(
                     builder:
                         (_) => AudioPlayerScreen(
-                          media: media,
-                          mediaList: mediaList,
-                          currentIndex: index,
+                          media: widget.media,
+                          mediaList: widget.mediaList,
+                          currentIndex: widget.index,
                         ),
                   ),
                 );

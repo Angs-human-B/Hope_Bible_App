@@ -3,9 +3,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../media/models/media.model.dart';
-import '../favourites/models/favorite.model.dart';
 import 'favorites_service.dart';
 
 class AudioService extends ChangeNotifier {
@@ -21,6 +19,7 @@ class AudioService extends ChangeNotifier {
   bool get isPlaying => _isPlaying;
   bool get isMuted => _isMuted;
   Stream<Duration> get positionStream => _player.positionStream;
+  Stream<PlayerState> get playerStateStream => _player.playerStateStream;
 
   static Future<void> initBackgroundService() async {
     await JustAudioBackground.init(
@@ -34,7 +33,17 @@ class AudioService extends ChangeNotifier {
 
   Future<void> init() async {
     _player.playerStateStream.listen((state) {
+      debugPrint(
+        'Player state changed - Playing: ${state.playing}, State: ${state.processingState}',
+      );
       _isPlaying = state.playing;
+
+      // Handle completion state
+      if (state.processingState == ProcessingState.completed) {
+        _isPlaying = false;
+        debugPrint('Track completed');
+      }
+
       notifyListeners();
     });
 
@@ -50,10 +59,21 @@ class AudioService extends ChangeNotifier {
         notifyListeners();
       }
     });
+
+    // Set up completion behavior
+    await _player.setLoopMode(LoopMode.off);
   }
 
   Future<void> setSource(String url, Media media) async {
     try {
+      // Reset states
+      _position = Duration.zero;
+      _duration = Duration.zero;
+      notifyListeners();
+
+      // Stop current playback before setting new source
+      await _player.stop();
+
       await _player.setAudioSource(
         AudioSource.uri(
           Uri.parse(url),
@@ -65,14 +85,23 @@ class AudioService extends ChangeNotifier {
           ),
         ),
       );
+
+      // Wait for duration to be available
       final duration = await _player.duration;
       if (duration != null) {
         _duration = duration;
         debugPrint('Total audio duration: $_duration');
         notifyListeners();
       }
+
+      // Start playing and update state
+      await play();
+      _isPlaying = true;
+      notifyListeners();
     } catch (e) {
       debugPrint('Error loading audio source: $e');
+      _isPlaying = false;
+      notifyListeners();
     }
   }
 
@@ -85,16 +114,27 @@ class AudioService extends ChangeNotifier {
   }
 
   Future<void> togglePlay() async {
-    if (_isPlaying) {
-      await pause();
-    } else {
-      await play();
+    try {
+      if (_isPlaying) {
+        await pause();
+      } else {
+        await play();
+      }
+      _isPlaying = !_isPlaying;
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error toggling play state: $e');
     }
   }
 
   void toggleMute() {
     _isMuted = !_isMuted;
     _player.setVolume(_isMuted ? 0.0 : 1.0);
+    notifyListeners();
+  }
+
+  void updatePlayingState(bool isPlaying) {
+    _isPlaying = isPlaying;
     notifyListeners();
   }
 

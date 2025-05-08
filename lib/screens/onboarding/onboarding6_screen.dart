@@ -23,7 +23,7 @@ class _Onboarding6ScreenState extends State<Onboarding6Screen>
     'NKJV',
     'MSG',
     'NLT',
-    'Other',
+    "I'm not sure",
   ];
 
   int selectedIdx = 9;

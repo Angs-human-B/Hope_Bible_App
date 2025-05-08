@@ -18,7 +18,7 @@ class _Onboarding15ScreenState extends State<Onboarding15Screen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 50.h),
+        SizedBox(height: 100.h),
 
         SizedBox(height: 84.h),
         AutoScrollingImage(

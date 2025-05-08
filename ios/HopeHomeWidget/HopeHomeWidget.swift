@@ -9,81 +9,126 @@ import WidgetKit
 import SwiftUI
 
 struct Provider: TimelineProvider {
-    // Function to fetch a random verse from the Bible API
-    func fetchVerse(completion: @escaping (BibleVerse?) -> Void) {
-        // API endpoint for random Bible verse
-        let url = URL(string: "https://labs.bible.org/api/?passage=random&type=json")!
-        
-        // Create and start the network request
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            // Handle network errors
-            guard let data = data, error == nil else {
-                print("Failed to fetch verse: \(error?.localizedDescription ?? "Unknown error")")
-                completion(nil)
-                return
-            }
-            
-            // Parse the JSON response
-            do {
-                let verses = try JSONDecoder().decode([BibleAPIVerse].self, from: data)
-                if let firstVerse = verses.first {
-                    // Create a BibleVerse object from the API response
-                    let verse = BibleVerse(
-                        verse: firstVerse.text,
-                        reference: "\(firstVerse.bookname) \(firstVerse.chapter):\(firstVerse.verse)"
-                    )
-                    completion(verse)
-                } else {
-                    completion(nil)
-                }
-            } catch {
-                print("Failed to decode verse: \(error.localizedDescription)")
-                completion(nil)
-            }
+    let userDefaults = UserDefaults(suiteName: "group.com.hope.app")
+    let appGroupID = "group.com.hope.app"
+    
+    init() {
+        // Check app group access on initialization
+        if let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) {
+            print("Widget can access app group container at: \(containerURL.path)")
+        } else {
+            print("Widget CANNOT access app group container - please check entitlements")
         }
-        task.resume()
+        
+        if let defaults = userDefaults {
+            print("Widget can initialize UserDefaults with app group")
+            // Print all available keys
+            let allKeys = defaults.dictionaryRepresentation().keys
+            print("Available keys in UserDefaults: \(allKeys.joined(separator: ", "))")
+        } else {
+            print("Widget CANNOT initialize UserDefaults with app group")
+        }
     }
-
-    // Provide a placeholder entry for widget gallery
+    
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), verse: BibleVerse(
-            verse: "For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life.",
-            reference: "John 3:16"
-        ))
+        print("Widget: placeholder called")
+        return SimpleEntry(
+            date: Date(),
+            verse: BibleVerse(
+                verse: "Loading...",
+                reference: "Please wait"
+            ),
+            isPlaceholder: true,
+            errorMessage: nil
+        )
     }
 
-    // Provide a snapshot entry for widget gallery
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), verse: BibleVerse(
-            verse: "For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life.",
-            reference: "John 3:16"
-        ))
+        print("Widget: getSnapshot called")
+        let entry = getCurrentEntry(isSnapshot: true)
         completion(entry)
     }
 
-    // Provide the timeline of entries for the widget
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        fetchVerse { verse in
-            let currentDate = Date()
-            // Create entry with fetched verse or fallback to default
-            let entry = SimpleEntry(
-                date: currentDate,
-                verse: verse ?? BibleVerse(
-                    verse: "For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life.",
-                    reference: "John 3:16"
-                )
+        print("Widget: getTimeline called")
+        let entry = getCurrentEntry(isSnapshot: false)
+        
+        // Schedule updates more frequently
+        let currentDate = Date()
+        let calendar = Calendar.current
+        
+        // Create an update every 30 seconds for testing
+        var entries: [SimpleEntry] = []
+        for secondOffset in stride(from: 0, through: 300, by: 30) {
+            let entryDate = calendar.date(byAdding: .second, value: secondOffset, to: currentDate)!
+            entries.append(SimpleEntry(
+                date: entryDate,
+                verse: entry.verse,
+                isPlaceholder: false,
+                errorMessage: entry.errorMessage
+            ))
+        }
+        
+        print("Widget: Created timeline with \(entries.count) entries")
+        let timeline = Timeline(entries: entries, policy: .atEnd)
+        completion(timeline)
+    }
+    
+    private func getCurrentEntry(isSnapshot: Bool) -> SimpleEntry {
+        print("\n=== Widget Data Fetch Start ===")
+        print("Context: \(isSnapshot ? "Snapshot" : "Timeline")")
+        
+        // First check if we can access the app group container
+        guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) else {
+            print("Error: Cannot access app group container")
+            return SimpleEntry(
+                date: Date(),
+                verse: BibleVerse(verse: "Error", reference: "Configuration Error"),
+                isPlaceholder: false,
+                errorMessage: "Cannot access app group. Please check entitlements."
             )
-            
-            // Schedule next update in 24 hours
-            let nextUpdate = Calendar.current.date(byAdding: .hour, value: 24, to: currentDate)!
-            let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
-            completion(timeline)
+        }
+        
+        guard let defaults = userDefaults else {
+            print("Error: Cannot initialize UserDefaults")
+            return SimpleEntry(
+                date: Date(),
+                verse: BibleVerse(verse: "Error", reference: "Configuration Error"),
+                isPlaceholder: false,
+                errorMessage: "Cannot access UserDefaults. Please check configuration."
+            )
+        }
+        
+        // Print all keys in UserDefaults
+        print("All UserDefaults keys:")
+        let allKeys = defaults.dictionaryRepresentation().keys
+        print("Available keys: \(allKeys.joined(separator: ", "))")
+        
+        let verse = defaults.string(forKey: "verse")
+        let reference = defaults.string(forKey: "reference")
+        
+        print("\nFound values:")
+        print("verse: \(verse ?? "nil")")
+        print("reference: \(reference ?? "nil")")
+        
+        if let verse = verse, let reference = reference, !verse.isEmpty, !reference.isEmpty {
+            print("Using stored values for widget")
+            return SimpleEntry(
+                date: Date(),
+                verse: BibleVerse(verse: verse, reference: reference),
+                isPlaceholder: false,
+                errorMessage: nil
+            )
+        } else {
+            print("No valid stored values found")
+            return SimpleEntry(
+                date: Date(),
+                verse: BibleVerse(verse: "No verse available", reference: "Error"),
+                isPlaceholder: false,
+                errorMessage: "No data found in UserDefaults"
+            )
         }
     }
-
-//    func relevances() async -> WidgetRelevances<Void> {
-//        // Generate a list containing the contexts this widget is relevant in.
-//    }
 }
 
 // Model for Bible verse data
@@ -96,6 +141,8 @@ struct BibleVerse: Codable {
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let verse: BibleVerse
+    let isPlaceholder: Bool
+    let errorMessage: String?
 }
 
 // Model for Unsplash API response
@@ -154,25 +201,41 @@ struct BackgroundImageManager {
 
 struct HopeHomeWidgetEntryView : View {
     var entry: Provider.Entry
+    @Environment(\.widgetFamily) var family
 
     var body: some View {
         ZStack {
-            // Single background color for the entire widget
             Color(UIColor(red: 0.133, green: 0.133, blue: 0.133, alpha: 1.0))
             
             VStack(alignment: .leading, spacing: 6) {
-                Text("DAILY VERSE")
-                    .font(.system(size: 11, weight: .medium, design: .rounded))
-                    .foregroundColor(Color.white.opacity(0.7))
-                    .textCase(.uppercase)
+                HStack {
+                    Text("DAILY VERSE")
+                        .font(.system(size: 11, weight: .medium, design: .rounded))
+                        .foregroundColor(Color.white.opacity(0.7))
+                        .textCase(.uppercase)
+                    
+                    if entry.isPlaceholder {
+                        Text("(Loading...)")
+                            .font(.system(size: 11))
+                            .foregroundColor(Color.white.opacity(0.5))
+                    }
+                }
                 
-                Text("\"\(entry.verse.verse)\"")
-                    .font(.system(size: 16, weight: .regular, design: .serif))
-                    .foregroundColor(.white)
-                    .lineLimit(8)
-                    .lineSpacing(1)
-                    .minimumScaleFactor(0.8)
-                    .multilineTextAlignment(.leading)
+                if let error = entry.errorMessage {
+                    Text(error)
+                        .font(.system(size: 14))
+                        .foregroundColor(.red)
+                        .lineLimit(3)
+                        .multilineTextAlignment(.leading)
+                } else {
+                    Text("\"\(entry.verse.verse)\"")
+                        .font(.system(size: 16, weight: .regular, design: .serif))
+                        .foregroundColor(.white)
+                        .lineLimit(family == .systemSmall ? 4 : 8)
+                        .lineSpacing(1)
+                        .minimumScaleFactor(0.8)
+                        .multilineTextAlignment(.leading)
+                }
                 
                 Spacer(minLength: 4)
                 
@@ -182,6 +245,7 @@ struct HopeHomeWidgetEntryView : View {
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
             .padding(12)
+            .opacity(entry.isPlaceholder ? 0.7 : 1.0)
         }
     }
 }
@@ -203,7 +267,7 @@ struct HopeHomeWidget: Widget {
             }
         }
         .configurationDisplayName("Daily Verse")
-        .description("Display a new Bible verse each day.")
+        .description("Display today's Bible verse.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
@@ -215,11 +279,7 @@ struct HopeHomeWidget: Widget {
     SimpleEntry(date: .now, verse: BibleVerse(
         verse: "For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life.",
         reference: "John 3:16"
-    ))
-    SimpleEntry(date: .now, verse: BibleVerse(
-        verse: "Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.",
-        reference: "Proverbs 3:5-6"
-    ))
+    ), isPlaceholder: false, errorMessage: nil)
 }
 
 // Model for API response

@@ -5,11 +5,21 @@ import '../widgets/HomeSection/daily_verse_card.dart';
 import '../widgets/HomeSection/feature_section.dart';
 import '../widgets/HomeSection/horizontal_card_list.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ListView(
       padding: const EdgeInsets.only(bottom: 10),
       children: [

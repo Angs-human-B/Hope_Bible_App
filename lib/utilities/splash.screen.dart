@@ -4,12 +4,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart' show Get, Inst;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart'
     show CupertinoScaffold;
+import '../screens/Pricing&LoginSection/pricing_screen_1.dart'
+    show PricingScreen1;
+import '../screens/auth/auth_page.dart' show AuthPage;
+import '../screens/auth/controllers/user.auth.controller.dart'
+    show SignUpController;
+import '../screens/onboarding/onboarding_screen_pageview.dart'
+    show OnboardingPager;
+import '../screens/persistent_botom_nav.dart' show PersistentBottomNav;
 import '../utilities/app.constants.dart' show AppConstants;
-import 'Pricing&LoginSection/pricing_screen_1.dart' show PricingScreen1;
-import 'auth/auth_page.dart' show AuthPage;
-import 'auth/controllers/user.auth.controller.dart' show SignUpController;
-import 'onboarding/onboarding_screen_pageview.dart';
-import 'persistent_botom_nav.dart' show PersistentBottomNav;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,7 +23,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   Future<String> _determineInitialScreen() async {
-    await Future.delayed(const Duration(seconds: 3)); // Add splash screen delay
+    // await Future.delayed(const Duration(seconds: 3)); // Add splash screen delay
 
     if (AppConstants.userId.isEmpty && !AppConstants.isSubscriptionActive) {
       return 'onboarding'; // Id Empty & Subscription inactive
@@ -73,9 +76,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             );
           } else {
-            final route = 'onboarding';
-            // final route = "";
-            // final route = snapshot.data ?? 'onboarding';
+            final route = snapshot.data ?? 'onboarding';
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.pushReplacement(
                 context,
@@ -95,7 +96,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               );
             });
-            return const Center(child: LogoOnly());
+            return const Center(child: SizedBox());
           }
         },
       ),

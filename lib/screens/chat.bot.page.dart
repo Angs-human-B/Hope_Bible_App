@@ -14,6 +14,9 @@ import 'package:path_provider/path_provider.dart';
 import '../services/openai_service.dart';
 import 'dart:async';
 
+// Add RouteObserver globally
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+
 class ChatBotPage extends StatefulWidget {
   const ChatBotPage({super.key});
 
@@ -22,7 +25,7 @@ class ChatBotPage extends StatefulWidget {
 }
 
 class _ChatBotPageState extends State<ChatBotPage>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver, RouteAware {
   String emphemeralKey = "";
   RTCPeerConnection? peerConnection;
   MediaStream? localStream;
@@ -58,6 +61,8 @@ class _ChatBotPageState extends State<ChatBotPage>
   @override
   void initState() {
     super.initState();
+    // Add observer for app lifecycle
+    WidgetsBinding.instance.addObserver(this);
 
     // Initialize animation controllers first
     _fadeController = AnimationController(
@@ -97,6 +102,37 @@ class _ChatBotPageState extends State<ChatBotPage>
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await _initializeAudioAndPermissions();
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Subscribe to route changes
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) {
+      _stopListening();
+    }
+  }
+
+  @override
+  void didPushNext() {
+    // Called when another route has been pushed on top of this one
+    _stopListening();
+  }
+
+  @override
+  void didPopNext() {
+    // Called when a route has been popped off and this route shows up
+    if (_isListening) {
+      _stopListening();
+    }
   }
 
   Future<void> _initializeAudioAndPermissions() async {
@@ -820,13 +856,17 @@ class _ChatBotPageState extends State<ChatBotPage>
 
   @override
   void dispose() {
+    // Remove observers
+    WidgetsBinding.instance.removeObserver(this);
+    routeObserver.unsubscribe(this);
+
     _pulseController.dispose();
     _typeTimer?.cancel();
     _textFadeController.dispose();
     _fadeController.dispose();
     print("Disposing MainScreen...");
     _audioPlayer.dispose();
-    stopWebRtcConnection(); // Use stopWebRtcConnection instead of _cleanupConnections
+    stopWebRtcConnection();
     super.dispose();
   }
 }

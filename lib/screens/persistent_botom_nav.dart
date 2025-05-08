@@ -69,7 +69,7 @@ class _PersistentBottomNavState extends State<PersistentBottomNav> {
           Obx(() {
             return BibleScreen.isBottomBarVisible.value
                 ? Positioned(
-                  bottom: 16.h,
+                  bottom: 24.h,
                   left: 0,
                   right: 0,
                   child: BottomNavBar(
