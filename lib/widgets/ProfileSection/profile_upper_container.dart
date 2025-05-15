@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hope/screens/profile_settings_screen.dart';
@@ -44,6 +45,7 @@ class _ProfileUpperContainerState extends State<ProfileUpperContainer> {
             children: [
               GestureDetector(
                 onTap: () {
+                  HapticFeedback.selectionClick();
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
@@ -161,7 +163,10 @@ class _ProfileUpperContainerState extends State<ProfileUpperContainer> {
                             borderRadius: BorderRadius.circular(99.sp),
                           ),
                           child: GestureDetector(
-                            onTap: () => _showChangeGoalDialog(context),
+                            onTap: () {
+                              HapticFeedback.selectionClick();
+                              _showChangeGoalDialog(context);
+                            },
                             child: AllText(
                               text: "Change My Goal",
                               style: TextStyle(
@@ -179,6 +184,7 @@ class _ProfileUpperContainerState extends State<ProfileUpperContainer> {
                   /// Streak icon container
                   GestureDetector(
                     onTap: () {
+                      HapticFeedback.selectionClick();
                       Navigator.push(
                         context,
                         CupertinoPageRoute(

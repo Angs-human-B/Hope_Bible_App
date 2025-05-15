@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hope/utilities/app.constants.dart' show AppConstants;
@@ -93,6 +94,7 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
         setState(() {
           _isTyping = false;
           // Update the actual message text after typing animation completes
+          HapticFeedback.selectionClick();
           if (_messages.isNotEmpty) {
             _messages.last = ChatMessage(text: text, isUser: false);
           }
@@ -271,6 +273,7 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
                                                   children: [
                                                     GestureDetector(
                                                       onTap: () {
+                                                        HapticFeedback.selectionClick();
                                                         _sendMessage(
                                                           chatController
                                                               .suggestions[0]
@@ -287,6 +290,7 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
                                                     ),
                                                     GestureDetector(
                                                       onTap: () {
+                                                        HapticFeedback.selectionClick();
                                                         _sendMessage(
                                                           chatController
                                                               .suggestions[1]
@@ -304,6 +308,7 @@ class _ChatHomeState extends State<ChatHome> with TickerProviderStateMixin {
 
                                                     GestureDetector(
                                                       onTap: () {
+                                                        HapticFeedback.selectionClick();
                                                         _sendMessage(
                                                           chatController
                                                               .suggestions[2]

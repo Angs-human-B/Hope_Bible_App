@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hope/Constants/colors.dart';
@@ -59,6 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   title: "My Account",
                   trailingIconPath: arrowRight2,
                   onTap: () {
+                    HapticFeedback.selectionClick();
                     Navigator.push(
                       context,
                       CupertinoPageRoute(
@@ -73,6 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   title: "App settings",
                   trailingIconPath: arrowRight2,
                   onTap: () {
+                    HapticFeedback.selectionClick();
                     Navigator.push(
                       context,
                       CupertinoPageRoute(
@@ -90,6 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   dropdownItems: ["Male", "Female"],
                   selectedItem: AppConstants.isMale ? "Male" : "Female",
                   onDropdownChanged: (value) {
+                    HapticFeedback.selectionClick();
                     AppConstants.isMale = value == "Male" ? true : false;
 
                     Utils.logger.f("Checking male ${AppConstants.isMale}");
@@ -105,6 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   enableDropdownTrailing: false,
                   selectedItem: languageController.selectedLanguage.value,
                   onTap: () {
+                    HapticFeedback.selectionClick();
                     LanguageChangeUtility.showLanguageScreen(context);
                   },
                 ),

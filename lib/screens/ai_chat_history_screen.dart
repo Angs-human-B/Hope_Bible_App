@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hope/Constants/colors.dart';
@@ -25,6 +26,7 @@ class AiChatHistoryScreen extends StatelessWidget {
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
           onTap: () {
+            HapticFeedback.selectionClick();
             Navigator.pop(context);
           },
           child: ClipRRect(
@@ -129,34 +131,41 @@ class AiChatHistoryScreen extends StatelessWidget {
                           ),
                           SizedBox(width: 10.w),
                           Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item['title']!,
-                                  style: TextStyle(
-                                    color: textWhite,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
+                            child: GestureDetector(
+                              onTap: () {
+                                HapticFeedback.selectionClick();
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item['title']!,
+                                    style: TextStyle(
+                                      color: textWhite,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: 4.h),
-                                Text(
-                                  item['subtitle']!,
-                                  style: TextStyle(
-                                    color: hintTextGrey,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w500,
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    item['subtitle']!,
+                                    style: TextStyle(
+                                      color: hintTextGrey,
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(width: 10.w),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              HapticFeedback.heavyImpact();
+                            },
                             child: SvgPicture.asset(
                               closeIcon,
                               width: 16.w,

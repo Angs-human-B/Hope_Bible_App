@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ import '../../Constants/colors.dart';
 import '../../Constants/icons.dart';
 import '../../services/audio_service.dart';
 import '../../services/favorites_service.dart' show FavoritesController;
+import '../../widgets/AudioPlayer/achievement_popup.dart';
 import '../../widgets/AudioPlayer/audio_controls.dart';
 import '../../widgets/AudioPlayer/audio_slider.dart';
 import '../../media/models/media.model.dart' show Media;
@@ -41,6 +43,8 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   late Media _currentMedia;
   StreamSubscription? _positionSubscription;
   StreamSubscription? _playerStateSubscription;
+  bool _showGoalPopup = false;
+
 
   @override
   void initState() {
@@ -167,6 +171,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
 
   void _togglePage() {
     final newPage = _isLyricsShown ? 0 : 1;
+    HapticFeedback.mediumImpact();
     _pageController.animateToPage(
       newPage,
       duration: const Duration(milliseconds: 300),
@@ -219,19 +224,31 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                        onTap: () => Navigator.pop(context),
+                        onTap: () {
+                          HapticFeedback.selectionClick();
+                          Navigator.pop(context);
+                        },
                         child: _buildBlurButton(icon: arrowLeft),
                       ),
-                      Text(
-                        _currentMedia.title,
-                        style: TextStyle(
-                          color: textWhite,
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w600,
+                      GestureDetector(
+                        onTap: (){
+                          HapticFeedback.lightImpact();
+                          setState(() => _showGoalPopup = true);
+                          HapticFeedback.heavyImpact();
+
+                        },
+                        child: Text(
+                          _currentMedia.title,
+                          style: TextStyle(
+                            color: textWhite,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                       GestureDetector(
                         onTap: () async {
+                          HapticFeedback.mediumImpact();
                           if (!favouritesController.isFavorite(
                             _currentMedia.id,
                           )) {
@@ -379,6 +396,24 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
               ),
             ),
           ),
+          if (_showGoalPopup)
+            Positioned.fill(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                child: Container(
+                  color: CupertinoColors.black.withOpacity(0.4),
+                  child: Center(
+                    child: AchievementPopup(
+                      onClose: () {
+                        HapticFeedback.lightImpact();
+                        setState(() => _showGoalPopup = false);
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
         ],
       ),
     );

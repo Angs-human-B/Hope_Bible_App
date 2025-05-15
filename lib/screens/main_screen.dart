@@ -36,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
               () => IndexedStack(index: currentIndex.value, children: screens),
             ),
             Positioned(
-              bottom: 16.h,
+              bottom: 0,
               left: 0,
               right: 0,
               child: Obx(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart' show Get, Inst;
 import 'package:hope/Constants/global_variable.dart';
@@ -66,7 +67,7 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                     setState(() {
                       selectedIdx = i;
                     });
-
+                    HapticFeedback.selectionClick();
                     onboardingController.updatePageData(
                       'denomination',
                       widget.denomination[i],
@@ -92,7 +93,7 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                     setState(() {
                       selectedIdx = i + 1;
                     });
-
+                    HapticFeedback.selectionClick();
                     onboardingController.updatePageData(
                       'denomination',
                       widget.denomination[i + 1],
@@ -127,7 +128,7 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                       });
                       Utils.logger.e(selectedIdx);
                       Utils.logger.f(widget.denomination[i]);
-
+                      HapticFeedback.selectionClick();
                       onboardingController.updatePageData(
                         'denomination',
                         widget.denomination[i],
@@ -155,7 +156,7 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
                       setState(() {
                         selectedIdx = i + 1;
                       });
-
+                      HapticFeedback.selectionClick();
                       onboardingController.updatePageData(
                         'denomination',
                         widget.denomination[i + 1],
@@ -186,6 +187,7 @@ class _ManualTwoColumnGridState extends State<ManualTwoColumnGrid> {
               setState(() {
                 denominationIsSelected = true;
                 onboardingController.isSelected.value = true;
+                HapticFeedback.selectionClick();
 
                 onboardingController.updatePageData(
                   'denomination',

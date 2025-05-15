@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart'
     show CachedNetworkImage;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../media/models/media.model.dart';
@@ -30,6 +31,7 @@ class FeatureCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
+        HapticFeedback.selectionClick();
         Navigator.of(context).push(
           CupertinoPageRoute(
             builder:
@@ -44,7 +46,7 @@ class FeatureCard extends StatelessWidget {
       child: Container(
         width: width,
         height: height,
-        margin: const EdgeInsets.only(right: 8),
+        margin: EdgeInsets.only(right: 14.w),
         decoration: BoxDecoration(
           // image: DecorationImage(
           //   image: NetworkImage(media.thumbnail ?? ''),
@@ -97,6 +99,7 @@ class FeatureCard extends StatelessWidget {
               left: 8,
               child: GestureDetector(
                 onTap: () async {
+                  HapticFeedback.mediumImpact();
                   if (!favouritesController.isFavorite(media.id)) {
                     await favouritesController.toggleFavorite(
                       media.id,

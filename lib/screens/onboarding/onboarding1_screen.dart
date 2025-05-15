@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hope/Constants/image.dart';
@@ -57,6 +58,7 @@ class _Onboarding1ScreenState extends State<Onboarding1Screen> {
                   SizedBox(height: 34.h),
                   GestureDetector(
                     onTap: () {
+                      HapticFeedback.mediumImpact();
                       onboardingController.currentProgress.value++;
 
                       Utils.logger.f(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -65,6 +66,7 @@ class _ManualTwoColumnGrid2State extends State<ManualTwoColumnGrid2> {
                     setState(() {
                       selectedIdx = i;
                     });
+                    HapticFeedback.selectionClick();
                     onboardingController.updatePageData(
                       'translations',
                       widget.denomination[i],
@@ -92,6 +94,7 @@ class _ManualTwoColumnGrid2State extends State<ManualTwoColumnGrid2> {
                     setState(() {
                       selectedIdx = i + 1;
                     });
+                    HapticFeedback.selectionClick();
                     onboardingController.updatePageData(
                       'translations',
                       widget.denomination[i + 1],
@@ -123,6 +126,7 @@ class _ManualTwoColumnGrid2State extends State<ManualTwoColumnGrid2> {
               setState(() {
                 selectedIdx = i;
               });
+              HapticFeedback.selectionClick();
               onboardingController.updatePageData(
                 'translations',
                 widget.denomination[i],

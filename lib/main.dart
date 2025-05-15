@@ -50,7 +50,7 @@ void main() async {
 
   await _configureSDK();
 
-  await fetchRevenueCatDetailsFn();
+  // await fetchRevenueCatDetailsFn();
 
   SharedPreferences sp = await SharedPreferences.getInstance();
 

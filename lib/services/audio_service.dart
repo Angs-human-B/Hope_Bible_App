@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:flutter/material.dart';
@@ -106,10 +107,12 @@ class AudioService extends ChangeNotifier {
   }
 
   Future<void> play() async {
+    HapticFeedback.selectionClick();
     await _player.play();
   }
 
   Future<void> pause() async {
+    HapticFeedback.selectionClick();
     await _player.pause();
   }
 
@@ -128,6 +131,7 @@ class AudioService extends ChangeNotifier {
   }
 
   void toggleMute() {
+    HapticFeedback.selectionClick();
     _isMuted = !_isMuted;
     _player.setVolume(_isMuted ? 0.0 : 1.0);
     notifyListeners();

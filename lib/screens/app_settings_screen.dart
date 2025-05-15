@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart' show Get, Inst;
@@ -131,6 +132,7 @@ class AppSettingsScreen extends StatelessWidget {
                 enableToggle: true,
                 toggleValue: AppConstants.receiveNotifications,
                 onToggleChanged: (val) async {
+                  HapticFeedback.selectionClick();
                   final controller = Get.find<SignUpController>();
                   final Map<String, dynamic> params = {
                     "value": AppConstants.userId,
@@ -160,7 +162,10 @@ class AppSettingsScreen extends StatelessWidget {
                 iconPath: logoutIcon,
                 title: "Logout",
                 trailingIconPath: arrowRight2,
-                onTap: () => _showLogoutDialog(context),
+                onTap: () {
+                  HapticFeedback.mediumImpact();
+                  _showLogoutDialog(context);
+                },
               ),
             ],
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'; // For some custom colors
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hope/Constants/colors.dart';
@@ -66,6 +67,7 @@ class ChatInputBar extends StatelessWidget {
 
         GestureDetector(
           onTap: () {
+            HapticFeedback.mediumImpact();
             Navigator.push(
               context,
               CupertinoPageRoute(

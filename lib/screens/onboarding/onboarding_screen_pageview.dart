@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart' show PlatformException;
+import 'package:flutter/services.dart' show HapticFeedback, PlatformException;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart' show Inst, Obx;
 import 'package:get/get_core/src/get_main.dart' show Get;
@@ -323,6 +323,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                         final enabled = isOptionsSelected(
                           oboardingController.currentPageIndex.value,
                         );
+                        HapticFeedback.mediumImpact();
                         if (enabled &&
                             oboardingController.isSelected.value &&
                             oboardingController.currentPageIndex.value != 26) {

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -36,6 +37,7 @@ class _AppBarHeaderState extends State<AppBarHeader> {
               // Back button
               GestureDetector(
                 onTap: () {
+                  HapticFeedback.selectionClick();
                   Navigator.pop(context);
                 },
                 child: ClipRRect(
@@ -77,6 +79,7 @@ class _AppBarHeaderState extends State<AppBarHeader> {
                 children: [
                   GestureDetector(
                     onTap: () {
+                      HapticFeedback.selectionClick();
                       setState(() {
                         _showPopup = !_showPopup;
                         print("_showPopup: $_showPopup");
@@ -126,6 +129,7 @@ class _AppBarHeaderState extends State<AppBarHeader> {
                 children: [
                   GestureDetector(
                     onTap: () {
+                      HapticFeedback.selectionClick();
                       setState(() => _showPopup = false);
                       Navigator.push(
                         context,
@@ -161,6 +165,7 @@ class _AppBarHeaderState extends State<AppBarHeader> {
                   SizedBox(height: 4.h),
                   GestureDetector(
                     onTap: () {
+                      HapticFeedback.heavyImpact();
                       setState(() => _showPopup = false);
                     },
                     child: Row(

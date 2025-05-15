@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
@@ -205,6 +206,7 @@ class _AICallScreenState extends State<AICallScreen>
   }
 
   void _toggleMute() {
+    HapticFeedback.selectionClick();
     setState(() {
       _isMuted = !_isMuted;
       if (localStream != null) {
@@ -216,6 +218,7 @@ class _AICallScreenState extends State<AICallScreen>
   }
 
   void _toggleSpeaker() async {
+    HapticFeedback.selectionClick();
     try {
       final session = await AudioSession.instance;
       setState(() {
@@ -390,6 +393,7 @@ class _AICallScreenState extends State<AICallScreen>
                   iconColor: CupertinoColors.white,
                   size: 24.sp,
                   onTap: () {
+                    HapticFeedback.mediumImpact();
                     _stopListening();
                     Navigator.of(context).pop();
                   },

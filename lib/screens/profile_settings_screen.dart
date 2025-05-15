@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart' show Get, Inst;
@@ -163,6 +164,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                     "data": {"name": nameController.text},
                   };
                   controller.userUpdateFn(params, context, true);
+                  HapticFeedback.mediumImpact();
                   setState(() {
                     AppConstants.name = nameController.text;
                   });

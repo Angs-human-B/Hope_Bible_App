@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart' show Get, Inst, Obx;
 import 'package:hope/screens/profile_screen.dart';
@@ -42,7 +43,9 @@ class _PersistentBottomNavState extends State<PersistentBottomNav> {
       setState(() {
         _opacity = 0.0;
       });
-
+      Future.delayed(const Duration(milliseconds: 70), () {
+        HapticFeedback.mediumImpact();
+      });
       Future.delayed(const Duration(milliseconds: 150), () {
         setState(() {
           _selectedIndex = index;
@@ -69,7 +72,7 @@ class _PersistentBottomNavState extends State<PersistentBottomNav> {
           Obx(() {
             return BibleScreen.isBottomBarVisible.value
                 ? Positioned(
-                  bottom: 24.h,
+                  bottom: 0,
                   left: 0,
                   right: 0,
                   child: BottomNavBar(

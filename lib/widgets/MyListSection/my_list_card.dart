@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart'
     show CachedNetworkImage;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../favourites/models/favorite.model.dart';
 import '../../media/models/media.model.dart' show Media;
@@ -18,6 +19,7 @@ class MyListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        HapticFeedback.mediumImpact();
         Navigator.of(context).push(
           CupertinoPageRoute(
             builder:
