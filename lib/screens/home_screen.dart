@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen>
           if (!_hasStartedTyping.value) return const SizedBox.shrink();
           return Positioned.fill(
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+              filter: ImageFilter.blur(sigmaX: 7, sigmaY: 6),
               child: Container(color: secondaryBlack.withOpacity(0.7)),
             ),
           );
