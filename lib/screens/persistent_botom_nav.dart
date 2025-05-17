@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart' show Get, Inst, Obx;
+import 'package:get/get.dart' show Get, Inst;
 import 'package:hope/screens/profile_screen.dart';
 
 import '../streak/controllers/streak.controller.dart' show StreakController;
@@ -69,19 +68,17 @@ class _PersistentBottomNavState extends State<PersistentBottomNav> {
               child: IndexedStack(index: _selectedIndex, children: _screens),
             ),
           ),
-          Obx(() {
-            return BibleScreen.isBottomBarVisible.value
-                ? Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: BottomNavBar(
-                    currentIndex: _selectedIndex,
-                    onTap: _onTap,
-                  ),
-                )
-                : const SizedBox.shrink();
-          }),
+          // Obx(() {
+          //   return BibleScreen.isBottomBarVisible.value
+          //       ?
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: BottomNavBar(currentIndex: _selectedIndex, onTap: _onTap),
+          ),
+          // : const SizedBox.shrink();
+          // }),
         ],
       ),
     );

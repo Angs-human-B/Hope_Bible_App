@@ -18,7 +18,7 @@ class SettingsButtonListTile extends StatefulWidget {
   final String? selectedItem;
   final ValueChanged<String>? onDropdownChanged;
   final bool enableDropdownTrailing;
-
+  final bool? showIcon;
   final bool enableToggle;
   final bool? toggleValue;
   final ValueChanged<bool>? onToggleChanged;
@@ -36,6 +36,7 @@ class SettingsButtonListTile extends StatefulWidget {
     this.enableToggle = false,
     this.toggleValue,
     this.onToggleChanged,
+    this.showIcon = true,
   });
 
   @override
@@ -153,7 +154,8 @@ class _SettingsButtonListTileState extends State<SettingsButtonListTile> {
             ),
             child: Row(
               children: [
-                SvgPicture.asset(widget.iconPath, height: 24.h, width: 24.w),
+                if (widget.showIcon == true)
+                  SvgPicture.asset(widget.iconPath, height: 24.h, width: 24.w),
                 SizedBox(width: 16.w),
                 Expanded(
                   child: AllText(

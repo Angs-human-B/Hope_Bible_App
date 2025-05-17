@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ import 'package:hope/widgets/common_text.dart';
 import 'package:hope/widgets/OnboardingSection/next_button.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart'
     show CupertinoScaffold;
+import 'package:url_launcher/url_launcher.dart';
 import '../../Constants/colors.dart';
 import 'controllers/onboarding.controller.dart' show OnboardingController;
 
@@ -146,11 +148,7 @@ class _Onboarding1ScreenState extends State<Onboarding1Screen> {
                     child: Text.rich(
                       TextSpan(
                         text: "By continuing, you agree to Bilble's ",
-                        style: TextStyle(
-                          color: textWhite,
-                          fontSize: 14.sp,
-                          // fontWeight: FontWeight.bold,
-                        ),
+                        style: TextStyle(color: textWhite, fontSize: 14.sp),
                         children: [
                           TextSpan(
                             text: "Terms of services",
@@ -158,6 +156,21 @@ class _Onboarding1ScreenState extends State<Onboarding1Screen> {
                               decoration: TextDecoration.underline,
                               color: textWhite,
                             ),
+                            recognizer:
+                                TapGestureRecognizer()
+                                  ..onTap = () async {
+                                    final Uri uri = Uri.parse(
+                                      'https://lovable-stack-987930.framer.app/articles/getting-started/copy',
+                                    );
+                                    if (!await launchUrl(
+                                      uri,
+                                      mode: LaunchMode.externalApplication,
+                                    )) {
+                                      throw Exception(
+                                        'Could not launch terms of service',
+                                      );
+                                    }
+                                  },
                           ),
                           TextSpan(text: " & "),
                           TextSpan(
@@ -166,6 +179,21 @@ class _Onboarding1ScreenState extends State<Onboarding1Screen> {
                               decoration: TextDecoration.underline,
                               color: textWhite,
                             ),
+                            recognizer:
+                                TapGestureRecognizer()
+                                  ..onTap = () async {
+                                    final Uri uri = Uri.parse(
+                                      'https://alive-days-556983.framer.app/articles/getting-started',
+                                    );
+                                    if (!await launchUrl(
+                                      uri,
+                                      mode: LaunchMode.externalApplication,
+                                    )) {
+                                      throw Exception(
+                                        'Could not launch privacy policy',
+                                      );
+                                    }
+                                  },
                           ),
                         ],
                       ),

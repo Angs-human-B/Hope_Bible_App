@@ -32,9 +32,7 @@ import 'onboarding23_screen.dart';
 import 'onboarding24_screen.dart';
 import 'onboarding25_screen.dart';
 import 'onboarding2_screen.dart';
-// …
 import 'onboarding26_screen.dart';
-import 'onboarding33_screen.dart';
 import 'onboarding5_screen.dart';
 import 'onboarding6_screen.dart';
 import 'onboarding7_screen.dart';
