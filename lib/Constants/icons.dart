@@ -33,3 +33,5 @@ String endCallIcon= "assets/icons/endCallIcon.svg";
 String historyIcon= "assets/icons/history.svg";
 String historyClockIcon= "assets/icons/historyClockIcon.svg";
 String deleteIcon= "assets/icons/delete.svg";
+String radioSelectedIcon= "assets/icons/radio_selected_icon.svg";
+String radioUnselectedIcon= "assets/icons/radio_unSelected_icon.svg";

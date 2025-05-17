@@ -112,13 +112,21 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                       SizedBox(height: 10.h),
                       widget.login
-                          ? const SizedBox()
+                          ? Text(
+                            'Sign in to your account.',
+                            semanticsLabel: 'Sign in to your account.',
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              color: textGrey.withValues(alpha: 0.9),
+                              letterSpacing: -0.41,
+                            ),
+                          )
                           : Text(
                             'Lets create your account.',
                             semanticsLabel: 'Lets create your account.',
                             style: TextStyle(
                               fontSize: 18.sp,
-                              color: textWhite.withValues(alpha: 0.9),
+                              color: textGrey.withValues(alpha: 0.9),
                               letterSpacing: -0.41,
                             ),
                           ),
@@ -204,6 +212,24 @@ class _AuthPageState extends State<AuthPage> {
                     ),
                   ),
                 ],
+              ),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 450.h,
+              width: 355.w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(55.sp),
+                  bottomRight: Radius.circular(55.sp),
+                ),
+                image: DecorationImage(
+                  image: AssetImage("assets/images/authPageBanner.png"),
+                ),
               ),
             ),
           ),
