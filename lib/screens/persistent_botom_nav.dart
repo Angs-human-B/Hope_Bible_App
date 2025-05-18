@@ -5,6 +5,7 @@ import 'package:get/get.dart' show Get, Inst, Obx;
 import 'package:hope/screens/profile_screen.dart';
 
 import '../streak/controllers/streak.controller.dart' show StreakController;
+import '../widgets/AudioPlayer/floating_audio_player.dart';
 import '../widgets/bottom_nav_bar.dart';
 import 'bible_screen.dart';
 import 'home_screen.dart';
@@ -82,6 +83,15 @@ class _PersistentBottomNavState extends State<PersistentBottomNav> {
                 )
                 : const SizedBox.shrink();
           }),
+          FloatingAudioPlayer(
+            thumbnailUrl: 'cevcibeewv',
+            title: 'The ArK Part 1 - Noah and The Great Journey',
+            position: const Duration(minutes: 5, seconds: 12),
+            isPlaying: true,
+            onPlayPause: () {},
+            onNext: () {},
+            onPrevious: () {},
+          ),
         ],
       ),
     );

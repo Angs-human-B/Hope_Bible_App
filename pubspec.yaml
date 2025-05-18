@@ -49,6 +49,7 @@ dependencies:
   visibility_detector: ^0.4.0+2
   shimmer: ^3.0.0
   flutter_tts: ^3.8.5
+  marquee: ^2.3.0
 
 dev_dependencies:
   flutter_test:

@@ -76,6 +76,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             );
           } else {
+            // final route = '';
             // final route = 'login';
             // final route = 'paywall';
             // final route = 'onboarding';
