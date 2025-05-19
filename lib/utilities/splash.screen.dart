@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart' show Get, Inst;
+import 'package:hope/screens/Pricing&LoginSection/pricing_screen.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart'
     show CupertinoScaffold;
 import '../screens/Pricing&LoginSection/pricing_screen_1.dart'
@@ -44,10 +45,12 @@ class _SplashScreenState extends State<SplashScreen> {
     final signUpcontroller = Get.find<SignUpController>();
     switch (route) {
       case 'paywall':
-        return PricingScreen1(
-          isMainScreen: true,
-          offering: signUpcontroller.offerings?.current,
-        ); // Paywall screen
+        // return PricingScreen1(
+        //   isMainScreen: true,
+        //   offering: signUpcontroller.offerings?.current,
+        // ); // Paywall screen
+
+        return PricingScreen();
       case 'onboarding':
         return const OnboardingPager(); // Onboarding screen
       case 'login':
@@ -78,9 +81,9 @@ class _SplashScreenState extends State<SplashScreen> {
           } else {
             // final route = '';
             // final route = 'login';
-            // final route = 'paywall';
+            final route = 'paywall';
             // final route = 'onboarding';
-            final route = snapshot.data ?? 'onboarding';
+            // final route = snapshot.data ?? 'onboarding';
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.pushReplacement(
                 context,

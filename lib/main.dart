@@ -45,7 +45,7 @@ void main() async {
 
   await _configureSDK();
 
-  await fetchRevenueCatDetailsFn();
+  // await fetchRevenueCatDetailsFn();
 
   SharedPreferences sp = await SharedPreferences.getInstance();
 
@@ -228,7 +228,7 @@ class _MainAppState extends State<MainApp> {
             scaffoldBackgroundColor: CupertinoColors.black,
           ),
           navigatorObservers: [routeObserver],
-          home: const PersistentBottomNav(),
+          home: const SplashScreen(),
         );
       },
     );

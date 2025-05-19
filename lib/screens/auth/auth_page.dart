@@ -76,7 +76,7 @@ class _AuthPageState extends State<AuthPage> {
           ),
           SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 30.h),
+              padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 17.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -87,12 +87,12 @@ class _AuthPageState extends State<AuthPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            CupertinoPageRoute(
-                              builder: (_) => const PersistentBottomNav(),
-                            ),
-                            (route) => false,
-                          );
+                          // Navigator.of(context).pushAndRemoveUntil(
+                          //   CupertinoPageRoute(
+                          //     builder: (_) => const PersistentBottomNav(),
+                          //   ),
+                          //   (route) => false,
+                          // );
                         },
                         child: Text(
                           widget.login
@@ -103,7 +103,7 @@ class _AuthPageState extends State<AuthPage> {
                                   ? 'Welcome Back!'
                                   : 'Your Subscription is Confirmed!',
                           style: TextStyle(
-                            fontSize: 36.sp,
+                            fontSize: 34.sp,
                             fontWeight: FontWeight.bold,
                             color: textWhite,
                             letterSpacing: -0.5,
@@ -221,7 +221,7 @@ class _AuthPageState extends State<AuthPage> {
             right: 0,
             child: Container(
               height: 450.h,
-              width: 355.w,
+              width: 365.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(55.sp),
