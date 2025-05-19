@@ -1,7 +1,5 @@
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -29,7 +27,8 @@ class _HomeScreenState extends State<HomeScreen>
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final RxList<Media> _searchResults = <Media>[].obs;
-  final RxList<Map<String, String>> recentSearches = <Map<String, String>>[].obs;
+  final RxList<Map<String, String>> recentSearches =
+      <Map<String, String>>[].obs;
   final RxBool _hasStartedTyping = false.obs;
 
   void _onSearchChanged(String query) {
@@ -43,12 +42,12 @@ class _HomeScreenState extends State<HomeScreen>
     }
 
     final lowercaseQuery = query.toLowerCase();
-    _searchResults.value = mediaController.mediaList.where((media) {
-      return media.title.toLowerCase().contains(lowercaseQuery);
-    }).toList();
+    _searchResults.value =
+        mediaController.mediaList.where((media) {
+          return media.title.toLowerCase().contains(lowercaseQuery);
+        }).toList();
     _searchResults.refresh();
   }
-
 
   @override
   void initState() {
@@ -90,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen>
             DailyVerseCard(),
             HorizontalCardList(title: 'Recommended'),
             SizedBox(height: 12.h),
-            HorizontalCardList(title: 'Watch Now'),
+            HorizontalCardList(title: 'Listen Now'),
             const SizedBox(height: 100),
           ],
         ),
@@ -128,11 +127,11 @@ class _HomeScreenState extends State<HomeScreen>
                 itemColor: textFieldGrey,
                 suffixMode: OverlayVisibilityMode.always,
                 onSuffixTap: () {
-                      _searchController.clear();
-                      _focusNode.unfocus();
-                      _hasStartedTyping.value = false;
-                      _searchResults.clear();
-                    },
+                  _searchController.clear();
+                  _focusNode.unfocus();
+                  _hasStartedTyping.value = false;
+                  _searchResults.clear();
+                },
                 onChanged: (query) {
                   setState(() {
                     _onSearchChanged(query);
@@ -145,9 +144,7 @@ class _HomeScreenState extends State<HomeScreen>
                   if (query.trim().isEmpty) return;
 
                   if (!recentSearches.any((e) => e['title'] == query.trim())) {
-                    recentSearches.insert(0, {
-                      'title': query.trim(),
-                    });
+                    recentSearches.insert(0, {'title': query.trim()});
                   }
 
                   _onSearchChanged(query.trim());
@@ -157,7 +154,8 @@ class _HomeScreenState extends State<HomeScreen>
           );
         }),
         Obx(() {
-          if (!_hasStartedTyping.value || _searchResults.isEmpty) return const SizedBox.shrink();
+          if (!_hasStartedTyping.value || _searchResults.isEmpty)
+            return const SizedBox.shrink();
           return Positioned(
             top: 56.h + 72.h,
             left: 0,
@@ -167,26 +165,34 @@ class _HomeScreenState extends State<HomeScreen>
         }),
         // 4) Results Grid
         Obx(() {
-          if (!_hasStartedTyping.value || _searchResults.isEmpty) return const SizedBox.shrink();
+          if (!_hasStartedTyping.value || _searchResults.isEmpty)
+            return const SizedBox.shrink();
           return Positioned(
             top: 56.h + 72.h + 55.h,
             left: 0,
             right: 0,
-            height: 240.h,
-            child: SizedBox(
-              height: 240.h,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                itemCount: _searchResults.length,
-                itemBuilder:
-                    (context, index) => FeatureCard(
-                      isSmall: true,
-                      media: _searchResults[index],
-                      mediaList: _searchResults,
-                      index: index,
-                    ),
+            bottom: 0,
+            child: GridView.builder(
+              padding: EdgeInsets.only(
+                left: 16.w,
+                right: 16.w,
+                top: 8.h,
+                bottom: 120.h,
               ),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.75,
+                crossAxisSpacing: 12.w,
+                mainAxisSpacing: 12.h,
+              ),
+              itemCount: _searchResults.length,
+              itemBuilder:
+                  (context, index) => FeatureCard(
+                    isSmall: true,
+                    media: _searchResults[index],
+                    mediaList: _searchResults,
+                    index: index,
+                  ),
             ),
           );
         }),
@@ -194,100 +200,107 @@ class _HomeScreenState extends State<HomeScreen>
         //5) Recent Searches
         // 5) Recent Searches Section
         Obx(() {
-          if (!_hasStartedTyping.value || recentSearches.isEmpty) return const SizedBox.shrink();
+          if (!_hasStartedTyping.value || recentSearches.isEmpty)
+            return const SizedBox.shrink();
           return Positioned(
-            top: _searchResults.isEmpty?56.h + 72.h :56.h + 72.h + 55.h + 240.h + 16.h, // below results
+            top: 56.h + 72.h, // below search bar
             left: 0,
             right: 0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SectionHeader(title: "Recent Searches"),
-                SizedBox(height: 8.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 17.w),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: cardGrey.withOpacity(0.65),
-                      borderRadius: BorderRadius.circular(16.r),
-                      border: Border.all(
-                        color: textWhite.withOpacity(0.2),
-                        width: 1,
-                      ),
-                    ),
-                    padding: EdgeInsets.only(left: 16.w,right: 16.w, bottom: 8.h,top: 0),
-                    child: ListView.separated(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: recentSearches.length,
-                      separatorBuilder: (_, __) => Padding(
-                        padding: EdgeInsets.symmetric(vertical: 4.h),
-                        child: Container(
-                          color: textWhite.withOpacity(0.2),
-                          height: 1.h,
-                          width: double.infinity,
-                        ),
-                      ),
-                      itemBuilder: (context, index) {
-                        final item = recentSearches[index];
-                        return Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SvgPicture.asset(
-                              historyClockIcon,
-                              width: 24.w,
-                              height: 24.h,
-                              colorFilter: const ColorFilter.mode(
-                                CupertinoColors.white,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                            SizedBox(width: 10.w),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  HapticFeedback.selectionClick();
-                                  _searchController.text = item['title']!;
-                                  _onSearchChanged(item['title']!);
-                                  _focusNode.requestFocus();
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      item['title']!,
-                                      style: TextStyle(
-                                        color: textWhite,
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10.w),
-                            GestureDetector(
-                              onTap: () {
-                                HapticFeedback.heavyImpact();
-                                recentSearches.removeAt(index);
-                              },
-                              child: SvgPicture.asset(
-                                closeIcon,
-                                width: 16.w,
-                                height: 16.h,
-                                colorFilter: const ColorFilter.mode(
-                                  CupertinoColors.systemGrey,
-                                  BlendMode.srcIn,
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ),
+                // SectionHeader(title: "Recent Searches"),
+                // SizedBox(height: 8.h),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 17.w),
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //       color: cardGrey.withOpacity(0.65),
+                //       borderRadius: BorderRadius.circular(16.r),
+                //       border: Border.all(
+                //         color: textWhite.withOpacity(0.2),
+                //         width: 1,
+                //       ),
+                //     ),
+                //     padding: EdgeInsets.only(
+                //       left: 16.w,
+                //       right: 16.w,
+                //       bottom: 8.h,
+                //       top: 0,
+                //     ),
+                //     child: ListView.separated(
+                //       physics: const NeverScrollableScrollPhysics(),
+                //       shrinkWrap: true,
+                //       itemCount: recentSearches.length,
+                //       separatorBuilder:
+                //           (_, __) => Padding(
+                //             padding: EdgeInsets.symmetric(vertical: 4.h),
+                //             child: Container(
+                //               color: textWhite.withOpacity(0.2),
+                //               height: 1.h,
+                //               width: double.infinity,
+                //             ),
+                //           ),
+                //       itemBuilder: (context, index) {
+                //         final item = recentSearches[index];
+                //         return Row(
+                //           crossAxisAlignment: CrossAxisAlignment.start,
+                //           children: [
+                //             SvgPicture.asset(
+                //               historyClockIcon,
+                //               width: 24.w,
+                //               height: 24.h,
+                //               colorFilter: const ColorFilter.mode(
+                //                 CupertinoColors.white,
+                //                 BlendMode.srcIn,
+                //               ),
+                //             ),
+                //             SizedBox(width: 10.w),
+                //             Expanded(
+                //               child: GestureDetector(
+                //                 onTap: () {
+                //                   HapticFeedback.selectionClick();
+                //                   _searchController.text = item['title']!;
+                //                   _onSearchChanged(item['title']!);
+                //                   _focusNode.requestFocus();
+                //                 },
+                //                 child: Column(
+                //                   crossAxisAlignment: CrossAxisAlignment.start,
+                //                   children: [
+                //                     Text(
+                //                       item['title']!,
+                //                       style: TextStyle(
+                //                         color: textWhite,
+                //                         fontSize: 16.sp,
+                //                         fontWeight: FontWeight.w600,
+                //                       ),
+                //                     ),
+                //                   ],
+                //                 ),
+                //               ),
+                //             ),
+                //             SizedBox(width: 10.w),
+                //             GestureDetector(
+                //               onTap: () {
+                //                 HapticFeedback.heavyImpact();
+                //                 recentSearches.removeAt(index);
+                //               },
+                //               child: SvgPicture.asset(
+                //                 closeIcon,
+                //                 width: 16.w,
+                //                 height: 16.h,
+                //                 colorFilter: const ColorFilter.mode(
+                //                   CupertinoColors.systemGrey,
+                //                   BlendMode.srcIn,
+                //                 ),
+                //               ),
+                //             ),
+                //           ],
+                //         );
+                //       },
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           );

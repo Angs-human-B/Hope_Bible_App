@@ -9,7 +9,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../utilities/mixins.dart' show RefreshToken;
 import '../../../utilities/network.call.dart'
-    show getAPI, multiPostAPINew, patchAPI;
+    show deleteAPI, getAPI, multiPostAPINew, patchAPI;
 import '../../../utilities/text.utility.dart' show AllText;
 import '../../../utilities/toast.widget.dart'
     show showErrorToast, showSuccessToast;
@@ -30,6 +30,7 @@ class SignUpController extends GetxController with RefreshToken {
   String registerUser = "api/v1/auth/register";
   String deleteUser = "api/user/delete";
   String userLogin = "api/v1/auth/login";
+  String deactivateAccount = "api/v1/auth/account";
   UserData userDetails = UserData.empty();
 
   Future getUserDetailsFn(String userId, context) async {
@@ -399,6 +400,73 @@ class SignUpController extends GetxController with RefreshToken {
       );
     } catch (ex) {
       error("something went wrong");
+      isLoading(false);
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  Future<void> userDeactivateFn(
+    Map<String, dynamic> param,
+    BuildContext context,
+    bool? preferenceChanged,
+  ) async {
+    try {
+      // Indicate that the loading process has started
+      isLoading(true);
+      isError(false);
+      error("");
+      await _checkAuthToken();
+      await deleteAPI(
+        methodName: deactivateAccount,
+        param: param,
+        callback: (value) async {
+          Utils.logger.d(param);
+          Map<String, dynamic> valueMap = json.decode(value.response);
+
+          if (valueMap["success"] == true) {
+            showSuccessToast(
+              context: context,
+              title: "User Account Deletion",
+              description:
+                  valueMap["message"] ??
+                  "Something went wrong. Please try again.",
+            );
+            destroyData(context);
+
+            Utils.logger.i(valueMap);
+          } else {
+            // Handle error response from API
+            isError(true);
+            error(valueMap["message"] ?? "An unexpected error occurred.");
+
+            // Show error toast with the message from the API
+            showErrorToast(
+              context: context,
+              title: "Update Failed",
+              description:
+                  valueMap["message"] ??
+                  "Something went wrong. Please try again.",
+            );
+          }
+
+          // Stop the loading indicator after processing the response
+          isLoading(false);
+        },
+      );
+    } catch (ex) {
+      // Handle any exceptions that occur during the API call
+      isError(true);
+      error("Something went wrong");
+
+      // Show a generic error toast for exceptions
+      showErrorToast(
+        context: context,
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+      );
+
+      // Stop the loading indicator in case of an exception
       isLoading(false);
     } finally {
       isLoading(false);

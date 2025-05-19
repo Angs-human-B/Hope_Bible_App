@@ -114,7 +114,7 @@ class UserData {
     this.longestStreak,
     this.currentStreak,
     this.readingTime,
-    this.receiveNotifications = true,
+    this.receiveNotifications = false,
   });
 
   /// Named constructor to create an empty UserData instance

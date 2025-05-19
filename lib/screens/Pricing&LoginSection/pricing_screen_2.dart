@@ -86,7 +86,11 @@ class _PricingScreen2State extends State<PricingScreen2> {
                   SizedBox(height: 10.h),
                   Row(
                     children: [
-                      CircleAvatar(radius: 24.sp, backgroundColor: textGrey),
+                      CircleAvatar(
+                        radius: 24.sp,
+                        backgroundColor: textGrey,
+                        child: Icon(Icons.lock_open, color: textWhite),
+                      ),
                       SizedBox(width: 16.w),
                       Expanded(
                         child: Column(

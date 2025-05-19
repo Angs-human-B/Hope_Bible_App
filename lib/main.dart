@@ -10,8 +10,6 @@ import 'package:hope/screens/persistent_botom_nav.dart';
 import 'package:hope/utilities/app.constants.dart'
     show AppConstants, EntitleMents, Utils;
 import 'package:jwt_decoder/jwt_decoder.dart' show JwtDecoder;
-import 'package:onesignal_flutter/onesignal_flutter.dart'
-    show OSLogLevel, OneSignal;
 import 'package:purchases_flutter/models/purchases_configuration.dart'
     show AmazonConfiguration, PurchasesConfiguration;
 import 'package:purchases_flutter/purchases_flutter.dart'
@@ -43,15 +41,11 @@ void main() async {
   // Apply bindings manually
   InitialBinding().dependencies();
 
-  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-  OneSignal.initialize("e01cb044-c3a0-4917-8f88-a899ecac24f5");
-  OneSignal.Notifications.requestPermission(true);
-
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
   await _configureSDK();
 
-  // await fetchRevenueCatDetailsFn();
+  await fetchRevenueCatDetailsFn();
 
   SharedPreferences sp = await SharedPreferences.getInstance();
 

@@ -19,8 +19,9 @@ class HorizontalCardList extends StatefulWidget {
 
 class _HorizontalCardListState extends State<HorizontalCardList> {
   final mediaController = Get.find<MediaController>();
-  late List<Media> randomizedList;
+  List<Media> randomizedList = [];
   final _random = Random();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -28,19 +29,53 @@ class _HorizontalCardListState extends State<HorizontalCardList> {
     if (mediaController.mediaList.isEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         await mediaController.getMediaFn({}, context);
+        _initializeRandomList();
       });
+    } else {
+      _initializeRandomList();
+    }
+
+    // Add scroll listener for infinite scrolling
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _initializeRandomList() {
+    randomizedList = List<Media>.from(mediaController.mediaList);
+    for (var i = randomizedList.length - 1; i > 0; i--) {
+      final j = _random.nextInt(i + 1);
+      final temp = randomizedList[i];
+      randomizedList[i] = randomizedList[j];
+      randomizedList[j] = temp;
     }
   }
 
-  List<Media> _getRandomizedList() {
-    final list = List<Media>.from(mediaController.mediaList);
-    for (var i = list.length - 1; i > 0; i--) {
-      final j = _random.nextInt(i + 1);
-      final temp = list[i];
-      list[i] = list[j];
-      list[j] = temp;
+  void _appendNewItems(List<Media> newItems) {
+    randomizedList.addAll(newItems);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+
+    // Get the current scroll position and viewport dimensions
+    final position = _scrollController.position;
+    final viewportWidth = position.viewportDimension;
+    final maxScroll = position.maxScrollExtent;
+    final currentScroll = position.pixels;
+
+    // Calculate how far we are from the right edge
+    final distanceFromRight = maxScroll - currentScroll;
+
+    // If we're within one viewport width from the right edge, load more
+    if (distanceFromRight <= viewportWidth) {
+      mediaController.loadMoreMedia(context);
     }
-    return list;
   }
 
   Widget _buildShimmerCard() {
@@ -102,18 +137,33 @@ class _HorizontalCardListState extends State<HorizontalCardList> {
               );
             }
 
-            final randomList = _getRandomizedList();
+            // Update our list when new items are loaded
+            if (randomizedList.length < mediaController.mediaList.length) {
+              final newItems =
+                  mediaController.mediaList
+                      .skip(randomizedList.length)
+                      .toList();
+              _appendNewItems(newItems);
+            }
+
             return ListView.builder(
+              controller: _scrollController,
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.symmetric(horizontal: 12.w),
-              itemCount: randomList.length,
-              itemBuilder:
-                  (context, index) => FeatureCard(
-                    isSmall: true,
-                    media: randomList[index],
-                    mediaList: randomList,
-                    index: index,
-                  ),
+              itemCount:
+                  randomizedList.length +
+                  (mediaController.hasMorePages.value ? 1 : 0),
+              itemBuilder: (context, index) {
+                if (index == randomizedList.length) {
+                  return _buildShimmerCard();
+                }
+                return FeatureCard(
+                  isSmall: true,
+                  media: randomizedList[index],
+                  mediaList: randomizedList,
+                  index: index,
+                );
+              },
             );
           }),
         ),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,57 +14,63 @@ class Onboarding33Screen extends StatefulWidget {
 }
 
 class _Onboarding33ScreenState extends State<Onboarding33Screen> {
-
   int _selectedSlot = 0;
-  TimeOfDay _customTime = TimeOfDay(hour: 20, minute: 30);
+  // TimeOfDay _customTime = TimeOfDay(hour: 20, minute: 30);
   Duration _selectedDuration = const Duration(hours: 20, minutes: 30);
   String _formattedTime(Duration d) {
     final now = DateTime.now();
     final dt = DateTime(
-        now.year, now.month, now.day, d.inHours, d.inMinutes % 60);
+      now.year,
+      now.month,
+      now.day,
+      d.inHours,
+      d.inMinutes % 60,
+    );
     return DateFormat.jm().format(dt);
   }
+
   Future<void> _pickCupertinoTime() async {
     await showCupertinoModalPopup<void>(
       context: context,
-      builder: (ctx) => Container(
-        height: 250.h,
-        color: CupertinoColors.systemBackground.resolveFrom(ctx),
-        child: Column(
-          children: [
-            // “Done” button bar
-            Container(
-
-              height: 44.h,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  CupertinoButton(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: const Text('Done'),
-                    onPressed: () => Navigator.of(ctx).pop(),
+      builder:
+          (ctx) => Container(
+            height: 250.h,
+            color: CupertinoColors.systemBackground.resolveFrom(ctx),
+            child: Column(
+              children: [
+                // “Done” button bar
+                Container(
+                  height: 44.h,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      CupertinoButton(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: const Text('Done'),
+                        onPressed: () => Navigator.of(ctx).pop(),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                // The actual picker
+                Expanded(
+                  child: CupertinoTimerPicker(
+                    mode: CupertinoTimerPickerMode.hm,
+                    initialTimerDuration: _selectedDuration,
+                    onTimerDurationChanged: (newDuration) {
+                      setState(() {
+                        _selectedSlot = -1; // clear preset
+                        _selectedDuration = newDuration;
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
-            // The actual picker
-            Expanded(
-              child: CupertinoTimerPicker(
-                mode: CupertinoTimerPickerMode.hm,
-                initialTimerDuration: _selectedDuration,
-                onTimerDurationChanged: (newDuration) {
-                  setState(() {
-                    _selectedSlot = -1;  // clear preset
-                    _selectedDuration = newDuration;
-                  });
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
     );
   }
+
   Widget _buildSlotButton({
     required String icon,
     required String label,
@@ -79,8 +84,10 @@ class _Onboarding33ScreenState extends State<Onboarding33Screen> {
           height: 108.h,
           width: 111.3.w,
           decoration: BoxDecoration(
-            color: selected? cardGrey: secondaryGrey,
-            border: Border.all(color: selected? Colors.white : Colors.transparent),
+            color: selected ? cardGrey : secondaryGrey,
+            border: Border.all(
+              color: selected ? Colors.white : Colors.transparent,
+            ),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Image.asset(icon),
@@ -103,17 +110,17 @@ class _Onboarding33ScreenState extends State<Onboarding33Screen> {
             Row(
               children: [
                 _buildSlotButton(
-                  icon:"assets/images/morning.png", // morning icon
+                  icon: "assets/images/morning.png", // morning icon
                   label: "Morning",
                   index: 0,
                 ),
-                SizedBox(width: 10.w,),
+                SizedBox(width: 10.w),
                 _buildSlotButton(
                   icon: "assets/images/mid-day.png", // mid-day icon
                   label: "Mid-day",
                   index: 1,
                 ),
-                SizedBox(width: 10.w,),
+                SizedBox(width: 10.w),
                 _buildSlotButton(
                   icon: "assets/images/night.png", // night icon
                   label: "Night",
