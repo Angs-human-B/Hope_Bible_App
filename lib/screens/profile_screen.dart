@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:hope/Constants/colors.dart';
 import 'package:hope/screens/app_settings_screen.dart';
 import 'package:hope/screens/profile_settings_screen.dart';
+import 'package:hope/screens/widget_settings_screen.dart';
 import 'package:hope/widgets/ProfileSection/profile_upper_container.dart';
 import '../Constants/icons.dart';
 import '../utilities/app.constants.dart' show AppConstants, Utils;
@@ -125,7 +126,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 //     print("Notifications: $val");
                 //   },
                 // ),
-                SizedBox(height: 120.h),
+                SizedBox(height: 10.h),
+                SettingsButtonListTile(
+                  iconPath: appleIcon,
+                  title: "Widget settings",
+                  trailingIconPath: arrowRight2,
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const WidgetSettingsScreen(),
+                      ),
+                    );
+                  },
+                ),
+                // SizedBox(height: 120.h),
               ],
             ),
           ),

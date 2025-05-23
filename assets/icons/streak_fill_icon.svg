@@ -1,0 +1,19 @@
+<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_9190_3014)">
+<path d="M8.38464 7.02682C9.88015 4.90631 8.49169 2.01208 7.74361 1.29541C7.74361 3.47169 6.31092 4.69221 5.39297 5.59413C4.47631 6.49669 3.89746 7.91528 3.89746 9.17618C3.89746 11.5505 5.90644 13.4749 8.38464 13.4749C10.8628 13.4749 12.8718 11.5505 12.8718 9.17618C12.8718 8.07874 12.0821 6.35374 11.3763 5.59413C10.0404 7.74349 9.28849 7.74349 8.38464 7.02682Z" fill="#F0F2F9" stroke="#F0F2F9" stroke-width="1.28205" stroke-linecap="round" stroke-linejoin="round"/>
+<g style="mix-blend-mode:color-dodge" filter="url(#filter0_f_9190_3014)">
+<path d="M8.38464 7.02682C9.88015 4.90631 8.49169 2.01208 7.74361 1.29541C7.74361 3.47169 6.31092 4.69221 5.39297 5.59413C4.47631 6.49669 3.89746 7.91528 3.89746 9.17618C3.89746 11.5505 5.90644 13.4749 8.38464 13.4749C10.8628 13.4749 12.8718 11.5505 12.8718 9.17618C12.8718 8.07874 12.0821 6.35374 11.3763 5.59413C10.0404 7.74349 9.28849 7.74349 8.38464 7.02682Z" fill="#F0F2F9"/>
+<path d="M8.38464 7.02682C9.88015 4.90631 8.49169 2.01208 7.74361 1.29541C7.74361 3.47169 6.31092 4.69221 5.39297 5.59413C4.47631 6.49669 3.89746 7.91528 3.89746 9.17618C3.89746 11.5505 5.90644 13.4749 8.38464 13.4749C10.8628 13.4749 12.8718 11.5505 12.8718 9.17618C12.8718 8.07874 12.0821 6.35374 11.3763 5.59413C10.0404 7.74349 9.28849 7.74349 8.38464 7.02682Z" stroke="#F0F2F9" stroke-width="1.28205" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_9190_3014" x="1.9743" y="-0.627754" width="12.8205" height="16.0255" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="0.641026" result="effect1_foregroundBlur_9190_3014"/>
+</filter>
+<clipPath id="clip0_9190_3014">
+<rect width="15.3846" height="15.3846" fill="white" transform="translate(0.692383 0.0131836)"/>
+</clipPath>
+</defs>
+</svg>

@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart' show ScreenUtilInit;
 import 'package:get/get.dart';
 import 'package:hope/screens/persistent_botom_nav.dart';
+import 'package:hope/screens/profile_screen.dart';
+import 'package:hope/screens/widget_settings_screen.dart';
 import 'package:hope/utilities/app.constants.dart'
     show AppConstants, EntitleMents, Utils;
 import 'package:jwt_decoder/jwt_decoder.dart' show JwtDecoder;
@@ -228,7 +230,7 @@ class _MainAppState extends State<MainApp> {
             scaffoldBackgroundColor: CupertinoColors.black,
           ),
           navigatorObservers: [routeObserver],
-          home: const SplashScreen(),
+          home: const ProfileScreen(),
         );
       },
     );
